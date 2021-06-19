@@ -1,0 +1,41 @@
+:root {
+    --p1_color: orange;
+
+    --apopis: red;
+    --orochi: orange;
+    --quetzalcoatl: yellow;
+    --longshen: lime;
+    --jormungandr: cyan;
+    --ouroboros: magenta;
+    
+}
+
+.p1-snake-body {
+    background-color: black;
+    border: var(--p1_color) solid 1px;
+    box-sizing: border-box;
+}
+
+.p1-snake-head {
+    background-color: var(--p1_color);
+}
+
+.p1-horizontal-tongue {
+    background-color: var(--p1_color);
+    height: 2px;
+    margin: 6.5px 2.5px;
+}
+
+.p1-vertical-tongue {
+    background-color: var(--p1_color);
+    width: 2px;
+    margin: 2.5px 6.5px;
+}
+
+#p1-wins{
+    color: var(--p1_color);
+}
+
+#p1Score{
+    color: var(--p1_color);
+}

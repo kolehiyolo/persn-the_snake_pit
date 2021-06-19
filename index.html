@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+
+    <link rel="stylesheet" href="assets/stylesheets/game-board.css">
+    <link rel="stylesheet" href="assets/stylesheets/snake-selection-div.css">
+    <link rel="stylesheet" href="assets/stylesheets/player-one.css">
+    <link rel="stylesheet" href="assets/stylesheets/player-two.css">
+    <title>Amphisbaena</title>
+</head>
+
+<body>
+    <header>
+        <h1>Choose your Snek</h1>
+        <h2>Tap twice to lock</h2>
+    </header>
+    <main>
+        <!-- < This is the div for the Game Board - -->
+        <div id="game-board" class="hidden"></div>
+        <!-- - This is the div for the Game Board ! -->
+
+        <!-- < This is the div for when the players are selecting their snake - -->
+        <div id="snake-selection-div" class="show">
+            <div id="snake-grid">
+                <div id="select-apopis" class="snake-select-div">
+                    <h2>Apopis</h2>
+                    <h3>Primordial God of Chaos</h3>
+                    <div id="skills-apopis" class="snake-skills">
+                        <p><span class="skills-apopis">Switch</span></p>
+                        <p>Swap bodies with the enemy</p>
+                        <p><span class="ital">Duration:</span> Instant</pa>
+                            <p><span class="ital">Cooldown:</span> 10s</p>
+                            <br>
+                            <p><span class="skills-apopis">Chaos</span></p>
+                            <p>Randomly scatter the snakes and all objects</p>
+                            <p><span class="ital">Duration:</span> Instant</pa>
+                                <p><span class="ital">Cooldown:</span> 10s</p>
+                    </div>
+                </div>
+                <div id="select-orochi" class="snake-select-div">
+                    <h2>Orochi</h2>
+                    <h3>Eight-Headed Leviathan</h3>
+                    <div id="skills-orochi" class="snake-skills">
+                        <p><span class="skills-orochi">Amputate</span></p>
+                        <p>Leave a clone without taking damage</p>
+                        <p><span class="ital">Duration:</span> Instant</pa>
+                            <p><span class="ital">Cooldown:</span> 10s</p>
+                            <br>
+                            <p><span class="skills-orochi">Sustainable</span></p>
+                            <p>Any damage taken is halved</p>
+                            <p><span class="ital">Duration:</span> Passive</pa>
+                                <p><span class="ital">Cooldown:</span> Passive</p>
+                    </div>
+                </div>
+                <div id="select-quetzalcoatl" class="snake-select-div">
+                    <h2>Quetzalcoatl</h2>
+                    <h3>Feathered Serpent Deity</h3>
+                    <div id="skills-quetzalcoatl" class="snake-skills">
+                        <p><span class="skills-quetzalcoatl">Takeover</span></p>
+                        <p>Control both snakes</p>
+                        <p><span class="ital">Duration:</span> 3s</pa>
+                            <p><span class="ital">Cooldown:</span> 10s</p>
+                            <br>
+                            <p><span class="skills-quetzalcoatl">Reversal</span></p>
+                            <p>Reverse the head and the tail</p>
+                            <p><span class="ital">Duration:</span> Instant</pa>
+                                <p><span class="ital">Cooldown:</span> 10s</p>
+                    </div>
+                </div>
+                <div id="select-long" class="snake-select-div">
+                    <h2>Lóng</h2>
+                    <h3>God King of Dragons</h3>
+                    <div id="skills-long" class="snake-skills">
+                        <p><span class="skills-long">Petrify</span></p>
+                        <p>Stun the enemy momentarily</p>
+                        <p><span class="ital">Duration:</span> 1s</pa>
+                            <p><span class="ital">Cooldown:</span> 10s</p>
+                            <br>
+                            <p><span class="skills-long">Target</span></p>
+                            <p>Shows the coordinates of the enemy's head and all objects</p>
+                            <p><span class="ital">Duration:</span> 3s</pa>
+                                <p><span class="ital">Cooldown:</span> 10s</p>
+                    </div>
+                </div>
+                <div id="select-jormungandr" class="snake-select-div">
+                    <h2>Jörmungandr</h2>
+                    <h3>Herald of Ragnarok</h3>
+                    <div id="skills-jormungandr" class="snake-skills">
+                        <p><span class="skills-jormungandr">Bifrost</span></p>
+                        <p>The edges of the arena become portals</p>
+                        <p><span class="ital">Duration:</span> 3s</pa>
+                            <p><span class="ital">Cooldown:</span> 10s</p>
+                            <br>
+                            <p><span class="skills-jormungandr">Phase</span></p>
+                            <p>Can pass through obstacles</p>
+                            <p><span class="ital">Duration:</span> 3s</pa>
+                                <p><span class="ital">Cooldown:</span> 10s</p>
+
+                    </div>
+                </div>
+                <div id="select-ouroboros" class="snake-select-div">
+                    <h2>Ouroboros</h2>
+                    <h3>Self-Devouring Titan</h3>
+                    <div id="skills-ouroboros" class="snake-skills">
+                        <p><span class="skills-ouroboros">Masochist</span></p>
+                        <p>Can pass through self</p>
+                        <p><span class="ital">Duration:</span> Passive</pa>
+                            <p><span class="ital">Cooldown:</span> Passive</p>
+                            <br>
+                            <p><span class="skills-ouroboros">Impenetrable</span></p>
+                            <p>The body won't take any damage</p>
+                            <p><span class="ital">Duration:</span> 3s</pa>
+                                <p><span class="ital">Cooldown:</span> 10s</p>
+                    </div>
+                </div>
+            </div>
+            <div id="ready-grid">
+                <button id="p1-ready" class="player-ready-btn">Player 1 is Not Ready</button>
+                <button id="p2-ready" class="player-ready-btn">Player 2 is Not Ready</button>
+            </div>    
+        </div>
+        <!-- - This is the div for when the players are selecting their snake ! -->
+
+        <div id="countdown-div" class="hidden">
+            <h1 id="countdown-msg"></h1>
+            <h1 id="countdown-number">-</h1>
+        </div>
+
+        <!-- < This is the div for the score-board - -->
+        <!-- <div id="score-board">
+            <h2 id="p1Score">Player 1 Score: 0</h2>
+            <h2 id="p2Score">Player 2 Score: 0</h2>
+        </div> -->
+        <!-- - This is the div for the score-board ! -->
+
+        <!-- < These are the divs for the Player - -->
+        <!-- <div id="p1-div">
+            <h2>Player 1 Bullets:</h2>
+            <h2 id="p1-bullets">0</h2>
+        </div>
+
+        <div id="p2-div">
+            <h2>Player 2 Bullets:</h2>
+            <h2 id="p2-bullets">0</h2>
+        </div> -->
+        <!-- - These are the divs for the Player ! -->
+
+        <!-- < This is the div for the game-over overlay - -->
+        <div id="game-over" class="hidden">
+            <h2 id="game-verdict"></h2>
+            <h3>press "Enter" to play again</h3>
+            <h3>press "Esc" to choose snakes</h3>
+        </div>
+        <!-- - This is the div for the game-over overlay ! -->
+    </main>
+
+
+    <footer>
+
+    </footer>
+
+    <script src="assets/javascript/game-board-setup.js"></script>
+    <script src="assets/javascript/game-states-orig.js"></script>
+    <script src="assets/javascript/mid-game.js"></script>
+    <script src="assets/javascript/call-functions.js"></script>
+    <script src="assets/javascript/game-states.js"></script>
+    <script src="assets/javascript/gameChoose.js"></script>
+    <script src="assets/javascript/gameVariables.js"></script>
+    <script src="assets/javascript/keyTranslator.js"></script>
+</body>
+
+</html>

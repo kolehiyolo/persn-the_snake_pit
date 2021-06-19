@@ -1,0 +1,146 @@
+:root {
+    --theme_color: white;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: black;
+}
+
+body {
+    min-height: 100vh;
+}
+
+header {
+    /* background-color: white; */
+    color: var(--theme_color);
+    font-family: monospace;
+    text-align: center;
+    padding: 40px 0 20px;
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+}
+
+#score-board {
+    /* background-color: red; */
+    /* color: var(--theme_color); */
+    font-family: monospace;
+    text-align: center;
+    width: 100%;
+    padding: 10px 0px 30px;
+    position: absolute;
+    box-sizing: border-box;
+    bottom: 0;
+}
+
+#score-board h2 {
+    margin: 0;
+    padding: 0;
+}
+
+#game-board {
+    /* display: none; */
+}
+
+#game-board {
+    text-align: center;
+    margin: 0 auto ;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+#game-board {
+    border: var(--theme_color) solid 1px;
+    padding: 2.5px;
+}
+
+.row {
+    display: flex;
+}
+
+.col {
+    background-color: rgb(20, 20, 20);
+    /* background-color: black; */
+
+    width: 10px;
+    height: 10px;
+    margin: 2.5px;
+}
+
+#game-over {
+    padding: 25px 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    background-color: rgba(0,0,0,0.5);
+    color: var(--theme_color);
+    font-family: monospace;
+}
+
+.dead-snake-body {
+    background-color: black;
+    border: lightgray solid 1px;
+    box-sizing: border-box;
+}
+ 
+.dead-snake-head {
+    background-color: lightgray;
+}
+
+.food {
+    background-color: white;
+}
+
+.food-2 {
+    background-color: white;
+}
+
+.super-food {
+    background-color: lime;
+}
+
+#p1-div {
+    position: absolute;
+    bottom: 50%;
+    left: 2%;
+    text-align: center;
+}
+
+#p1-div h2 {
+    color: orange;
+    font-family: monospace;
+}
+
+#p2-div {
+    position: absolute;
+    bottom: 50%;
+    right: 2%;
+    text-align: center;
+}
+
+#p2-div h2 {
+    color: cyan;
+    font-family: monospace;
+}
+
+.hidden {
+    opacity: 0 !important;
+    transition:1s;
+}
+
+.show {
+    opacity: 1 !important;
+    transition: 1s;
+}
