@@ -252,7 +252,7 @@ function gameChoose(key) {
 function gameChooseDefaults() {
     selectSnakeGrid = [
         ["apopis", "orochi", "quetzalcoatl"],
-        ["long", "jormungandr", "ouroboros"]
+        ["lóng", "jörmungandr", "ouroboros"]
     ];
 
     player1.chooseGridPosition = [0, 0];
@@ -283,39 +283,32 @@ function gameChooseDefaults() {
 
 function navigateSelection() {
     // Placeholder Variables
-    var activePlayerSelectID = "snake-player_" + activePlayer.playerNumber + "-icon-active"; // FIX
-    var enemyPlayerSelectID = "snake-player_" + enemyPlayer.playerNumber + "-icon-active"; // FIX
-    var activePlayerSnakeID = activePlayer.chooseSnake + "-div";
-    var activePlayerSnakeHover = "choose-" + activePlayer.chooseSnake + "-hover";
-    var activePlayerSelectHover = "snake-div-hover";
+    let playerHover = `choose-player_${activePlayer.playerNumber}-hover`;
+    let enemyHover = `choose-player_${enemyPlayer.playerNumber}-hover`;
+    let playerIcon = `snake-player_${activePlayer.playerNumber}-icon-hover`;
+    let snakeHover = `choose-${activePlayer.chooseSnake}-hover`;
 
     // First, remove the styling from the current location
     // -This removes the styling on the Selection Div
     // -- If the activePlayer's icon is not on the same Selection Div as the enemyPlayer's, remove the styling on the Selection Div
-    if ($("." + activePlayerSelectID).hasClass(enemyPlayerSelectID) === false) {
-        $("." + activePlayerSelectID).removeClass(activePlayerSelectID + " " + activePlayerSnakeHover + " " + activePlayerSelectHover);
-        $("." + activePlayerSnakeID + "-font_color").removeClass(activePlayerSnakeID + "-font_color");
+    if ($("." + playerHover).hasClass(enemyHover) === false) {
+        $("." + snakeHover).removeClass(snakeHover + " snake-div-hover");
     }
     // -- Otherwise, remove only the activePlayer's icon
-    else {
-        $("." + activePlayerSelectID).removeClass(activePlayerSelectID);
-    }
+    $("." + playerHover).removeClass(playerHover);
     // -This removes the Active Player's Icon from the current location
-    $("." + activePlayerSelectID + "_icon-active").removeClass(activePlayerSelectID + "_icon-active"); //
+    $("." + playerIcon).removeClass(playerIcon);
 
     // Then, set the new location
     activePlayer.chooseSnake = selectSnakeGrid[activePlayer.chooseGridPosition[0]][activePlayer.chooseGridPosition[1]];
-    activePlayerSnakeID = "game_choose-" + activePlayer.chooseSnake;
-    activePlayerSnakeHover = "game_choose-select-" + activePlayer.chooseSnake + "-hover";
+    snakeHover = `choose-${activePlayer.chooseSnake}-hover`;
 
     // Finally, add the styling to the new location
     // -This adds the styling to the Selection Div
-    $("#" + activePlayerSnakeID).addClass(activePlayerSelectID + " " + activePlayerSnakeHover + " " + activePlayerSelectHover);
-    $("#" + activePlayerSnakeID + "_name").addClass(activePlayerSnakeID + "-font_color");
-    $("#" + activePlayerSnakeID + "_skill-1_name").addClass(activePlayerSnakeID + "-font_color");
-    $("#" + activePlayerSnakeID + "_skill-2_name").addClass(activePlayerSnakeID + "-font_color");
+    $(`#${activePlayer.chooseSnake}-div`).addClass(`${snakeHover} ${playerHover} snake-div-hover`);
     // -This adds the Active Player's Icon to the new location
-    $("#" + activePlayerSnakeID + "-player_select_icons ." + activePlayerSelectID + "_icon").addClass(activePlayerSelectID + "_icon-active");
+    $(`#${activePlayer.chooseSnake}-div .snake-player_${activePlayer.playerNumber}-icon`).addClass(playerIcon);
+    // $("#" + activePlayerSnakeID + "-player_select_icons ." + activePlayerSelectID + "_icon").addClass(activePlayerSelectID + "_icon-active");
 
     switch (activePlayer.playerNumber) {
         case 1:

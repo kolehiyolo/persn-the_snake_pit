@@ -7,48 +7,28 @@
     --ouroboros: magenta;
 }
 
-/* < game_choose-grid - */
-#game_choose-grid {
-    /* Box Format */
+#game-choose-grid {
     width: 925px;
     padding: 25px;
     box-sizing: border-box;
-    /* border: 1px solid; */
     margin: 0;
-}
-
-#game_choose-grid {
-    /* Fonts & Color */
+    border: black 1px solid;
     background-color: black;
-    /* border-color: lightgray; */
     color: lightgray;
     font-family: monospace;
-}
-
-#game_choose-grid {
-    /* Position */
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* z-index: -10; */
-}
-
-#game_choose-grid {
-    /* Grid */
     display: grid;
     grid-template-areas:
-        "game_choose-snakes_grid"
-        "game_choose-ready_grid";
+        "choose-snakes-grid"
+        "choose-ready-grid";
     gap: 25px;
 }
 
-/* - game_choose-grid ! */
-
-/* < game_choose-snakes_grid - */
-#game_choose-snakes_grid {
-    /* Grid */
-    grid-area: game_choose-snakes_grid;
+#choose-snakes-grid {
+    grid-area: choose-snakes-grid;
     display: grid;
     grid-template-areas:
         "game_choose-apopis game_choose-orochi game_choose-quetzalcoatl"
@@ -57,66 +37,75 @@
     gap: 25px;
 }
 
-/* <- game_choose-snake_div -- */
-.game_choose-snake_div {
-    /* Box Format */
+.snake-div {
     width: 275px;
     height: 275px;
     box-sizing: border-box;
+    margin: 0;
     padding: 20px;
     border: 1px dashed;
     position: relative;
     transition: 0.5s;
-}
-
-.game_choose-snake_div {
-    /* Fonts & Color */
     border-color: lightgray;
     text-align: center;
 }
 
-.game_choose-name {
-    /* Box Format */
+.snake-header-name,
+.snake-skills p {
     margin: 0;
 }
 
-.game_choose-epithet {
-    /* Fonts & Color */
-    font-style: italic;
-}
-
-.game_choose-skill {
-    /* Box Format */
+.snake-skill_1,
+.snake-skill_2 {
     margin-bottom: 15px;
-}
-
-.game_choose-skill {
-    /* Fonts & Color */
     text-align: left;
 }
 
-.game_choose-skill p {
-    /* Box Format */
-    margin: 0;
+.snake-skill_1-dura,
+.snake-skill_2-dura {
+    padding-left: 20px;
 }
 
-.game_choose-italics {
-    /* Fonts & Color */
+.snake-skill_1-cool,
+.snake-skill_2-cool {
+    padding-left: 20px;
+}
+
+.choose-italics {
     font-style: italic;
 }
 
-.game_choose-skill_dura {
-    /* Box Format */
-    padding-left: 20px;
+#choose-ready-grid {
+    grid-area: choose-ready-grid;
+    display: grid;
+    grid-template-areas:
+        "choose-player_1-button choose-player_2-button";
+    gap: 25px;
 }
 
-.game_choose-skill_cool {
-    /* Box Format */
-    padding-left: 20px;
+
+.choose-player-button {
+    border: 1px solid;
+    padding: 15px;
+    transition: 0.3s;
+    background-color: black;
+    color: lightgray;
+    border-color: lightgray;
+    text-align: center;
+    font-size: 20px;
+    font-family: monospace;
+    text-transform: uppercase;
 }
 
-.game_choose-player-select_icon {
-    /* Box Format */
+#choose-player_1-button {
+    grid-area: choose-player_1-button;
+}
+
+#choose-player_2-button {
+    grid-area: choose-player_2-button;
+}
+
+.snake-players-icon {
     opacity: 0;
     padding: 10px;
     border-radius: 20px;
@@ -128,155 +117,84 @@
     font-size: 15px;
 }
 
-
-
-.game_choose-player1-select_icon {
+.snake-player_1-icon {
     position: absolute;
     top: -13px;
     left: -13px;
 }
 
-.game_choose-player2-select_icon {
+.snake-player_2-icon {
     position: absolute;
     top: -13px;
     right: -13px;
 }
 
-.game_choose-player1-select_icon-active {
+
+
+/* ACTIVE STATES */
+.snake-player_1-icon-hover {
     opacity: 1;
 }
 
-.game_choose-player2-select_icon-active {
+.snake-player_2-icon-hover {
     opacity: 1;
 }
 
-/* -- game_choose-snake_div -! */
-
-/* - game_choose-snakes_grid ! */
-
-/* < game_choose-ready_grid - */
-#game_choose-ready_grid {
-    /* Grid */
-    grid-area: game_choose-ready_grid;
-    display: grid;
-    grid-template-areas:
-        "game_choose-player1-ready_btn game_choose-player2-ready_btn";
-    gap: 25px;
-}
-
-.game_choose-player-ready_btn {
-    /* Box Format */
-    border: 1px solid;
-    padding: 15px;
-    transition: 0.3s;
-}
-
-.game_choose-player-ready_btn {
-    /* Fonts & Colors */
-    background-color: black;
-    color: lightgray;
-    border-color: lightgray;
-    text-align: center;
-    font-size: 20px;
-    font-family: monospace;
-    text-transform: uppercase;
-}
-
-#game_choose-player1-ready_btn {
-    /* Grid */
-    grid-area: game_choose-player1-ready_btn;
-}
-
-#game_choose-player2-ready_btn {
-    /* Grid */
-    grid-area: game_choose-player2-ready_btn;
-}
-
-/* - game_choose-ready_grid ! */
-
-/* < Unique Snakes - */
-.game_choose-apopis_color {
-    color: var(--apopis);
-}
-
-.game_choose-orochi_color {
-    color: var(--orochi);
-}
-
-.game_choose-quetzalcoatl_color {
-    color: var(--quetzalcoatl);
-}
-
-.game_choose-long_color {
-    color: var(--long);
-}
-
-.game_choose-jormungandr_color {
-    color: var(--jormungandr);
-}
-
-.game_choose-ouroboros_color {
-    color: var(--ouroboros);
-}
-
-.game_choose-select-hover {
+.snake-div-hover {
     padding-top: 20px;
     border: 4.5px solid;
     border-radius: 30px;
 }
 
-.game_choose-select-apopis-hover {
-    border-color: var(--apopis);
+.choose-player_1-hover {
+
 }
 
-.game_choose-select-orochi-hover {
-    border-color: var(--orochi);
-}
 
-.game_choose-select-quetzalcoatl-hover {
-    border-color: var(--quetzalcoatl);
-}
-
-.game_choose-select-long-hover {
-    border-color: var(--long);
-}
-
-.game_choose-select-jormungandr-hover {
-    border-color: var(--jormungandr);
-}
-
-.game_choose-select-ouroboros-hover {
-    border-color: var(--ouroboros);
-}
-
-.game_choose-select-apopis-ready {
-    border-color: var(--apopis);
+.choose-apopis-font_color {
     color: var(--apopis);
 }
 
-.game_choose-select-orochi-ready {
-    border-color: var(--orochi);
+.choose-orochi-font_color {
     color: var(--orochi);
 }
 
-.game_choose-select-quetzalcoatl-ready {
-    border-color: var(--quetzalcoatl);
+.choose-quetzalcoatl-font_color {
     color: var(--quetzalcoatl);
 }
 
-.game_choose-select-long-ready {
-    border-color: var(--long);
+.choose-long-font_color {
     color: var(--long);
 }
 
-.game_choose-select-jormungandr-ready {
-    border-color: var(--jormungandr);
+.choose-jormungandr-font_color {
     color: var(--jormungandr);
 }
 
-.game_choose-select-ouroboros-ready {
-    border-color: var(--ouroboros);
+.choose-ouroboros-font_color {
     color: var(--ouroboros);
 }
 
-/* - Unique Snakes ! */
+.choose-apopis-hover {
+    border-color: var(--apopis);
+}
+
+.choose-orochi-hover {
+    border-color: var(--orochi);
+}
+
+.choose-quetzalcoatl-hover {
+    border-color: var(--quetzalcoatl);
+}
+
+.choose-lóng-hover {
+    border-color: var(--long);
+}
+
+.choose-jörmungandr-hover {
+    border-color: var(--jormungandr);
+}
+
+.choose-ouroboros-hover {
+    border-color: var(--ouroboros);
+}
