@@ -1,5 +1,41 @@
+// The state of this boolean determines if logging the key translations is permitted
+var enableLogTranslateKey = false;
+
+function logTranslateKey() {
+    var logEvent;
+    if (keyType != undefined && enableLogTranslateKey === true) {
+        switch (keyType) {
+            case "misc":
+                switch (activePlayer.activeMisc) {
+                    case "aux":
+                        logEvent = "'Aux'";
+                        break;
+                    case "exit":
+                        logEvent = "'Exit'";
+                        break;
+                }
+                break;
+            case "ability":
+                switch (activePlayer.activeAbility) {
+                    case 0:
+                        logEvent = "'Strike'";
+                        break;
+                    case 1:
+                    case 2:
+                        logEvent = "'Ability '" + activePlayer.activeAbility + "'";
+                        break;
+                }
+                break;
+            case "direction":
+                logEvent = "'" + activePlayer.direction + "'";
+                break;
+        }
+        console.log("--TK: Player " + activePlayer.playerNumber + " -> "+keyType+":'" + key + "' = " + logEvent);
+    }
+}
+
 function translateKey(key) {
-    // These conditions are triggered when any of the players press their Aux or Exit keys
+    // These commands are triggered when any of the players press their Aux or Exit keys
     if (
         key === p1Controls.aux || key === p1Controls.auxAlt ||
         key === p1Controls.exit || key === p1Controls.exitAlt ||
@@ -8,20 +44,9 @@ function translateKey(key) {
     ) {
         keyType = "misc";
         keyToMisc(key);
-        switch (activePlayer.activeMisc) {
-            case "aux":
-                console.log("-TK- Player " + activePlayer.playerNumber + " pressed '" + key + "' which means they pressed their aux key");
-                break;
-            case "exit":
-                console.log("-TK- Player " + activePlayer.playerNumber + " pressed '" + key + "' which means they wish to exit");
-                break;
-
-        }
     }
 
-    // These conditions are triggered when any of the players press any of their ability keys
-    // FIX ME
-    // Each player has their own "Strike" key and this conditional has to reflect this
+    // These commands are triggered when any of the players press any of their ability keys
     else if (
         key === p1Controls.strike || key === p1Controls.strikeAlt ||
         key === p1Controls.ability1 || key === p1Controls.ability1Alt ||
@@ -32,26 +57,9 @@ function translateKey(key) {
     ) {
         keyType = "ability";
         keyToAbility(key);
-        switch (activePlayer.playerNumber) {
-            case 1:
-                activePlayer.activeAbility = player1.activeAbility;
-                break;
-            case 2:
-                activePlayer.activeAbility = player2.activeAbility;
-                break;
-        }
-        switch (activePlayer.activeAbility) {
-            case 0:
-                console.log("-TK- Player " + activePlayer.playerNumber + " pressed '" + key + "' which means they want to 'strike'");
-                break;
-            case 1:
-            case 2:
-                console.log("-TK- Player " + activePlayer.playerNumber + " pressed '" + key + "' which means they want to activate 'Ability " + activePlayer.activeAbility + "'");
-                break;
-        }
     }
 
-    // Finally, these conditions are triggered when any of the players press any of their directional keys
+    // These commands are triggered when any of the players press any of their directional keys
     else if (
         key === p1Controls.up || key === p1Controls.upAlt ||
         key === p1Controls.down || key === p1Controls.downAlt ||
@@ -64,16 +72,19 @@ function translateKey(key) {
     ) {
         keyType = "direction";
         keyToDirection(key);
-        switch (activePlayer.playerNumber) {
-            case 1:
-                activePlayer.playerNumberDirection = player1.direction;
-                break;
-            case 2:
-                activePlayer.playerNumberDirection = player2.direction;
-                break;
-        }
-        console.log("-TK- Player " + activePlayer.playerNumber + " pressed '" + key + "' which means they want to go '" + activePlayer.direction + "'");
     }
+
+    // Otherwise, the keyType has to be cleared
+    else {
+        keyType = undefined;
+    }
+
+    // Then, once the activePlayer has been set, we complete the activePlayer and set the enemyPlayer
+    setActivePlayer();
+    setEnemyPlayer();
+
+    // Finally, we log the entire translation
+    logTranslateKey();
 }
 
 // This function converts any aux key into valuable info
@@ -83,23 +94,27 @@ function keyToMisc(key) {
         case p1Controls.aux:
         case p1Controls.auxAlt:
             activePlayer.playerNumber = 1;
-            activePlayer.activeMisc = "aux";
-            break;
-        case p2Controls.aux:
-        case p2Controls.auxAlt:
-            activePlayer.playerNumber = 2;
-            activePlayer.activeMisc = "aux";
+            player1.activeMisc = "aux";
             break;
         case p1Controls.exit:
         case p1Controls.exitAlt:
             activePlayer.playerNumber = 1;
-            activePlayer.activeMisc = "exit";
+            player1.activeMisc = "exit";
+            break;
+    }
+
+    switch (key) {
+        case p2Controls.aux:
+        case p2Controls.auxAlt:
+            activePlayer.playerNumber = 2;
+            player2.activeMisc = "aux";
             break;
         case p2Controls.exit:
         case p2Controls.exitAlt:
             activePlayer.playerNumber = 2;
-            activePlayer.activeMisc = "exit";
+            player2.activeMisc = "exit";
             break;
+
     }
 }
 
@@ -111,6 +126,7 @@ function keyToAbility(key) {
         case p1Controls.strikeAlt:
             activePlayer.playerNumber = 1;
             player1.activeAbility = 0;
+
             break;
         case p1Controls.ability1:
         case p1Controls.ability1Alt:
@@ -191,16 +207,6 @@ function keyToDirection(key) {
         case p2Controls.rightAlt:
             activePlayer.playerNumber = 2;
             player2.direction = "right";
-            break;
-    }
-
-    // Finally, we set the activePlayer.direction based on which Player pressed the button
-    switch (activePlayer.playerNumber) {
-        case 1:
-            activePlayer.direction = player1.direction;
-            break;
-        case 2:
-            activePlayer.direction = player2.direction;
             break;
     }
 }

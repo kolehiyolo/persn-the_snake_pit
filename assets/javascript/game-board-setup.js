@@ -33,13 +33,6 @@ var p2Bullets = initBullets;
 
 // < Game Grid Set-up - 
 function addGrid(row, col) {
-    console.log( "activated addGrid()" ) ; 
-    for (var i = 1; i <= row; i++) { // This first layer of the nest adds the rows
-        $("#game-board").append("<div id='r" + i + "' class='row'></div>");
-        for (var j = 1; j <= col; j++) { // This second layer adds the column cells for each row
-            $("#r" + i).append("<div id='r" + i + "c" + j + "' class='col'></div>");
-        }
-    }
 }
 // - Game Grid Set-up ! 
 
@@ -82,7 +75,7 @@ function p1InitSnake(row, col) {
         p1SnakeBody[i][1] = p1SnakeBody[i-1][1] - 1;
     }
     
-    addSnakeClass(p1SnakeBody,"p1-snake-head","p1-snake-body");
+    addSnakeClass(p1SnakeBody, "p1-snake-head " + player1.gameSnake +"-head", "p1-snake-body " + player1.gameSnake +"-body");
 }
 
 function p2InitSnake(row, col) {
@@ -95,7 +88,7 @@ function p2InitSnake(row, col) {
         p2SnakeBody[i][1] = p2SnakeBody[i-1][1] + 1;
     }
 
-    addSnakeClass(p2SnakeBody,"p2-snake-head","p2-snake-body");
+    addSnakeClass(p2SnakeBody, "p2-snake-head " + player2.gameSnake +"-head", "p2-snake-body " + player2.gameSnake +"-body");
 }
 
 

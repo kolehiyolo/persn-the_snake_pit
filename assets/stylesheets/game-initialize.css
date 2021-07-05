@@ -1,0 +1,94 @@
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: black;
+}
+
+/* TEST */
+body {
+    /* background-color: white; */
+}
+
+body {
+    min-height: 100vh;
+}
+
+/* < Prompt Transition Speeds - */
+.quickSpeed {
+    transition: 0.3s;
+}
+
+.mediumSpeed {
+    transition: 0.5s;
+}
+
+.slowSpeed {
+    transition: 1s;
+}
+/* - Transition Speeds ! */
+
+/* < Prompt Sizes - */
+.smallPrompt {
+    font-size: 30px;
+}
+
+.mediumPrompt {
+    font-size: 50px;
+}
+
+.bigPrompt {
+    font-size: 70px;
+}
+/* - Prompt Sizes ! */
+
+/* < Display Control - */
+.hidden {
+    opacity: 0;
+    /* z-index: -50; */
+    /* position:relative; */
+}
+
+.show {
+    opacity: 1;
+    /* z-index: 50; */
+    /* position:relative; */
+}
+/* - Display Control ! */
+
+#game-prompt-div {
+    color: lightgrey;
+    font-family: monospace;
+    width: 100vw;
+    padding: 50px;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+}
+
+header {
+    color: var(--theme_color);
+    font-family: monospace;
+    text-align: center;
+    padding: 40px 0 20px;
+}
+
+#header-msg-1 {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+
+}
+
+footer {
+
+}

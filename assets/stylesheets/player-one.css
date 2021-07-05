@@ -1,23 +1,17 @@
 :root {
     --p1_color: orange;
-
-    --apopis: red;
-    --orochi: orange;
-    --quetzalcoatl: yellow;
-    --longshen: lime;
-    --jormungandr: cyan;
-    --ouroboros: magenta;
-    
 }
 
-.p1-snake-body {
-    background-color: black;
-    border: var(--p1_color) solid 1px;
+.player1-snake {
+    border: solid 1px;
     box-sizing: border-box;
 }
+.player1-snake-body {
+    background-color: black;
+}
 
-.p1-snake-head {
-    background-color: var(--p1_color);
+.player1-snake-head {
+    background-color: red;
 }
 
 .p1-horizontal-tongue {

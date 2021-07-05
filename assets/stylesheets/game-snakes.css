@@ -1,0 +1,56 @@
+:root {
+    --apopis: red;
+    --orochi: orange;
+    --quetzalcoatl: yellow;
+    --long: lime;
+    --jormungandr: cyan;
+    --ouroboros: magenta;
+}
+
+.apopis-head {
+    background-color: var(--apopis);
+}
+
+.apopis-body {
+    border-color: var(--apopis);
+}
+
+.orochi-head{
+    background-color: var(--orochi);
+}
+
+.orochi-body{
+    border-color: var(--orochi);
+}
+
+.quetzalcoatl-head{
+    background-color: var(--quetzalcoatl);
+}
+
+.quetzalcoatl-body{
+    border-color: var(--quetzalcoatl);
+}
+
+.long-head{
+    background-color: var(--long);
+}
+
+.long-body{
+    border-color: var(--long);
+}
+
+.jormungandr-head{
+    background-color: var(--jormungandr);
+}
+
+.jormungandr-body{
+    border-color: var(--jormungandr);
+}
+
+.ouroboros-head{
+    background-color: var(--ouroboros);
+}
+
+.ouroboros-body{
+    border-color: var(--ouroboros);
+}

@@ -1,0 +1,45 @@
+:root {
+    --theme_color: white;
+}
+
+/* < Game Arena - */
+#game-arena {
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border: var(--theme_color) solid 1px;
+    padding: 2.5px;
+}
+
+.row {
+    display: flex;
+}
+
+.col {
+    background-color: rgb(20, 20, 20);
+    /* background-color: green; */
+    width: 10px;
+    height: 10px;
+    margin: 2.5px;
+}
+/* - Game Arena ! */
+
+/* < Food - */
+.food-1 {
+    background-color: white;
+}
+
+.food-2 {
+    background-color: white;
+}
+
+.food-3 {
+    background-color: white;
+}
+
+.food-super {
+    background-color: grey;
+}
+/* - Food ! */

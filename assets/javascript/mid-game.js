@@ -83,19 +83,19 @@ function checkSnakeHead(player, enemy, playerBody, headClassName, bodyClassName,
 
 function p1MoveSnake() {
     // console.log( "activated p1MoveSnake()" ) ;
-    remSnakeClass(p1SnakeBody, "p1-snake-head", "p1-snake-body");
+    remSnakeClass(p1SnakeBody, "p1-snake-head " + player1.gameSnake +"-head", "p1-snake-body " + player1.gameSnake +"-body");
     changeSnakeCoordinates(p1SnakeBody);
     changeDirection("p1");
-    addSnakeClass(p1SnakeBody, "p1-snake-head", "p1-snake-body");
+    addSnakeClass(p1SnakeBody, "p1-snake-head " + player1.gameSnake +"-head", "p1-snake-body " + player1.gameSnake +"-body");
     checkSnakeHead("p1", "p2", p1SnakeBody, "p1-snake-head", "p1-snake-body", p1Score);
 }
 
 function p2MoveSnake() {
     // console.log( "activated p2MoveSnake()" ) ;
-    remSnakeClass(p2SnakeBody, "p2-snake-head", "p2-snake-body");
+    remSnakeClass(p2SnakeBody, "p2-snake-head " + player2.gameSnake +"-head", "p2-snake-body " + player2.gameSnake +"-body");
     changeSnakeCoordinates(p2SnakeBody);
     changeDirection("p2");
-    addSnakeClass(p2SnakeBody, "p2-snake-head", "p2-snake-body");
+    addSnakeClass(p2SnakeBody, "p2-snake-head " + player2.gameSnake +"-head", "p2-snake-body " + player2.gameSnake +"-body");
     checkSnakeHead("p2", "p1", p2SnakeBody, "p2-snake-head", "p2-snake-body", p2Score);
 
 }

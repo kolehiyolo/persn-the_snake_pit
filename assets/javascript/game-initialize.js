@@ -19,7 +19,19 @@ function setGameState(newGameState) {
     gameState = newGameState;
     console.clear();
     console.log("GAME STATE = " + gameState);
-    console.log("\n");
+
+    switch (gameState) {
+        case "gameChoose":
+            gameChooseDefaults();
+            console.log("This is the state where Players choose their Snake");
+            console.log("\n");
+            break;
+        case "gameStarted":
+            console.log("This is the state where Players can now fight");
+            console.log("\n");
+            setGameStarted();
+            break;
+    }
 }
 
 // This is the event listener that takes any keypress from the keyboard
@@ -49,13 +61,11 @@ $("html").keypress(function (e) {
             gameOver(key);
             break;
     }
+
+    console.log("\n");
 });
 
 // ! These are the functions that are yet to be set-up
-function gameStarted(key) {
-    console.log("Activated gameStarted() phase");
-}
-
 function gamePaused(key) {
     console.log("Activated gamePaused() phase");
 }

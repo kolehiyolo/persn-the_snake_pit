@@ -2,17 +2,19 @@
     --p2_color: cyan;
 }
 
-.p2-snake-body {
-    background-color: black;
-    border: var(--p2_color) solid 1px;
+.player2-snake {
+    border: solid 1px;
     box-sizing: border-box;
 }
-
-.p2-snake-head {
-    background-color: var(--p2_color);
+.player2-snake-body {
+    background-color: black;
 }
 
-.p2-horizontal-tongue {
+.player2-snake-head {
+    background-color: blue;
+}
+
+.player2-horizontal-tongue {
     background-color: var(--p2_color);
     height: 2px;
     margin: 6.5px 2.5px;
@@ -27,7 +29,6 @@
 #p2-wins{
     color: var(--p2_color);
 }
-
 
 #p2Score{
     color: var(--p2_color);
