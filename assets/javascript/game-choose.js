@@ -68,20 +68,20 @@ function gameChoose(key) {
             case "aux":
                 if (activePlayer.chooseClicked === true) {
                     // Placeholder Variables
-                    var activePlayerReadyID = "choose-player_" + activePlayer.playerNumber + "-button";
-                    var activePlayerReadyStyling = "game_choose-select-" + activePlayer.chooseSnake + "-ready";
+                    var playerReadyButtonID = "choose-player_" + activePlayer.playerNumber + "-button";
+                    var playerReadyButtonStyling = "choose-" + activePlayer.chooseSnake + "-hover ready-div-hover choose-" + activePlayer.chooseSnake + "-font_color";
 
                     // If the player pressed the aux key when they haven't selected the snake they're on yet, these commands are fulfilled
-                    if ($("#" + activePlayerReadyID).hasClass(activePlayerReadyStyling) === false) {
+                    if ($("#" + playerReadyButtonID).hasClass(playerReadyButtonStyling) === false) {
                         // We set that the Player isn't ready yet
                         activePlayer.chooseReady = false;
 
                         // We set the styling on the Player Ready button
-                        $("#" + activePlayerReadyID).attr("class", "game_choose-player-ready_btn");
-                        $("#" + activePlayerReadyID).addClass(activePlayerReadyStyling);
+                        $("#" + playerReadyButtonID).attr("class", "choose-player-button");
+                        $("#" + playerReadyButtonID).addClass(playerReadyButtonStyling);
 
                         // Finally, we set the text on the button
-                        $("#" + activePlayerReadyID).html(activePlayer.playerName + " chooses " + activePlayer.chooseSnake);
+                        $("#" + playerReadyButtonID).html(activePlayer.playerName + " chooses " + activePlayer.chooseSnake);
                     }
                     // If the player pressed the aux key when they've already selected the snake they're on, these commands are fulfilled, meaning they're ready
                     else {
@@ -89,7 +89,7 @@ function gameChoose(key) {
                         activePlayer.chooseReady = true;
 
                         // We then set the text on the button
-                        $("#" + activePlayerReadyID).html(activePlayer.playerName + " is ready");
+                        $("#" + playerReadyButtonID).html(activePlayer.playerName + " is ready");
                     }
 
                     // We then assign the activePlayer ready value to the actual player
@@ -110,34 +110,28 @@ function gameChoose(key) {
                     // If the Players have the same snake, the Active Player is "unreadied" and must choose another snake
                     if (activePlayer.chooseSnake === enemyPlayer.chooseSnake) {
                         // Placeholder Variables
-                        var activePlayerReadyID = "game_choose-player" + activePlayer.playerNumber + "-ready_btn";
+                        var activePlayerReadyID = "choose-player_" + activePlayer.playerNumber + "-button";
+                        $("#" + playerReadyButtonID).html(activePlayer.playerName + " chooses " + activePlayer.chooseSnake);
 
                         // We first show the Prompt
-                        $("#game-prompt-div").removeClass("hidden quickSpeed");
-                        $("#game-prompt-div").addClass("show quickSpeed");
-                        $("#game-prompt-msg-1").addClass("smallPrompt");
-
                         // The prompt then tells that the Enemy Player already chose the snake
-                        $("#game-prompt-msg-1").html("<span class='game_choose-"+enemyPlayer.chooseSnake+"_color'>" + enemyPlayer.playerName + "</span> selected "+enemyPlayer.chooseSnake.charAt(0).toUpperCase() + enemyPlayer.chooseSnake.slice(1)
-                        +" first");
-                        $("#game-prompt-msg-2").html("");
-                        $("#game-prompt-msg-3").html("");
-                        $("#game-prompt-msg-4").html("");
+                        // FIX - The name of the snake has to be capitalized on the prompt
+                        // FIX - We should reeaally set up proper functions that manipulate styling
+                        let promptMsgArray = [`<span class='choose-${enemyPlayer.chooseSnake}-font_color'>${enemyPlayer.playerName}</span> selected ${enemyPlayer.chooseSnake} first`];
+                        setPromptMsgs("quick", ["small"], promptMsgArray);
 
                         // Then, the prompt closes after a while
                         setTimeout(function () {
                             // The prompt is hidden
-                            $("#game-prompt-div").removeClass("show mediumSpeed");
-                            $("#game-prompt-div").addClass("hidden mediumSpeed");
+                            setTimeout(function () {
 
-                            setTimeout(function() {
-                                $("#game-prompt-msg-1").removeClass("smallPrompt");
-                            },1000) ;
+                                remPromptMsgs("medium");
+                                // We then "unready" the Active Player
+                                activePlayer.chooseReady = false;
+                                $("#" + activePlayerReadyID).attr("class", "choose-player-button");
+                                $("#" + activePlayerReadyID).html(activePlayer.playerName + " is Not Ready");
+                            }, 300);
 
-                            // We then "unready" the Active Player
-                            activePlayer.chooseReady = false;
-                            $("#" + activePlayerReadyID).attr("class", "game_choose-player-ready_btn");
-                            $("#" + activePlayerReadyID).html(activePlayer.playerName + " is Not Ready");
                         }, 1500);
                     }
 
@@ -153,7 +147,7 @@ function gameChoose(key) {
                 /* Exit Key */
             case "exit":
                 // Placeholder Variables
-                var activePlayerReadyID = "game_choose-player" + activePlayer.playerNumber + "-ready_btn";
+                var activePlayerReadyID = "choose-player_" + activePlayer.playerNumber + "-button";
 
                 // The following commands are triggered when the countdown is active and exit is clicked
                 if (gameStartCountdownActive === true) {
@@ -170,7 +164,7 @@ function gameChoose(key) {
                     // Finally, we hide the Countdown div and remove the styling from the Active Player's Ready button, indicating that they aren't ready
                     setTimeout(function () {
                         // We remove the styling on the Ready button as well as broadcast the unready-ing
-                        $("#" + activePlayerReadyID).attr("class", "game_choose-player-ready_btn");
+                        $("#" + activePlayerReadyID).attr("class", "choose-player-button");
                         $("#" + activePlayerReadyID).html(activePlayer.playerName + " is Not Ready");
 
                         // We finally hide the prompt
@@ -185,7 +179,7 @@ function gameChoose(key) {
                     activePlayer.chooseReady = false;
 
                     // We remove the styling on the Ready button as well as broadcast the unready-ing
-                    $("#" + activePlayerReadyID).attr("class", "game_choose-player-ready_btn");
+                    $("#" + activePlayerReadyID).attr("class", "choose-player-button");
                     $("#" + activePlayerReadyID).html(activePlayer.playerName + " is Not Ready");
                 }
 
@@ -205,40 +199,42 @@ function gameChoose(key) {
 
     // The following commands are triggered when a directional key is pressed
     else if (keyType === "direction") {
-        if (activePlayer.chooseClicked === true) {
-            switch (activePlayer.direction) {
-                case "up":
-                    if (activePlayer.chooseGridPosition[0] > 0) {
-                        activePlayer.chooseGridPosition[0]--;
-                    }
-                    break;
-                case "down":
-                    if (activePlayer.chooseGridPosition[0] < 1) {
-                        activePlayer.chooseGridPosition[0]++;
-                    }
-                    break;
-                case "left":
-                    if (activePlayer.chooseGridPosition[1] > 0) {
-                        activePlayer.chooseGridPosition[1]--;
-                    }
-                    break;
-                case "right":
-                    if (activePlayer.chooseGridPosition[1] < 2) {
-                        activePlayer.chooseGridPosition[1]++;
-                    }
-                    break;
+        if (activePlayer.chooseReady === false) {
+            if (activePlayer.chooseClicked === true) {
+                switch (activePlayer.direction) {
+                    case "up":
+                        if (activePlayer.chooseGridPosition[0] > 0) {
+                            activePlayer.chooseGridPosition[0]--;
+                        }
+                        break;
+                    case "down":
+                        if (activePlayer.chooseGridPosition[0] < 1) {
+                            activePlayer.chooseGridPosition[0]++;
+                        }
+                        break;
+                    case "left":
+                        if (activePlayer.chooseGridPosition[1] > 0) {
+                            activePlayer.chooseGridPosition[1]--;
+                        }
+                        break;
+                    case "right":
+                        if (activePlayer.chooseGridPosition[1] < 2) {
+                            activePlayer.chooseGridPosition[1]++;
+                        }
+                        break;
+                }
+            } else {
+                switch (activePlayer.playerNumber) {
+                    case 1:
+                        player1.chooseClicked = true;
+                        break;
+                    case 2:
+                        player2.chooseClicked = true;
+                        break;
+                }
             }
-        } else {
-            switch (activePlayer.playerNumber) {
-                case 1:
-                    player1.chooseClicked = true;
-                    break;
-                case 2:
-                    player2.chooseClicked = true;
-                    break;
-            }
+            navigateSelection();
         }
-        navigateSelection();
     }
 
     // The following commands are triggered when an ability key is pressed
@@ -287,12 +283,15 @@ function navigateSelection() {
     let enemyHover = `choose-player_${enemyPlayer.playerNumber}-hover`;
     let playerIcon = `snake-player_${activePlayer.playerNumber}-icon-hover`;
     let snakeHover = `choose-${activePlayer.chooseSnake}-hover`;
+    let colorHover = `choose-${activePlayer.chooseSnake}-font_color`;
 
     // First, remove the styling from the current location
     // -This removes the styling on the Selection Div
     // -- If the activePlayer's icon is not on the same Selection Div as the enemyPlayer's, remove the styling on the Selection Div
     if ($("." + playerHover).hasClass(enemyHover) === false) {
-        $("." + snakeHover).removeClass(snakeHover + " snake-div-hover");
+        // $("." + snakeHover).removeClass(snakeHover + " snake-div-hover");
+        $(`#choose-snakes-grid .${snakeHover}`).removeClass(snakeHover + " snake-div-hover");
+        $(`#choose-snakes-grid .${colorHover}`).removeClass(colorHover);
     }
     // -- Otherwise, remove only the activePlayer's icon
     $("." + playerHover).removeClass(playerHover);
@@ -302,13 +301,16 @@ function navigateSelection() {
     // Then, set the new location
     activePlayer.chooseSnake = selectSnakeGrid[activePlayer.chooseGridPosition[0]][activePlayer.chooseGridPosition[1]];
     snakeHover = `choose-${activePlayer.chooseSnake}-hover`;
+    colorHover = `choose-${activePlayer.chooseSnake}-font_color`;
 
     // Finally, add the styling to the new location
     // -This adds the styling to the Selection Div
     $(`#${activePlayer.chooseSnake}-div`).addClass(`${snakeHover} ${playerHover} snake-div-hover`);
+    $(`#${activePlayer.chooseSnake}-div .snake-header-name`).addClass(`${colorHover}`);
+    $(`#${activePlayer.chooseSnake}-div .snake-skill_1-name`).addClass(`${colorHover}`);
+    $(`#${activePlayer.chooseSnake}-div .snake-skill_2-name`).addClass(`${colorHover}`);
     // -This adds the Active Player's Icon to the new location
     $(`#${activePlayer.chooseSnake}-div .snake-player_${activePlayer.playerNumber}-icon`).addClass(playerIcon);
-    // $("#" + activePlayerSnakeID + "-player_select_icons ." + activePlayerSelectID + "_icon").addClass(activePlayerSelectID + "_icon-active");
 
     switch (activePlayer.playerNumber) {
         case 1:
@@ -385,22 +387,22 @@ function gameStartCountdown() {
             // We then hide the prompt while making sure to clear the speed and the sizes
             $("#game-prompt-div").removeClass("show mediumSpeed");
             $("#game-prompt-div").addClass("hidden slowSpeed");
-            
+
             // We then also hide the Header
             $("header-msg-1").removeClass("show slowSpeed");
             $("header-msg-1").addClass("hidden slowSpeed");
             $("header-msg-2").removeClass("show slowSpeed");
             $("header-msg-2").addClass("hidden slowSpeed");
-            
+
             // Then, we set the gameStarted state
             setGameState("gameStarted");
-            
+
             // Finally, we show the Game Board and the new Header
             setTimeout(function () {
                 // Show the Game Board
                 $("#game-arena").removeClass("hidden slowSpeed");
                 $("#game-arena").addClass("show slowSpeed");
-                
+
                 // Show the new Header with the different text
                 $("header-msg-1").html("Snek Fight");
                 $("header-msg-1").removeClass("hidden slowSpeed");

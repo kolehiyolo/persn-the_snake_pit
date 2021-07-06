@@ -2,18 +2,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-body {
     background-color: black;
-}
-
-/* TEST */
-body {
-    /* background-color: white; */
-}
-
-body {
     min-height: 100vh;
 }
 
@@ -59,7 +48,7 @@ body {
 }
 /* - Display Control ! */
 
-#game-prompt-div {
+#game-prompts-div {
     color: lightgrey;
     font-family: monospace;
     width: 100vw;
@@ -71,6 +60,12 @@ body {
     left: 50%;
     transform: translate(-50%,-50%);
     text-align: center;
+    z-index: 50;
+}
+
+.header-msg,
+.game-prompt-msg {
+    text-transform: uppercase;
 }
 
 header {
@@ -83,12 +78,4 @@ header {
 #header-msg-1 {
     margin: 0;
     padding: 0;
-}
-
-main {
-
-}
-
-footer {
-
 }

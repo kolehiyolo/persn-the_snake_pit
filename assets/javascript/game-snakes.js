@@ -11,7 +11,7 @@ let chooseApopis = {
         },
         skill2: {
             name: "Chaos",
-            description: "-Randomly scatter the snakes and all objects",
+            description: "-Randomly scatter all objects and the snakes",
             duration: "Instant",
             cooldown: "10s"
         }
@@ -125,6 +125,7 @@ let chooseSnakesArray = [
 
 function setChooseSnakesGrid() {
     console.log(`activated setChooseSnakesGrid()`);
+    $(`body main`).append(`<div id="game-choose-grid"></div>`);
     $(`#game-choose-grid`).append(`<div id="choose-snakes-grid"></div>`);
     $(`#game-choose-grid`).append(`<div id="choose-ready-grid"></div>`);
     $(`#choose-ready-grid`).append(`<button id="choose-player_1-button" class="choose-player-button"></button>`);

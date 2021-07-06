@@ -43,11 +43,19 @@
     box-sizing: border-box;
     margin: 0;
     padding: 20px;
-    border: 1px dashed;
+    border: 2px dotted;
     position: relative;
     transition: 0.5s;
+    /* transition: 3s; */
     border-color: lightgray;
     text-align: center;
+}
+
+.snake-header-name,
+.snake-skill_1-name,
+.snake-skill_2-name {
+    transition: 0.5s;
+    /* transition: 3s; */
 }
 
 .snake-header-name,
@@ -61,14 +69,15 @@
     text-align: left;
 }
 
-.snake-skill_1-dura,
-.snake-skill_2-dura {
-    padding-left: 20px;
+.snake-skills .snake-skill_1-dura,
+.snake-skills .snake-skill_2-dura {
+    padding-left: 30px;
+    margin-top: 2.5px;
 }
 
 .snake-skill_1-cool,
 .snake-skill_2-cool {
-    padding-left: 20px;
+    padding-left: 30px;
 }
 
 .choose-italics {
@@ -78,6 +87,7 @@
 #choose-ready-grid {
     grid-area: choose-ready-grid;
     display: grid;
+    grid-template-columns: 1fr 1fr;
     grid-template-areas:
         "choose-player_1-button choose-player_2-button";
     gap: 25px;
@@ -146,9 +156,13 @@
     border-radius: 30px;
 }
 
-.choose-player_1-hover {
-
+.ready-div-hover {
+    border: 4.5px solid;
+    border-radius: 30px;
+    padding: 11.5px;
 }
+
+.choose-player_1-hover {}
 
 
 .choose-apopis-font_color {
@@ -163,11 +177,11 @@
     color: var(--quetzalcoatl);
 }
 
-.choose-long-font_color {
+.choose-lóng-font_color {
     color: var(--long);
 }
 
-.choose-jormungandr-font_color {
+.choose-jörmungandr-font_color {
     color: var(--jormungandr);
 }
 
@@ -177,24 +191,30 @@
 
 .choose-apopis-hover {
     border-color: var(--apopis);
+    background-color: rgba(255, 0, 0, 0.1);
 }
 
 .choose-orochi-hover {
     border-color: var(--orochi);
+    background-color: rgba(255, 165, 0, 0.1);
 }
 
 .choose-quetzalcoatl-hover {
     border-color: var(--quetzalcoatl);
+    background-color: rgba(255, 255, 0, 0.1);
 }
 
 .choose-lóng-hover {
     border-color: var(--long);
+    background-color: rgba(0, 255, 0, 0.1);
 }
 
 .choose-jörmungandr-hover {
     border-color: var(--jormungandr);
+    background-color: rgba(0, 255, 255, 0.1);
 }
 
 .choose-ouroboros-hover {
     border-color: var(--ouroboros);
+    background-color: rgba(255, 0, 255, 0.1);
 }
