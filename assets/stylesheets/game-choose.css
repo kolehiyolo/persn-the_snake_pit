@@ -8,7 +8,8 @@
 }
 
 #game-choose-grid {
-    width: 925px;
+    /* width: 925px; */
+    width: 1000px; /* Test */
     padding: 25px;
     box-sizing: border-box;
     margin: 0;
@@ -38,16 +39,17 @@
 }
 
 .snake-div {
-    width: 275px;
-    height: 275px;
+    /* width: 275px; 
+    height: 275px; */
+    width: 300px; /* Test */
+    height: 300px; /* Test */
     box-sizing: border-box;
     margin: 0;
     padding: 20px;
-    border: 2px dotted;
+    border: 1px solid black;
     position: relative;
     transition: 0.5s;
     /* transition: 3s; */
-    border-color: lightgray;
     text-align: center;
 }
 
@@ -58,15 +60,49 @@
     /* transition: 3s; */
 }
 
+.snake-header-name {
+    text-transform: uppercase;
+    letter-spacing: 5px;
+}
+
+.snake-skill_1-name,
+.snake-skill_2-name {
+    font-size: 14px;
+    font-weight: bold;
+    position: absolute;
+    top: -12px;
+    background-color: black;
+    padding: 2px 2px 5px 5px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
 .snake-header-name,
 .snake-skills p {
     margin: 0;
 }
 
+.snake-header-epithet {
+    margin: 5px 0px 20px;
+    font-weight: normal;
+}
+
+.snake-header {
+    position: relative;
+}
+
 .snake-skill_1,
 .snake-skill_2 {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     text-align: left;
+    padding-left: 15px;
+    position: relative;
+}
+
+.snake-skill_1, .snake-skill_2 {
+    border: solid 2px white;
+    padding: 10px 15px 15px 15px;
+    border-radius: 15px;
 }
 
 .snake-skills .snake-skill_1-dura,
@@ -95,12 +131,11 @@
 
 
 .choose-player-button {
-    border: 1px solid;
+    border: 2px solid lightgray;
     padding: 15px;
     transition: 0.3s;
     background-color: black;
     color: lightgray;
-    border-color: lightgray;
     text-align: center;
     font-size: 20px;
     font-family: monospace;
@@ -117,7 +152,8 @@
 
 .snake-players-icon {
     opacity: 0;
-    padding: 10px;
+    padding: 5px 7.5px;
+    /* text-transform: uppercase; */
     border-radius: 20px;
     background-color: black;
     border: solid 3px white;
@@ -192,29 +228,35 @@
 .choose-apopis-hover {
     border-color: var(--apopis);
     background-color: rgba(255, 0, 0, 0.1);
+    background-color: #1A0000;
 }
 
 .choose-orochi-hover {
     border-color: var(--orochi);
     background-color: rgba(255, 165, 0, 0.1);
+    background-color: #1A1100;
 }
 
 .choose-quetzalcoatl-hover {
     border-color: var(--quetzalcoatl);
     background-color: rgba(255, 255, 0, 0.1);
+    background-color: #1A1A00;
 }
 
 .choose-lóng-hover {
     border-color: var(--long);
     background-color: rgba(0, 255, 0, 0.1);
+    background-color: #001A00;
 }
 
 .choose-jörmungandr-hover {
     border-color: var(--jormungandr);
     background-color: rgba(0, 255, 255, 0.1);
+    background-color: #001A1A;
 }
 
 .choose-ouroboros-hover {
     border-color: var(--ouroboros);
     background-color: rgba(255, 0, 255, 0.1);
+    background-color: #1A001A;
 }

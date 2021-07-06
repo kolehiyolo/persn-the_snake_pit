@@ -60,6 +60,10 @@ function logGameChoose() {
     }
 }
 
+function setPlayerReady() {
+
+}
+
 function gameChoose(key) {
     // The following commands are triggered when a miscellaneous key is pressed
     if (keyType === "misc") {
@@ -307,8 +311,8 @@ function navigateSelection() {
     // -This adds the styling to the Selection Div
     $(`#${activePlayer.chooseSnake}-div`).addClass(`${snakeHover} ${playerHover} snake-div-hover`);
     $(`#${activePlayer.chooseSnake}-div .snake-header-name`).addClass(`${colorHover}`);
-    $(`#${activePlayer.chooseSnake}-div .snake-skill_1-name`).addClass(`${colorHover}`);
-    $(`#${activePlayer.chooseSnake}-div .snake-skill_2-name`).addClass(`${colorHover}`);
+    $(`#${activePlayer.chooseSnake}-div .snake-skill_1-name`).addClass(`${colorHover} ${snakeHover}`);
+    $(`#${activePlayer.chooseSnake}-div .snake-skill_2-name`).addClass(`${colorHover} ${snakeHover}`);
     // -This adds the Active Player's Icon to the new location
     $(`#${activePlayer.chooseSnake}-div .snake-player_${activePlayer.playerNumber}-icon`).addClass(playerIcon);
 

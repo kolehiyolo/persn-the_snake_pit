@@ -5,13 +5,13 @@ let chooseApopis = {
     skills: {
         skill1: {
             name: "Switch",
-            description: "-Swap bodies with the enemy",
+            description: "Swap bodies with the enemy",
             duration: "Instant",
             cooldown: "10s"
         },
         skill2: {
             name: "Chaos",
-            description: "-Randomly scatter all objects and the snakes",
+            description: "Randomly scatter all objects and the snakes",
             duration: "Instant",
             cooldown: "10s"
         }
@@ -25,13 +25,13 @@ let chooseOrochi = {
     skills: {
         skill1: {
             name: "Amputate",
-            description: "-Leave a clone without taking damage",
+            description: "Leave a clone without taking damage",
             duration: "Instant",
             cooldown: "10s"
         },
         skill2: {
             name: "Sustainable",
-            description: "-Any damage taken is halved",
+            description: "Any damage taken is halved",
             duration: "Passive",
             cooldown: "Passive"
         }
@@ -45,13 +45,13 @@ let chooseQuetzalcoatl = {
     skills: {
         skill1: {
             name: "Takeover",
-            description: "-Control both snakes",
+            description: "Control both snakes",
             duration: "3s",
             cooldown: "10s"
         },
         skill2: {
             name: "Reversal ",
-            description: "-Reverse the head and the tail",
+            description: "Reverse the head and the tail",
             duration: "Instant",
             cooldown: "10s"
         }
@@ -65,13 +65,13 @@ let chooseLong = {
     skills: {
         skill1: {
             name: "Petrify",
-            description: "-Stun the enemy momentarily",
+            description: "Stun the enemy momentarily",
             duration: "1s",
             cooldown: "10s"
         },
         skill2: {
             name: "Target",
-            description: "-Shows the coordinates of the enemy's head and all objects",
+            description: "Shows the coordinates of all targets",
             duration: "3s",
             cooldown: "10s"
         }
@@ -85,13 +85,13 @@ let chooseJormungandr = {
     skills: {
         skill1: {
             name: "Bifrost",
-            description: "-The edges of the arena become portals",
+            description: "The edges of the arena become portals",
             duration: "3s",
             cooldown: "10s"
         },
         skill2: {
             name: "Phase",
-            description: "-Can pass through obstacles",
+            description: "Can pass through obstacles",
             duration: "3s",
             cooldown: "10s"
         }
@@ -105,13 +105,13 @@ let chooseOuroboros = {
     skills: {
         skill1: {
             name: "Masochist",
-            description: "-Can pass through self",
+            description: "Can pass through self",
             duration: "Passive",
             cooldown: "Passive"
         },
         skill2: {
             name: "Impenetrable",
-            description: "-The body won't take any damage",
+            description: "The body won't take any damage",
             duration: "3s",
             cooldown: "10s"
         }
