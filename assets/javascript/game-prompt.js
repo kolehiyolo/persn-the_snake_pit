@@ -21,23 +21,24 @@ function setPromptMsgs(speed, sizes, messages) {
 
     // Finally, we show the Prompt Div
     setTimeout(() => {
-        $("#game-prompts-div").addClass(`${speed}Speed`);
+        $("#game-prompts-div").addClass(`${speed}-anim`);
         $("#game-prompts-div").removeClass("hidden");
         $("#game-prompts-div").addClass("show");
     }, 1);
 }
 
-function remPromptMsgs(speed) {
+function remPromptMsgs(speed, deletion) {
     // First, we hide the Prompt Div
-    $("#game-prompts-div").removeClass("slowSpeed mediumSpeed quickSpeed");
-    $("#game-prompts-div").addClass(`${speed}Speed`);
+    $("#game-prompts-div").removeClass("slow-anim medium-anim quick-anim");
+    $("#game-prompts-div").addClass(`${speed}-anim`);
     $("#game-prompts-div").removeClass("show");
     $("#game-prompts-div").addClass("hidden");
+    // console.log(`Activated remPromptMsgs()`); 
 
     // Finally, we delete the Prompt Div altogether
     setTimeout(() => {
         $(`#game-prompts-div`).remove();
-    }, 1000);
+    }, deletion);
 }
 
 function resetHeaderMsgs() {
@@ -51,9 +52,8 @@ function showDiv(div, speed) {
     console.log(`div = ${div}`); 
     console.log(`speed = ${speed}`); 
 
-    $(`#div`).removeClass(`slowSpeed mediumSpeed quickSpeed`);
-    $(`#div`).addClass(`${speed}Speed`);
+    $(`#div`).removeClass(`slow-anim medium-anim quick-anim`);
+    $(`#div`).addClass(`${speed}-anim`);
     $(`#div`).removeClass(`hidden`);
     $(`#div`).addClass(`show`);
-
 }

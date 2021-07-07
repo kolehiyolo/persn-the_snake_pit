@@ -25,29 +25,30 @@
 }
 
 .col {
+    background-color: rgb(20, 20, 20);
     width: 10px;
     height: 10px;
     margin: 2.5px;
 }
 
-.col-anim {
+/* .col-anim {
     transition: 0.5s;
 }
 
 .col-anim-slower {
     transition: 2s;
-}
+} */
 
 .col-dead {
     background-color: black;
 }
 
 .col-color {
-    background-color: rgb(20, 20, 20);
+    /* background-color: rgb(20, 20, 20); */
     /* background-color: rgb(39, 39, 39); */
 }
 
-.col-color-2 {
+.col-glow {
     background-color: rgb(92, 92, 92);
     /* width: 10.5px;
     height: 10.5px; */

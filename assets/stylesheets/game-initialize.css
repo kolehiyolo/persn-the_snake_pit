@@ -7,15 +7,15 @@ body {
 }
 
 /* < Prompt Transition Speeds - */
-.quickSpeed {
+.quick-anim {
     transition: 0.3s;
 }
 
-.mediumSpeed {
+.medium-anim {
     transition: 0.5s;
 }
 
-.slowSpeed {
+.slow-anim {
     transition: 1s;
 }
 /* - Transition Speeds ! */

@@ -1,241 +1,136 @@
-let player1;
-let player2;
+let player;
+let controls;
 let activePlayer;
 let enemyPlayer;
-let p1Controls;
-let p2Controls;
+
 let food1;
 let food2;
 let food3;
 let superFood;
 
 function setPlayers() {
-    player1 = {
-        playerNumber: 1,
-        playerName: "Tristan",
-        direction: undefined,
-        activeAbility: undefined,
-        activeMisc: undefined,
-        score: 0,
-        
-        gameSnake: undefined,
-        gamePosition: [undefined],
-        gameDirection: undefined,
+    player = {
+        p1: {
+            main: {
+                id: 1,
+                name: undefined,
+                direction: undefined,
+                ability: undefined,
+                misc: undefined,
+            },
 
-        chooseSnake: undefined,
-        chooseReady: false,
-        chooseClicked: false,
-        chooseGridPosition: [undefined, undefined],
+            choose: {
+                snake: undefined,
+                position: [undefined, undefined],
+                ready: false,
+                clicked: false,
+            },
 
-        startedCoordinate: [undefined, undefined]
-    };
-
-    player2 = {
-        playerNumber: 2,
-        playerName: "Theolo",
-        direction: undefined,
-        activeAbility: undefined,
-        activeMisc: undefined,
-        score: 0,
-
-        gameSnake: undefined,
-        gamePosition: [undefined, undefined],
-        gameDirection: undefined,
-
-        chooseSnake: undefined,
-        chooseReady: false,
-        chooseClicked: false,
-        chooseGridPosition: [undefined, undefined],
-
-        startedCoordinate: [undefined, undefined]
-    };
-
-    activePlayer = {
-        playerNumber: undefined,
-        playerName: undefined,
-        direction: undefined,
-        activeAbility: undefined,
-        activeMisc: undefined,
-        score: 0,
-
-        gameSnake: undefined,
-        gamePosition: [undefined, undefined],
-        gameDirection: undefined,
-
-        chooseSnake: undefined,
-        chooseReady: false,
-        chooseClicked: false,
-        chooseGridPosition: [undefined, undefined],
-
-        startedCoordinate: [undefined, undefined]
+            arena: {
+                snake: undefined,
+                position: [undefined],
+                direction: undefined,
+            }
+        }
     }
+    player.p2 = JSON.parse(JSON.stringify(player.p1));
+    player.p2.main.id = 2;
+    player.p1.main.name = "Tristan";
+    player.p2.main.name = "Theolo";
 
-    enemyPlayer = {
-        playerNumber: undefined,
-        playerName: undefined,
-        direction: undefined,
-        activeAbility: undefined,
-        activeMisc: undefined,
-        score: 0,
-
-        gameSnake: undefined,
-        gamePosition: [undefined, undefined],
-        gameDirection: undefined,
-
-        chooseSnake: undefined,
-        chooseReady: false,
-        chooseClicked: false,
-        chooseGridPosition: [undefined, undefined],
-
-        startedCoordinate: [undefined, undefined]
-    }
+    activePlayer = JSON.parse(JSON.stringify(player.p1));
+    activePlayer.main.id = undefined;
+    activePlayer.main.name = undefined;
+    enemyPlayer = JSON.parse(JSON.stringify(activePlayer));
 }
 
-function setActivePlayer() {
-    switch (activePlayer.playerNumber) {
-        case 1:
-            activePlayer = {
-                playerNumber: player1.playerNumber,
-                playerName: player1.playerName,
-                direction: player1.direction,
-                activeAbility: player1.activeAbility,
-                activeMisc: player1.activeMisc,
-                score: player1.score,
-
-                gameSnake: player1.gameSnake,
-                gamePosition: player1.gamePosition,
-                gameDirection: player1.gameDirection,
-
-                chooseSnake: player1.chooseSnake,
-                chooseReady: player1.chooseReady,
-                chooseClicked: player1.chooseClicked,
-                chooseGridPosition: player1.chooseGridPosition,
-
-                startedCoordinate: player1.startedCoordinate
-            }
-            break;
-        case 2:
-            activePlayer = {
-                playerNumber: player2.playerNumber,
-                playerName: player2.playerName,
-                direction: player2.direction,
-                activeAbility: player2.activeAbility,
-                activeMisc: player2.activeMisc,
-                score: player2.score,
-
-                gameSnake: player2.gameSnake,
-                gamePosition: player2.gamePosition,
-                gameDirection: player2.gameDirection,
-
-                chooseSnake: player2.chooseSnake,
-                chooseReady: player2.chooseReady,
-                chooseClicked: player2.chooseClicked,
-                chooseGridPosition: player2.chooseGridPosition,
-
-                startedCoordinate: player2.startedCoordinate
-            }
-            break;
+function setPlayerRoles() {
+    let activeID = activePlayer.main.id;
+    let enemyID;
+    if (activeID === 1) {
+        enemyID = 2;
+    } else {
+        enemyID = 1;
     }
+
+    activePlayer.main = JSON.parse(JSON.stringify(player[`p${activeID}`].main));
+    activePlayer[gameState] = JSON.parse(JSON.stringify(player[`p${activeID}`][gameState]));
+
+    enemyPlayer.main = JSON.parse(JSON.stringify(player[`p${enemyID}`].main));
+    enemyPlayer[gameState] = JSON.parse(JSON.stringify(player[`p${enemyID}`][gameState]));
 }
 
-function setEnemyPlayer() {
-    switch (activePlayer.playerNumber) {
-        case 1:
-            enemyPlayer = {
-                playerNumber: player2.playerNumber,
-                playerName: player2.playerName,
-                direction: player2.direction,
-                activeAbility: player2.activeAbility,
-                activeMisc: player2.activeMisc,
-                score: player2.score,
-
-                gameSnake: player2.gameSnake,
-                gamePosition: player2.gamePosition,
-                gameDirection: player2.gameDirection,
-
-                chooseSnake: player2.chooseSnake,
-                chooseReady: player2.chooseReady,
-                chooseClicked: player2.chooseClicked,
-                chooseGridPosition: player2.chooseGridPosition,
-
-                startedCoordinate: player2.startedCoordinate
-            }
-            break;
-        case 2:
-            enemyPlayer = {
-                playerNumber: player1.playerNumber,
-                playerName: player1.playerName,
-                direction: player1.direction,
-                activeAbility: player1.activeAbility,
-                activeMisc: player1.activeMisc,
-                score: player1.score,
-
-                gameSnake: player1.gameSnake,
-                gamePosition: player1.gamePosition,
-                gameDirection: player1.gameDirection,
-
-                chooseSnake: player1.chooseSnake,
-                chooseReady: player1.chooseReady,
-                chooseClicked: player1.chooseClicked,
-                chooseGridPosition: player1.chooseGridPosition,
-
-                startedCoordinate: player1.startedCoordinate
-            }
-            break;
+function setPlayerValues() {
+    let activeID = activePlayer.main.id;
+    let enemyID;
+    if (activeID === 1) {
+        enemyID = 2;
+    } else {
+        enemyID = 1;
     }
+
+    player[`p${activeID}`].main = JSON.parse(JSON.stringify(activePlayer.main));
+    player[`p${activeID}`][gameState] = JSON.parse(JSON.stringify(activePlayer[gameState]));
+
+    player[`p${enemyID}`].main = JSON.parse(JSON.stringify(enemyPlayer.main));
+    player[`p${enemyID}`][gameState] = JSON.parse(JSON.stringify(enemyPlayer[gameState]));    
 }
 
 function setControls() {
-    // Here are the Primary Controls for Player 1
-    p1Controls = {
-        up: "w",
-        down: "s",
-        left: "a",
-        right: "d",
-
-        strike: "c",
-        ability1: "v",
-        ability2: "b",
-
-        aux: " ",
-        exit: "t",
-    };
-
-    // Here are the Primary Controls for Player 2
-    p2Controls = {
-        up: "i",
-        down: "k",
-        left: "j",
-        right: "l",
-
-        strike: "[",
-        ability1: "]",
-        ability2: "\\",
-
-        aux: "Enter",
-        exit: "8",
+    controls = {
+        p1: {
+            // Here are the Primary Controls for Player 1
+            main: {
+                direction: {
+                    up: "w",
+                    down: "s",
+                    left: "a",
+                    right: "d",
+                },
+                ability: {
+                    strike: "c",
+                    ability1: "v",
+                    ability2: "b",
+                },
+                misc: {
+                    aux: " ",
+                    exit: "t",
+                }
+            },
+        },
+        // Here are the Primary Controls for Player 2
+        p2: {
+            main: {
+                direction: {
+                    up: "i",
+                    down: "k",
+                    left: "j",
+                    right: "l",
+                },
+                ability: {
+                    strike: "[",
+                    ability1: "]",
+                    ability2: "\\",
+                },
+                misc: {
+                    aux: "Enter",
+                    exit: "8",
+                }
+            }
+        }
     }
 
-    // Now we define the Alternative Controls for each player
-    p1Controls.upAlt = p1Controls.up.toUpperCase();
-    p1Controls.downAlt = p1Controls.down.toUpperCase();
-    p1Controls.leftAlt = p1Controls.left.toUpperCase();
-    p1Controls.rightAlt = p1Controls.right.toUpperCase();
-    p1Controls.strikeAlt = p1Controls.strike.toUpperCase();
-    p1Controls.ability1Alt = p1Controls.ability1.toUpperCase();
-    p1Controls.ability2Alt = p1Controls.ability2.toUpperCase();
-    p1Controls.auxAlt = p1Controls.aux.toUpperCase();
-    p1Controls.exitAlt = p1Controls.exit.toUpperCase();
+    controls.p1.alt = JSON.parse(JSON.stringify(controls.p1.main));
+    controls.p2.alt = JSON.parse(JSON.stringify(controls.p2.main));
 
-    p2Controls.upAlt = p2Controls.up.toUpperCase();
-    p2Controls.downAlt = p2Controls.down.toUpperCase();
-    p2Controls.leftAlt = p2Controls.left.toUpperCase();
-    p2Controls.rightAlt = p2Controls.right.toUpperCase();
-    p2Controls.strikeAlt = p2Controls.strike.toUpperCase();
-    p2Controls.ability2Alt = p2Controls.ability1.toUpperCase();
-    p2Controls.ability2Alt = p2Controls.ability2.toUpperCase();
-    p2Controls.auxAlt = p2Controls.aux.toUpperCase();
-    p2Controls.exitAlt = p2Controls.exit.toUpperCase();
+    // Now we define the Alternative Controls for each player
+    for (let i = 1; i <= 2; i++) {
+        for (let j in controls[`p${i}`].main) {
+            for (let k in controls[`p${i}`].main[j]) {
+                controls[`p${i}`].alt[j][k] = controls[`p${i}`].main[j][k].toUpperCase();
+            }
+        }
+    }
 }
 
 setPlayers();
