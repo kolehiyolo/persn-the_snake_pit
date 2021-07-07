@@ -12,7 +12,12 @@ gameState = "gameOver"; // This is the state when one or both Players lose
 
 // Here we assign the gameState as "gameChoose" by default
 // This way, the game starts at the Snake Selection phase
-setGameState("gameChoose");
+// TEST
+// setGameState("gameChoose");
+player1.chooseSnake = "apopis";
+player2.chooseSnake = "orochi";
+setGameState("gameStarted");
+
 
 // This function sets the new Game State as well as logs it
 function setGameState(newGameState) {
@@ -22,56 +27,16 @@ function setGameState(newGameState) {
 
     switch (gameState) {
         case "gameChoose":
-            gameChooseDefaults();
+            setGameChoose();
             console.log("This is the state where Players choose their Snake");
             console.log("\n");
             break;
         case "gameStarted":
             console.log("This is the state where Players can now fight");
-            console.log("\n");
             setGameStarted();
+            console.log("\n");
             break;
     }
-}
-
-function setPromptMsgs(speed, sizes, messages) {
-    // First, we add the Prompt Div
-    $(`body main`).append(`<div id="game-prompts-div" class="hidden"></div>`);
-
-    // Then, set the Prompt Div Messages
-    for (let i = 1; i <= 4; i++) {
-        $(`#game-prompts-div`).append(`<p id="prompt-msg-${i}" class="prompt-msgs"></p>`);
-        if (sizes[i - 1] != undefined) {
-            $(`#prompt-msg-${i}`).addClass(`${sizes[i-1]}Prompt`);
-            $(`#prompt-msg-${i}`).html(`${messages[i-1]}`);
-        }
-    }
-
-    // Finally, we show the Prompt Div
-    setTimeout(() => {
-        $("#game-prompts-div").addClass(`${speed}Speed`);
-        $("#game-prompts-div").removeClass("hidden");
-        $("#game-prompts-div").addClass("show");
-    }, 1);
-}
-
-function remPromptMsgs(speed) {
-    // First, we hide the Prompt Div
-    $("#game-prompts-div").addClass(`${speed}Speed`);
-    $("#game-prompts-div").removeClass("show");
-    $("#game-prompts-div").addClass("hidden");
-
-    // Finally, we delete the Prompt Div altogether
-    setTimeout(() => {
-        $(`#game-prompts-div`).remove();
-    }, 2000);
-}
-
-function resetHeaderMsgs() {
-    $(`#header-msg-1`).html("");
-    $(`#header-msg-2`).html("");
-    $(`#header-msg-3`).html("");
-    $(`#header-msg-4`).html("");
 }
 
 // This is the event listener that takes any keypress from the keyboard

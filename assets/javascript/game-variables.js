@@ -1,15 +1,13 @@
-var player1;
-var player2;
-var activePlayer;
-var enemyPlayer;
-
-var p1Controls;
-var p2Controls;
-
-var food1;
-var food2;
-var food3;
-var superFood;
+let player1;
+let player2;
+let activePlayer;
+let enemyPlayer;
+let p1Controls;
+let p2Controls;
+let food1;
+let food2;
+let food3;
+let superFood;
 
 function setPlayers() {
     player1 = {
@@ -21,7 +19,8 @@ function setPlayers() {
         score: 0,
         
         gameSnake: undefined,
-        gamePosition: [undefined, undefined],
+        gamePosition: [undefined],
+        gameDirection: undefined,
 
         chooseSnake: undefined,
         chooseReady: false,
@@ -41,6 +40,7 @@ function setPlayers() {
 
         gameSnake: undefined,
         gamePosition: [undefined, undefined],
+        gameDirection: undefined,
 
         chooseSnake: undefined,
         chooseReady: false,
@@ -60,6 +60,7 @@ function setPlayers() {
 
         gameSnake: undefined,
         gamePosition: [undefined, undefined],
+        gameDirection: undefined,
 
         chooseSnake: undefined,
         chooseReady: false,
@@ -79,6 +80,7 @@ function setPlayers() {
 
         gameSnake: undefined,
         gamePosition: [undefined, undefined],
+        gameDirection: undefined,
 
         chooseSnake: undefined,
         chooseReady: false,
@@ -102,6 +104,7 @@ function setActivePlayer() {
 
                 gameSnake: player1.gameSnake,
                 gamePosition: player1.gamePosition,
+                gameDirection: player1.gameDirection,
 
                 chooseSnake: player1.chooseSnake,
                 chooseReady: player1.chooseReady,
@@ -122,6 +125,7 @@ function setActivePlayer() {
 
                 gameSnake: player2.gameSnake,
                 gamePosition: player2.gamePosition,
+                gameDirection: player2.gameDirection,
 
                 chooseSnake: player2.chooseSnake,
                 chooseReady: player2.chooseReady,
@@ -147,6 +151,7 @@ function setEnemyPlayer() {
 
                 gameSnake: player2.gameSnake,
                 gamePosition: player2.gamePosition,
+                gameDirection: player2.gameDirection,
 
                 chooseSnake: player2.chooseSnake,
                 chooseReady: player2.chooseReady,
@@ -167,6 +172,7 @@ function setEnemyPlayer() {
 
                 gameSnake: player1.gameSnake,
                 gamePosition: player1.gamePosition,
+                gameDirection: player1.gameDirection,
 
                 chooseSnake: player1.chooseSnake,
                 chooseReady: player1.chooseReady,
@@ -192,7 +198,7 @@ function setControls() {
         ability2: "b",
 
         aux: " ",
-        exit: "y",
+        exit: "t",
     };
 
     // Here are the Primary Controls for Player 2

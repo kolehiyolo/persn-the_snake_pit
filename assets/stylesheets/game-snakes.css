@@ -2,8 +2,8 @@
     --apopis: red;
     --orochi: orange;
     --quetzalcoatl: yellow;
-    --long: lime;
-    --jormungandr: cyan;
+    --lóng: lime;
+    --jörmungandr: cyan;
     --ouroboros: magenta;
 }
 
@@ -12,7 +12,7 @@
 }
 
 .apopis-body {
-    border-color: var(--apopis);
+    border: var(--apopis) solid 1px;
 }
 
 .orochi-head{
@@ -20,7 +20,7 @@
 }
 
 .orochi-body{
-    border-color: var(--orochi);
+    border: var(--orochi) solid 1px;
 }
 
 .quetzalcoatl-head{
@@ -28,23 +28,23 @@
 }
 
 .quetzalcoatl-body{
-    border-color: var(--quetzalcoatl);
+    border: var(--quetzalcoatl) solid 1px;
 }
 
-.long-head{
-    background-color: var(--long);
+.lóng-head{
+    background-color: var(--lóng);
 }
 
-.long-body{
-    border-color: var(--long);
+.lóng-body{
+    border: var(--lóng) solid 1px;
 }
 
-.jormungandr-head{
-    background-color: var(--jormungandr);
+.jörmungandr-head{
+    background-color: var(--jörmungandr);
 }
 
-.jormungandr-body{
-    border-color: var(--jormungandr);
+.jörmungandr-body{
+    border: var(--jörmungandr) solid 1px;
 }
 
 .ouroboros-head{
@@ -52,5 +52,15 @@
 }
 
 .ouroboros-body{
-    border-color: var(--ouroboros);
+    border: var(--ouroboros) solid 1px;
+}
+
+.player1-snake-body, .player2-snake-body {
+    background-color: black;
+    box-sizing: border-box;
+    border-radius: 2px;
+}
+
+.player1-snake-head, .player2-snake-head {
+    border-radius: 2px;
 }

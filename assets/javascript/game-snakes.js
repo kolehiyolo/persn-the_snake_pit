@@ -58,7 +58,7 @@ let chooseQuetzalcoatl = {
     }
 }
 
-let chooseLong = {
+let chooseLóng = {
     name: "lóng",
     epithet: "God King of Dragons",
     color: "lime",
@@ -78,7 +78,7 @@ let chooseLong = {
     }
 }
 
-let chooseJormungandr = {
+let chooseJörmungandr = {
     name: "jörmungandr",
     epithet: "Herald of Ragnarok",
     color: "cyan",
@@ -120,7 +120,7 @@ let chooseOuroboros = {
 
 let chooseSnakesArray = [
     chooseApopis, chooseOrochi, chooseQuetzalcoatl,
-    chooseLong, chooseJormungandr, chooseOuroboros
+    chooseLóng, chooseJörmungandr, chooseOuroboros
 ];
 
 function setChooseSnakesGrid() {
@@ -172,5 +172,3 @@ function setChooseSnakesGrid() {
     });
 
 }
-
-setChooseSnakesGrid();

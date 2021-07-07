@@ -60,7 +60,29 @@ function logGameChoose() {
     }
 }
 
-function setPlayerReady() {
+function setPlayerReady(verdict) {
+    let playerReadyButtonID = "choose-player_" + activePlayer.playerNumber + "-button";
+    let playerReadyButtonStyling = "choose-" + activePlayer.chooseSnake + "-hover ready-div-hover choose-" + activePlayer.chooseSnake + "-font_color";
+    let activePlayerReadyID = "choose-player_" + activePlayer.playerNumber + "-button";
+
+    switch (verdict) {
+        case true:
+            // We now set that the Player is ready
+            activePlayer.chooseReady = true;
+
+            // We then set the text on the button
+            $("#" + playerReadyButtonID).html(activePlayer.playerName + " is ready");
+            $(`.snake-player_${activePlayer.playerNumber}-icon-hover`).addClass(`choose-${activePlayer.chooseSnake}-hover choose-${activePlayer.chooseSnake}-font_color`);
+            break;
+
+        case false:
+            activePlayer.chooseReady = false;
+
+            $("#" + activePlayerReadyID).attr("class", "choose-player-button");
+            $("#" + activePlayerReadyID).html(activePlayer.playerName + " is Not Ready")
+            $(`.snake-player_${activePlayer.playerNumber}-icon-hover`).removeClass(`choose-${activePlayer.chooseSnake}-hover choose-${activePlayer.chooseSnake}-font_color`);
+            break;
+    }
 
 }
 
@@ -89,11 +111,7 @@ function gameChoose(key) {
                     }
                     // If the player pressed the aux key when they've already selected the snake they're on, these commands are fulfilled, meaning they're ready
                     else {
-                        // We now set that the Player is ready
-                        activePlayer.chooseReady = true;
-
-                        // We then set the text on the button
-                        $("#" + playerReadyButtonID).html(activePlayer.playerName + " is ready");
+                        setPlayerReady(true);
                     }
 
                     // We then assign the activePlayer ready value to the actual player
@@ -115,15 +133,17 @@ function gameChoose(key) {
                     if (activePlayer.chooseSnake === enemyPlayer.chooseSnake) {
                         // Placeholder Variables
                         var activePlayerReadyID = "choose-player_" + activePlayer.playerNumber + "-button";
+                        $(`.snake-player_${activePlayer.playerNumber}-icon-hover`).removeClass(`choose-${activePlayer.chooseSnake}-hover choose-${activePlayer.chooseSnake}-font_color`);
                         $("#" + playerReadyButtonID).html(activePlayer.playerName + " chooses " + activePlayer.chooseSnake);
 
                         // We first show the Prompt
                         // The prompt then tells that the Enemy Player already chose the snake
                         // FIX - The name of the snake has to be capitalized on the prompt
                         // FIX - We should reeaally set up proper functions that manipulate styling
-                        let promptMsgArray = [`<span class='choose-${enemyPlayer.chooseSnake}-font_color'>${enemyPlayer.playerName}</span> selected ${enemyPlayer.chooseSnake} first`];
+                        let promptMsgArray = [];
+                        promptMsgArray.push(`<span class='choose-${enemyPlayer.chooseSnake}-font_color'>${enemyPlayer.playerName}</span> selected ${enemyPlayer.chooseSnake} first`);
                         setPromptMsgs("quick", ["small"], promptMsgArray);
-
+                        activePlayer.chooseReady = false;
                         // Then, the prompt closes after a while
                         setTimeout(function () {
                             // The prompt is hidden
@@ -131,9 +151,7 @@ function gameChoose(key) {
 
                                 remPromptMsgs("medium");
                                 // We then "unready" the Active Player
-                                activePlayer.chooseReady = false;
-                                $("#" + activePlayerReadyID).attr("class", "choose-player-button");
-                                $("#" + activePlayerReadyID).html(activePlayer.playerName + " is Not Ready");
+                                setPlayerReady(false);
                             }, 300);
 
                         }, 1500);
@@ -159,7 +177,7 @@ function gameChoose(key) {
                     clearInterval(gameStartCountdownTimer);
 
                     // We then broadcast that the active player is not ready
-                    $("#game-prompt-msg-1").html(activePlayer.playerName + " is not Ready");
+                    $(".prompt-msg-light").html((activePlayer.playerName + " is not Ready").toUpperCase());
 
                     // We then establish that the boolean switch is false and the active player is not ready
                     gameStartCountdownActive = false;
@@ -168,13 +186,10 @@ function gameChoose(key) {
                     // Finally, we hide the Countdown div and remove the styling from the Active Player's Ready button, indicating that they aren't ready
                     setTimeout(function () {
                         // We remove the styling on the Ready button as well as broadcast the unready-ing
-                        $("#" + activePlayerReadyID).attr("class", "choose-player-button");
-                        $("#" + activePlayerReadyID).html(activePlayer.playerName + " is Not Ready");
-
+                        setPlayerReady(false);
                         // We finally hide the prompt
-                        $("#game-prompt-div").removeClass("show slowSpeed");
-                        $("#game-prompt-div").addClass("hidden slowSpeed");
-                    }, 500);
+                        remPromptMsgs("slow");
+                    }, 1000);
                 }
 
                 // If the countdown hasn't started yet, the exit button sets the Active Player "unready"
@@ -183,20 +198,17 @@ function gameChoose(key) {
                     activePlayer.chooseReady = false;
 
                     // We remove the styling on the Ready button as well as broadcast the unready-ing
-                    $("#" + activePlayerReadyID).attr("class", "choose-player-button");
-                    $("#" + activePlayerReadyID).html(activePlayer.playerName + " is Not Ready");
+                    setPlayerReady(false);
                 }
-
-                // We then assign the activePlayer ready value to the actual player
-                switch (activePlayer.playerNumber) {
-                    case 1:
-                        player1.chooseReady = activePlayer.chooseReady;
-                        break;
-                    case 2:
-                        player2.chooseReady = activePlayer.chooseReady;
-                        break;
-                }
-
+                break;
+        }
+        // We then assign the activePlayer ready value to the actual player
+        switch (activePlayer.playerNumber) {
+            case 1:
+                player1.chooseReady = activePlayer.chooseReady;
+                break;
+            case 2:
+                player2.chooseReady = activePlayer.chooseReady;
                 break;
         }
     }
@@ -249,7 +261,8 @@ function gameChoose(key) {
     logGameChoose();
 }
 
-function gameChooseDefaults() {
+function setGameChoose() {
+    setChooseSnakesGrid();
     selectSnakeGrid = [
         ["apopis", "orochi", "quetzalcoatl"],
         ["lóng", "jörmungandr", "ouroboros"]
@@ -346,16 +359,10 @@ function gameStartCountdown() {
     }
 
     // We then show the prompt with specific speed and decide the sizes of the prompts
-    $("#game-prompt-msg-1").addClass("smallPrompt");
-    $("#game-prompt-msg-2").addClass("bigPrompt");
-    $("#game-prompt-div").removeClass("hidden");
-    $("#game-prompt-div").addClass("show");
-    $("#game-prompt-div").addClass("mediumSpeed");
-
-    // Then, we set the messages
-    $("#game-prompt-msg-1").html("Game Starts in");
-    $("#game-prompt-msg-2").html(countdownNum);
-    $("#game-prompt-msg-3").html();
+    let promptMsgArray = [];
+    promptMsgArray.push(`<span class="prompt-msg-light">Game Starts In</span>`);
+    promptMsgArray.push(`${countdownNum}`);
+    setPromptMsgs("medium", ["medium", "big"], promptMsgArray);
 
     // Before the actual Countdown, we reduce the counter
     countdownNum--;
@@ -370,7 +377,7 @@ function gameStartCountdown() {
                 console.log("\n");
             }
 
-            $("#game-prompt-msg-2").html(countdownNum);
+            $("#prompt-msg-2").html(`${countdownNum}`);
             countdownNum--;
         }
         // Once the countdown goes below zero, we set the stage for the gameStarted gameState
@@ -383,38 +390,32 @@ function gameStartCountdown() {
                 console.log("----gameChoose: Event = gameStartCountdown Ended");
                 console.log("\n");
             }
-
-            // Then, we hide the Snake Selection Grid
-            $("#game_choose-grid").removeClass("show mediumSpeed");
-            $("#game_choose-grid").addClass("hidden slowSpeed");
-
-            // We then hide the prompt while making sure to clear the speed and the sizes
-            $("#game-prompt-div").removeClass("show mediumSpeed");
-            $("#game-prompt-div").addClass("hidden slowSpeed");
-
-            // We then also hide the Header
-            $("header-msg-1").removeClass("show slowSpeed");
-            $("header-msg-1").addClass("hidden slowSpeed");
-            $("header-msg-2").removeClass("show slowSpeed");
-            $("header-msg-2").addClass("hidden slowSpeed");
-
-            // Then, we set the gameStarted state
-            setGameState("gameStarted");
+            remGameChoose();
 
             // Finally, we show the Game Board and the new Header
-            setTimeout(function () {
-                // Show the Game Board
-                $("#game-arena").removeClass("hidden slowSpeed");
-                $("#game-arena").addClass("show slowSpeed");
-
-                // Show the new Header with the different text
-                $("header-msg-1").html("Snek Fight");
-                $("header-msg-1").removeClass("hidden slowSpeed");
-                $("header-msg-1").addClass("show slowSpeed");
-
-                $("#game-prompt-msg-2").removeClass("smallPrompt");
-                $("#game-prompt-msg-2").removeClass("bigPrompt");
-            }, 1000);
+            // setTimeout(function () {
+            //     // // Show the Game Board
+            //     // $("#game-arena").removeClass("hidden slowSpeed");
+            //     // $("#game-arena").addClass("show slowSpeed");
+            // }, 1000);
         }
+    }, 1000);
+}
+
+function remGameChoose() {
+    // We then hide the prompt while making sure to clear the speed and the sizes
+    remPromptMsgs("slow");
+
+    // Then, we hide the Snake Selection Grid
+    setTimeout(() => {
+        $("#game-choose-grid").addClass("slowSpeed");
+        $("#game-choose-grid").removeClass("show");
+        $("#game-choose-grid").addClass("hidden");
+
+        setTimeout(() => {
+            $(`#game-choose-grid`).remove();
+            // Then, we set the gameStarted state
+            setGameState("gameStarted");
+        }, 1000);
     }, 1000);
 }

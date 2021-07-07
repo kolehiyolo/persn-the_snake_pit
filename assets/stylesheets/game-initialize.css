@@ -26,11 +26,11 @@ body {
 }
 
 .mediumPrompt {
-    font-size: 50px;
+    font-size: 35px;
 }
 
 .bigPrompt {
-    font-size: 70px;
+    font-size: 50px;
 }
 /* - Prompt Sizes ! */
 
@@ -78,4 +78,10 @@ header {
 #header-msg-1 {
     margin: 0;
     padding: 0;
+}
+
+.prompt-msgs {
+    letter-spacing: 4px;
+    font-weight: bold;
+    margin: 10px;
 }
