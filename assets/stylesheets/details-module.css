@@ -1,0 +1,51 @@
+#details-module {
+    /* background-color: green; */
+}
+
+#details-module {
+    color: white;
+    font-family: monospace;
+    font-family: 'VT323', monospace;
+    font-size: 12px;
+    position: absolute;
+    bottom: 0;
+    padding: 0 20px;
+    width: 100vw;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+#details-module h2 {
+    margin: 0;
+}
+
+#details-module p {
+    margin: 0;
+}
+
+#details-module {
+    display: flex;
+    flex-direction: row;
+}
+
+.details-module-div {
+    border: solid 1px white;
+    margin: 0 5px;
+    padding: 0 10px;
+    /* width: 400px; */
+    display: flex;
+    flex-direction: row;
+}
+
+.details-module-div > div {
+    width: 200px;
+}
+
+#game-details {
+    display: flex;
+    width: 350px;
+}
+
+#p1-main, #p2-main {
+    width: 150px;
+}

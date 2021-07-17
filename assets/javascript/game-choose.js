@@ -10,8 +10,9 @@ let gameStartCountdownCounter; // This is the counter for the countdown
 
 function logChoose() {
     let logEvent;
-    if (keyType != undefined && enableLogGameChoose === true) {
-        switch (keyType) {
+    let activePlayer = player[`p${active.id}`];
+    if (key.type != undefined && enableLogGameChoose === true) {
+        switch (key.type) {
             case "misc":
                 switch (activePlayer.main.misc) {
                     case "aux":
@@ -21,42 +22,42 @@ function logChoose() {
                                     // If the Active Player already clicked, the following command is prompted
                                     switch (activePlayer.choose.ready) {
                                         case true:
-                                            logEvent = "'Ready with " + activePlayer.choose.snake + "'";
+                                            logEvent = `Ready with ${activePlayer.choose.snake}`;
                                             break;
                                         case false:
-                                            logEvent = "'Selected " + activePlayer.choose.snake + "'";
+                                            logEvent = `Selected ${activePlayer.choose.snake}`;
                                             break;
                                     }
                                 } else {
-                                    logEvent = "'Countdown Already Started'";
+                                    logEvent = `'Countdown Already Started'`;
                                 }
                                 break;
                             case false:
                                 // If not, the following command is prompted 
-                                logEvent = "'Nothing Selected Yet'";
+                                logEvent = `'Nothing Selected Yet'`;
                         }
                         break;
                     case "exit":
                         switch (gameStartCountdownActive) {
                             case true:
-                                logEvent = "'Canceled Countdown'";
+                                logEvent = `'Canceled Countdown'`;
                                 break;
                             case false:
-                                logEvent = "'Not Ready'";
+                                logEvent = `'Not Ready'`;
                                 break;
                         }
                         break;
                 }
                 break;
             case "ability":
-                logEvent = "'NO EFFECT'";
+                logEvent = `'NO EFFECT'`;
                 break;
             case "direction":
-                logEvent = "'Hovering over " + activePlayer.choose.snake + "'";
+                logEvent = `'Hovering over ${activePlayer.choose.snake}'`;
                 break;
         }
 
-        console.log("----gameChoose: Player " + activePlayer.main.id + " -> '" + key + "' = " + logEvent);
+        console.log(`--gameChoose: Player ${active.id} -> ${key.type}: '${key.id}' = ${logEvent}`);
     }
 }
 
@@ -69,14 +70,14 @@ function setChoose() {
 
     player.p1.choose = {
         snake: "apopis",
-        position: [0,0],
+        position: [0, 0],
         ready: false,
         clicked: false
     }
 
     player.p2.choose = {
         snake: "quetzalcoatl",
-        position: [0,2],
+        position: [0, 2],
         ready: false,
         clicked: false
     }
@@ -84,7 +85,7 @@ function setChoose() {
     gameStartCountdownActive = false;
     gameStartCountdownTimer = undefined;
 
-    $("#game-arena").addClass("hidden");
+    // $("#game-arena").addClass("hidden");
 
     $(".snake-player_1-icon").html(player.p1.main.name);
     $(".snake-player_2-icon").html(player.p2.main.name);
@@ -95,6 +96,8 @@ function setChoose() {
 
 function gameChoose() {
     // Placeholder Variables
+    let activePlayer = player[`p${active.id}`];
+    let enemyPlayer = player[`p${enemy.id}`];
     let activeID = activePlayer.main.id;
     let activeName = activePlayer.main.name;
     let activeDirection = activePlayer.main.direction;
@@ -109,7 +112,7 @@ function gameChoose() {
     let playerReadyButtonID = "choose-player_" + activeID + "-button";
 
     // The following commands are triggered when a miscellaneous key is pressed
-    if (keyType === "misc") {
+    if (key.type === "misc") {
         switch (activeMisc) {
             /* Aux Key */
             case "aux":
@@ -135,7 +138,7 @@ function gameChoose() {
                     }
 
                     // We then assign the activePlayer ready value to the actual player
-                    setPlayerValues();
+                    // setPlayerValues();
                 }
 
                 /* Players Ready */
@@ -160,7 +163,7 @@ function gameChoose() {
                         setTimeout(function () {
                             // The prompt is hidden
                             setTimeout(function () {
-                                remPromptMsgs("medium",1000);
+                                remPromptMsgs("medium", 1000);
                                 // We then "unready" the Active Player
                                 setPlayerReady(false);
                             }, 300);
@@ -197,7 +200,7 @@ function gameChoose() {
                         // We remove the styling on the Ready button as well as broadcast the unready-ing
                         setPlayerReady(false);
                         // We finally hide the prompt
-                        remPromptMsgs("slow",1000);
+                        remPromptMsgs("slow", 1000);
                     }, 1000);
                 }
 
@@ -212,11 +215,11 @@ function gameChoose() {
                 break;
         }
         // We then assign the activePlayer ready value to the actual player
-        setPlayerValues();
+        // setPlayerValues();
     }
 
     // The following commands are triggered when a directional key is pressed
-    else if (keyType === "direction") {
+    else if (key.type === "direction") {
         if (activeReady === false) {
             if (activeClicked === true) {
                 switch (activeDirection) {
@@ -243,14 +246,14 @@ function gameChoose() {
                 }
             } else {
                 activePlayer.choose.clicked = true;
-                setPlayerValues();
+                // setPlayerValues();
             }
             navigateSelection();
         }
     }
 
     // The following commands are triggered when an ability key is pressed
-    else if (keyType === "ability") {
+    else if (key.type === "ability") {
 
     }
 
@@ -258,6 +261,7 @@ function gameChoose() {
 }
 
 function setPlayerReady(verdict) {
+    let activePlayer = player[`p${active.id}`];
     let playerReadyButtonID = "choose-player_" + activePlayer.main.id + "-button";
     let activePlayerReadyID = "choose-player_" + activePlayer.main.id + "-button";
 
@@ -284,6 +288,9 @@ function setPlayerReady(verdict) {
 
 function navigateSelection() {
     // Placeholder Variables
+    let activePlayer = player[`p${active.id}`];
+    let enemyPlayer = player[`p${enemy.id}`];
+    
     let playerHover = `choose-player_${activePlayer.main.id}-hover`;
     let enemyHover = `choose-player_${enemyPlayer.main.id}-hover`;
     let playerIcon = `snake-player_${activePlayer.main.id}-icon-hover`;
@@ -316,11 +323,12 @@ function navigateSelection() {
     $(`#${activePlayer.choose.snake}-div .snake-skill_2-name`).addClass(`${colorHover} ${snakeHover}`);
     // -This adds the Active Player's Icon to the new location
     $(`#${activePlayer.choose.snake}-div .snake-player_${activePlayer.main.id}-icon`).addClass(playerIcon);
-    setPlayerValues()
 }
 
 function gameStartCountdown() {
     // Obligatory Clog
+    let activePlayer = player[`p${active.id}`];
+    let enemyPlayer = (activePlayer === 1) ? 2 : 1;
     if (enableLogGameChoose === true) {
         console.log("----gameChoose: Event = gameStartCountdown Started");
         console.log("\n");
@@ -371,7 +379,6 @@ function gameStartCountdown() {
                 console.log("\n");
             }
             remGameChoose();
-
             // Finally, we show the Game Board and the new Header
             // setTimeout(function () {
             //     // // Show the Game Board
@@ -384,7 +391,7 @@ function gameStartCountdown() {
 
 function remGameChoose() {
     // We then hide the prompt while making sure to clear the speed and the sizes
-    remPromptMsgs("slow",1000);
+    remPromptMsgs("slow", 1000);
 
     // Then, we hide the Snake Selection Grid
     setTimeout(() => {
@@ -395,7 +402,7 @@ function remGameChoose() {
         setTimeout(() => {
             $(`#game-choose-grid`).remove();
             // Then, we set the gameStarted state
-            setGameState("gameStarted");
+            setGameState("arena");
         }, 1000);
     }, 1000);
 }

@@ -8,7 +8,7 @@
 }
 
 .apopis-head {
-    background-color: var(--apopis);
+    background-color: var(--apopis) !important;
 }
 
 .apopis-body {
@@ -16,7 +16,7 @@
 }
 
 .orochi-head{
-    background-color: var(--orochi);
+    background-color: var(--orochi) !important;
 }
 
 .orochi-body{
@@ -24,7 +24,7 @@
 }
 
 .quetzalcoatl-head{
-    background-color: var(--quetzalcoatl);
+    background-color: var(--quetzalcoatl) !important;
 }
 
 .quetzalcoatl-body{
@@ -32,7 +32,7 @@
 }
 
 .lóng-head{
-    background-color: var(--lóng);
+    background-color: var(--lóng) !important;
 }
 
 .lóng-body{
@@ -40,7 +40,7 @@
 }
 
 .jörmungandr-head{
-    background-color: var(--jörmungandr);
+    background-color: var(--jörmungandr) !important;
 }
 
 .jörmungandr-body{
@@ -48,7 +48,7 @@
 }
 
 .ouroboros-head{
-    background-color: var(--ouroboros);
+    background-color: var(--ouroboros) !important;
 }
 
 .ouroboros-body{
@@ -56,11 +56,119 @@
 }
 
 .player1-snake-body, .player2-snake-body {
-    background-color: black;
+    background-color: black !important;
     box-sizing: border-box;
     border-radius: 2px;
+    border-width: 2px;
+    transition: 0;
 }
 
 .player1-snake-head, .player2-snake-head {
-    border-radius: 2px;
+    border-radius: 2px !important;
+    width: 10px !important;
+    height: 10px !important;
+    margin: 2.5px !important;
+    transition: 0;
+}
+
+.apopis-strike {
+    background-color: var(--apopis);
+}
+
+.orochi-strike{
+    background-color: var(--orochi);
+}
+
+.quetzalcoatl-strike{
+    background-color: var(--quetzalcoatl);
+}
+
+.lóng-strike{
+    background-color: var(--lóng);
+}
+
+.jörmungandr-strike{
+    background-color: var(--jörmungandr);
+}
+
+.ouroboros-strike{
+    background-color: var(--ouroboros);
+}
+
+.horizontal-strike {
+    border-radius: 0;
+    width: 15px;
+    height: 2px;
+    margin: 6.5px 0;
+}
+
+.vertical-strike {
+    border-radius: 0;
+    width: 2px;
+    height: 15px;
+    margin: 0 6.5px;
+}
+
+.apopis-font_color {
+    color: var(--apopis);
+}
+
+.orochi-font_color {
+    color: var(--orochi);
+}
+
+.quetzalcoatl-font_color {
+    color: var(--quetzalcoatl);
+}
+
+.lóng-font_color {
+    color: var(--long);
+}
+
+.jörmungandr-font_color {
+    color: var(--jormungandr);
+}
+
+.ouroboros-font_color {
+    color: var(--ouroboros);
+}
+
+.apopis-border {
+    border-color: var(--apopis);
+    background-color: rgba(255, 0, 0, 0.1);
+    background-color: #1A0000;
+}
+
+.orochi-border {
+    border-color: var(--orochi);
+    background-color: rgba(255, 165, 0, 0.1);
+    background-color: #1A1100;
+}
+
+.quetzalcoatl-border {
+    border-color: var(--quetzalcoatl);
+    background-color: rgba(255, 255, 0, 0.1);
+    background-color: #1A1A00;
+}
+
+.lóng-border {
+    border-color: var(--long);
+    background-color: rgba(0, 255, 0, 0.1);
+    background-color: #001A00;
+}
+
+.jörmungandr-border {
+    border-color: var(--jormungandr);
+    background-color: rgba(0, 255, 255, 0.1);
+    background-color: #001A1A;
+}
+
+.ouroboros-border {
+    border-color: var(--ouroboros);
+    background-color: rgba(255, 0, 255, 0.1);
+    background-color: #1A001A;
+}
+
+.player1-snake-head {
+
 }

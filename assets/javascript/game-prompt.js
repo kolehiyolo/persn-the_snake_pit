@@ -1,10 +1,28 @@
 function setPromptMsgs(speed, sizes, messages) {
+    $(`#game-prompts-div`).remove();
     // First, we add the Prompt Div
     $(`body main`).append(`<div id="game-prompts-div" class="hidden"></div>`);
+    $(`#game-prompts-div`).append(`<div id="prompt-msgs-div"></div>`);
+
+    let arenaWidth;
+    let arenaHeight;
+    switch (game.state) {
+        case `choose`:
+            arenaWidth = $(`#game-choose-grid`).outerWidth();
+            arenaHeight = $(`#game-choose-grid`).outerHeight();
+            break;
+        case `arena`:
+            arenaWidth = $(`#game-arena-grid`).outerWidth();
+            arenaHeight = $(`#game-arena-grid`).outerHeight();
+            break;
+    }
+    console.log(`arenaWidth = ${arenaWidth}`); 
+    console.log(`arenaHeight = ${arenaHeight}`); 
+    $(`#game-prompts-div`).attr(`style`, `height:${arenaHeight}px; width:${arenaWidth}px;`);
 
     // Then, set the Prompt Div Messages
     for (let i = 1; i <= 4; i++) {
-        $(`#game-prompts-div`).append(`<p id="prompt-msg-${i}" class="prompt-msgs"></p>`);
+        $(`#prompt-msgs-div`).append(`<p id="prompt-msg-${i}" class="prompt-msgs"></p>`);
         if (sizes[i - 1] != undefined) {
             $(`#prompt-msg-${i}`).addClass(`${sizes[i-1]}Prompt`);
             let convertedMessage = messages[i - 1];
@@ -49,8 +67,8 @@ function resetHeaderMsgs() {
 }
 
 function showDiv(div, speed) {
-    console.log(`div = ${div}`); 
-    console.log(`speed = ${speed}`); 
+    console.log(`div = ${div}`);
+    console.log(`speed = ${speed}`);
 
     $(`#div`).removeClass(`slow-anim medium-anim quick-anim`);
     $(`#div`).addClass(`${speed}-anim`);

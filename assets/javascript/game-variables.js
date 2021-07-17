@@ -1,14 +1,59 @@
+// This variable represents the current game state, which will be used to determine what the keys are supposed to do at a time
 let player;
 let controls;
+let food;
+let game;
+let active;
+let enemy;
 let activePlayer;
 let enemyPlayer;
 
-let food1;
-let food2;
-let food3;
-let superFood;
+let key = {
+    id: undefined,
+    type: undefined,
+    valid: false
+}
 
-function setPlayers() {
+function setGameVariables() {
+    active = {
+        id: 0
+    }
+    enemy = {
+        id: 0
+    }
+    food = {
+        food1: {
+            position: [undefined, undefined]
+        },
+        food2: {
+            position: [undefined, undefined]
+        },
+        food3: {
+            position: [undefined, undefined]
+        },
+        super: {
+            position: [undefined, undefined],
+            active: false,
+            count: 0
+        }
+    }
+    game = {
+        state: undefined,
+        row: 49,
+        col: 49,
+        winner: undefined,
+        loser: undefined,
+        paused: false,
+        over: false,
+        ready: false,
+    }
+    // game.row = 29;
+    // game.col = 29;
+    // game.row = 49;
+    // game.col = 29;
+}
+
+function setPlayersMain() {
     player = {
         p1: {
             main: {
@@ -17,6 +62,7 @@ function setPlayers() {
                 direction: undefined,
                 ability: undefined,
                 misc: undefined,
+                score: 0,
             },
 
             choose: {
@@ -25,55 +71,75 @@ function setPlayers() {
                 ready: false,
                 clicked: false,
             },
-
-            arena: {
-                snake: undefined,
-                position: [undefined],
-                direction: undefined,
-            }
         }
     }
     player.p2 = JSON.parse(JSON.stringify(player.p1));
+    player.alter1 = JSON.parse(JSON.stringify(player.p1));
+    player.alter2 = JSON.parse(JSON.stringify(player.p2));
     player.p2.main.id = 2;
     player.p1.main.name = "Tristan";
     player.p2.main.name = "Theolo";
-
-    activePlayer = JSON.parse(JSON.stringify(player.p1));
-    activePlayer.main.id = undefined;
-    activePlayer.main.name = undefined;
-    enemyPlayer = JSON.parse(JSON.stringify(activePlayer));
 }
 
-function setPlayerRoles() {
-    let activeID = activePlayer.main.id;
-    let enemyID;
-    if (activeID === 1) {
-        enemyID = 2;
-    } else {
-        enemyID = 1;
+function setPlayersArena() {
+    player.p1.arena = {
+        direction: undefined,
+        snake: undefined,
+        position: [undefined],
+        size: undefined,
+        alive: true,
+        disabled: false,
+        canTurn: false,
+        immobilized: false,
+        phased: false,
+        portaled: false,
     }
-
-    activePlayer.main = JSON.parse(JSON.stringify(player[`p${activeID}`].main));
-    activePlayer[gameState] = JSON.parse(JSON.stringify(player[`p${activeID}`][gameState]));
-
-    enemyPlayer.main = JSON.parse(JSON.stringify(player[`p${enemyID}`].main));
-    enemyPlayer[gameState] = JSON.parse(JSON.stringify(player[`p${enemyID}`][gameState]));
-}
-
-function setPlayerValues() {
-    let activeID = activePlayer.main.id;
-    let enemyID;
-    if (activeID === 1) {
-        enemyID = 2;
-    } else {
-        enemyID = 1;
+    player.p1.status = {
+        alive: true, // This means the snake is alive
+        disabled: false, // This means the snake can't move and use abilities
+        canTurn: false, // This means the snake can turn to a perpendicular direction
+        canStrike: false, // This means the snake can use strike
+        immobilized: false, // This means the snake can't move but still use abilities
+        phased: false, // This means the snake can pass through obstacles, snakes and strikes
+        portable: false, // This means the snake can use the borders as portals
+        unstoppable: false, // This means the snake can plow through obstacles, snakes and strikes
+        masochist: false, // This means the snake can pass through itself
     }
-
-    player[`p${activeID}`].main = JSON.parse(JSON.stringify(activePlayer.main));
-    player[`p${activeID}`][gameState] = JSON.parse(JSON.stringify(activePlayer[gameState]));
-
-    player[`p${enemyID}`].main = JSON.parse(JSON.stringify(enemyPlayer.main));
-    player[`p${enemyID}`][gameState] = JSON.parse(JSON.stringify(enemyPlayer[gameState]));    
+    player.p1.intervals = {
+        run: {
+            status: false,
+            function: undefined,
+            count: 0,
+            speed: 100
+            // speed: 120
+        },
+        useStrike: {
+            status: false,
+            function: undefined,
+            count: 0,
+            speed: 5
+            // speed: 1
+        },
+        fetchStrike: {
+            status: false,
+            function: undefined,
+            count: 0,
+            speed: 40
+            // speed: 200
+        },
+        growth: {
+            status: false,
+            function: undefined,
+            count: 5,
+            speed: 1000
+        }
+    }
+    player.p2.arena = JSON.parse(JSON.stringify(player.p1.arena));
+    player.alter1.arena = JSON.parse(JSON.stringify(player.p1.arena));
+    player.alter2.arena = JSON.parse(JSON.stringify(player.p2.arena));
+    player.p2.intervals = JSON.parse(JSON.stringify(player.p1.intervals));
+    player.alter1.intervals = JSON.parse(JSON.stringify(player.p1.intervals));
+    player.alter2.intervals = JSON.parse(JSON.stringify(player.p2.intervals));
 }
 
 function setControls() {
@@ -111,6 +177,7 @@ function setControls() {
                     strike: "[",
                     ability1: "]",
                     ability2: "\\",
+                    // ability2: "Enter",
                 },
                 misc: {
                     aux: "Enter",
@@ -133,5 +200,54 @@ function setControls() {
     }
 }
 
-setPlayers();
+function setAbilities(num) {
+    let activeUser = player[`p${num}`];
+    activeUser.abilities = {
+        strike: {
+            name: "strike",
+            status: false,
+            cost: 1,
+        },
+        ability1: {
+            name: snakes[activeUser.arena.snake].skills.skill1.name,
+            status: false,
+            ready: false,
+            cost: 1,
+            duration: snakes[activeUser.arena.snake].skills.skill1.duration,
+            cooldown: snakes[activeUser.arena.snake].skills.skill1.cooldown,
+            interval: {
+                status: false,
+                counter: 0,
+                function: undefined
+            },
+            seconds: {
+                status: false,
+                counter: 0,
+                function: undefined
+            }
+        },
+        ability2: {
+            name: snakes[activeUser.arena.snake].skills.skill2.name,
+            status: false,
+            ready: false,
+            cost: 1,
+            duration: snakes[activeUser.arena.snake].skills.skill2.duration,
+            cooldown: snakes[activeUser.arena.snake].skills.skill2.cooldown,
+            interval: {
+                status: false,
+                counter: 0,
+                function: undefined
+            },
+            seconds: {
+                status: false,
+                counter: 0,
+                function: undefined
+            }
+        },
+    }
+}
+
+setGameVariables();
+setPlayersMain();
+setPlayersArena();
 setControls();

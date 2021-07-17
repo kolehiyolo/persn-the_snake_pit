@@ -17,10 +17,15 @@
     <link rel="stylesheet" href="assets/stylesheets/game-choose.css">
     <link rel="stylesheet" href="assets/stylesheets/game-arena.css">
 
-    <link rel="stylesheet" href="assets/stylesheets/player-one.css">
-    <link rel="stylesheet" href="assets/stylesheets/player-two.css">
+    <link rel="stylesheet" href="assets/stylesheets/game-ui.css">
     <link rel="stylesheet" href="assets/stylesheets/game-snakes.css">
-    <title>Snek</title>
+    <link rel="stylesheet" href="assets/stylesheets/game-abilities.css">
+    <link rel="stylesheet" href="assets/stylesheets/details-module.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <title>The Snake Pit</title>
 </head>
 
 <body>
@@ -37,6 +42,50 @@
 
     <footer>
     </footer>
+    <!-- <div id="details-module">
+        <div id="game-details" class="details-module-div">
+            <div id="game-main">
+                <p id="game-winner">game.winner:</p>
+                <p id="game-loser">game.loser:</p>
+                <p id="game-paused">game.paused:</p>
+                <p id="game-over">game.over:</p>
+                <p id="game-ready">game.ready:</p>
+            </div>
+            <div id="game-food">
+                <p id="food-food1-position">food1.position:</p>
+                <p id="food-food2-position">food2.position:</p>
+                <p id="food-food3-position">food3.position:</p>
+                <p id="food-super-count">super.count:</p>
+                <p id="food-super-position">super.position:</p>
+            </div>
+        </div>
+        <div id="p1-details" class="details-module-div">
+            <div id="p1-main">
+                <p id="p1-run-interval-status">run.status:</p>
+                <p id="p1-run-interval-count">run.count:</p>
+                <p id="p1-arena-disabled">disabled:</p>
+            </div>
+            <div id="p1-strike">
+                <p id="p1-useStrike-interval-status">useStrike.status:</p>
+                <p id="p1-useStrike-interval-count">useStrike.count:</p>
+                <p id="p1-fetchStrike-interval-status">fetchStrike.status:</p>
+                <p id="p1-fetchStrike-interval-count">fetchStrike.count:</p>
+            </div>
+        </div>
+        <div id="p2-details" class="details-module-div">
+            <div id="p2-main">
+                <p id="p2-run-interval-status">run.status:</p>
+                <p id="p2-run-interval-count">run.count:</p>
+                <p id="p2-arena-disabled">disabled:</p>
+            </div>
+            <div id="p2-strike">
+                <p id="p2-useStrike-interval-status">useStrike.status:</p>
+                <p id="p2-useStrike-interval-count">useStrike.count:</p>
+                <p id="p2-fetchStrike-interval-status">fetchStrike.status:</p>
+                <p id="p2-fetchStrike-interval-count">fetchStrike.count:</p>
+            </div>
+        </div>
+    </div> -->
 
     <div id="scripts">
         <script src="assets/javascript/game-variables.js"></script>
@@ -46,10 +95,15 @@
             <script src="assets/javascript/game-choose.js"></script>
             <script src="assets/javascript/game-arena.js"></script>
         </div>
-        
+
+        <script src="assets/javascript/game-strike.js"></script>
+        <script src="assets/javascript/game-ui.js"></script>
+        <script src="assets/javascript/game-abilities.js"></script>
         <script src="assets/javascript/game-snakes.js"></script>
         <script src="assets/javascript/game-initialize.js"></script>
         <script src="assets/javascript/game-prompt.js"></script>
+        <script src="assets/javascript/game-run.js"></script>
+        <script src="assets/javascript/details-module.js"></script>
     </div>
 </body>
 

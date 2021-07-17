@@ -1,0 +1,31 @@
+.lóng-target {
+    background-color: rgba(0, 255, 0, 0.3);
+}
+
+.lóng-petrify {
+    box-shadow: 0 0 0 2px rgb(1, 214, 1);
+}
+
+.player2-snake {
+    /* box-shadow: 0 0 0 2px rgb(1, 214, 1); */
+}
+
+.quetzalcoatl-takeover {
+    box-shadow: 0 0 0 2px rgb(255, 255, 0);
+}
+
+.player2-snake {
+    /* box-shadow: 0 0 5px 2px rgb(255, 255, 0) */
+}
+
+.phase-style {
+    box-shadow: 0 0 5px 2px cyan;
+}
+
+.arena-border-portal {
+    /* border: cyan  7px; */
+    border-color: cyan;
+    /* border-color: rgb(0, 162, 255); */
+    /* border-width: 7px; */
+    /* border-style: double; */
+}

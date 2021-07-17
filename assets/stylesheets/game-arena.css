@@ -13,11 +13,11 @@
 }
 
 .arena-border-dead {
-    border: black solid 4px;
+    border: black solid 7px;
 }
 
 .arena-border-normal {
-    border: white solid 4px;
+    border: white solid 7px;
 }
 
 .row {
@@ -26,32 +26,18 @@
 
 .col {
     background-color: rgb(20, 20, 20);
+    background-color: rgb(10, 10, 10);
     width: 10px;
     height: 10px;
     margin: 2.5px;
 }
 
-/* .col-anim {
-    transition: 0.5s;
-}
-
-.col-anim-slower {
-    transition: 2s;
-} */
-
 .col-dead {
     background-color: black;
 }
 
-.col-color {
-    /* background-color: rgb(20, 20, 20); */
-    /* background-color: rgb(39, 39, 39); */
-}
-
 .col-glow {
     background-color: rgb(92, 92, 92);
-    /* width: 10.5px;
-    height: 10.5px; */
 }
 
 /* - Game Arena ! */
@@ -70,7 +56,17 @@
 }
 
 .food-super {
-    background-color: grey;
+    /* background-color: grey; */
+    border: solid 2px white;
+    box-sizing: border-box;
+    box-shadow: 0 0 20px 2.5px white;
+    position: relative;
+    z-index: 10;
 }
 
-/* - Food ! */
+.dead-snake {
+    background-color: black;
+    border: solid 2px rgb(119, 119, 119) !important;
+    box-sizing: border-box;
+    border-radius: 2px;
+}

@@ -1,126 +1,178 @@
-let chooseApopis = {
-    name: "apopis",
-    epithet: "Primordial God of Chaos",
-    color: "red",
-    skills: {
-        skill1: {
-            name: "Switch",
-            description: "Swap bodies with the enemy",
-            duration: "Instant",
-            cooldown: "10s"
-        },
-        skill2: {
-            name: "Chaos",
-            description: "Randomly scatter all objects and the snakes",
-            duration: "Instant",
-            cooldown: "10s"
-        }
-    }
-}
+// Possible Abilities
+// Dash - Move Forward Quickly
 
-let chooseOrochi = {
-    name: "orochi",
-    epithet: "Eight-Headed Leviathan",
-    color: "orange",
-    skills: {
-        skill1: {
-            name: "Amputate",
-            description: "Leave a clone without taking damage",
-            duration: "Instant",
-            cooldown: "10s"
-        },
-        skill2: {
-            name: "Sustainable",
-            description: "Any damage taken is halved",
-            duration: "Passive",
-            cooldown: "Passive"
-        }
-    }
-}
+// Whiplash - Send out a Strike you can control
+// Venom - Send out consecutive Mini-Strikes
+// Latch - Send out a Strike that latches and drags you
+// Snipe - Send out a Quick-fire Strike that breaks through all obstacles
+// Portals - Send out Strikes that create portals upon impact
+// Splinter - Send out Strikes from all directions
 
-let chooseQuetzalcoatl = {
-    name: "quetzalcoatl",
-    epithet: "Feathered Serpent Deity",
-    color: "yellow",
-    skills: {
-        skill1: {
-            name: "Takeover",
-            description: "Control both snakes",
-            duration: "3s",
-            cooldown: "10s"
-        },
-        skill2: {
-            name: "Reversal ",
-            description: "Reverse the head and the tail",
-            duration: "Instant",
-            cooldown: "10s"
+let snakes = {
+    apopis: {
+        name: "apopis",
+        epithet: "Primordial God of Chaos",
+        color: "red",
+        skills: {
+            skill1: {
+                name: "Switch",
+                description: "Swap bodies with the enemy",
+                longerDescription: "Swap bodies with the enemy",
+                duration: "Instant",
+                cooldown: 20,
+                cost: 5,
+                required: 8,
+            },
+            skill2: {
+                name: "Chaos",
+                description: "Randomly scatter all objects and the snakes",
+                longerDescription: "Randomly scatter all objects and the snakes",
+                duration: "Instant",
+                cooldown: 10,
+                cost: 3,
+                required: 5,
+            }
         }
-    }
-}
-
-let chooseLóng = {
-    name: "lóng",
-    epithet: "God King of Dragons",
-    color: "lime",
-    skills: {
-        skill1: {
-            name: "Petrify",
-            description: "Stun the enemy momentarily",
-            duration: "1s",
-            cooldown: "10s"
-        },
-        skill2: {
-            name: "Target",
-            description: "Shows the coordinates of all targets",
-            duration: "3s",
-            cooldown: "10s"
+    },
+    orochi: {
+        name: "orochi",
+        epithet: "Eight-Headed Leviathan",
+        color: "orange",
+        skills: {
+            skill1: {
+                name: "Sustainable",
+                description: "Any damage taken is halved",
+                longerDescription: "Any damage taken is halved",
+                duration: "Passive",
+                cooldown: "Passive",
+                cost: 0,
+                required: 0,
+            },
+            skill2: {
+                name: "Amputate",
+                description: "Leave a clone without taking damage",
+                longerDescription: "Leave a clone without taking damage",
+                duration: "Instant",
+                cooldown: 10,
+                cost: 0,
+                required: 4,
+            },
         }
-    }
-}
-
-let chooseJörmungandr = {
-    name: "jörmungandr",
-    epithet: "Herald of Ragnarok",
-    color: "cyan",
-    skills: {
-        skill1: {
-            name: "Bifrost",
-            description: "The edges of the arena become portals",
-            duration: "3s",
-            cooldown: "10s"
-        },
-        skill2: {
-            name: "Phase",
-            description: "Can pass through obstacles",
-            duration: "3s",
-            cooldown: "10s"
+    },
+    quetzalcoatl: {
+        name: "quetzalcoatl",
+        epithet: "Feathered Serpent Deity",
+        color: "yellow",
+        skills: {
+            skill1: {
+                name: "Reversal",
+                description: "Reverse the head and the tail",
+                longerDescription: "Reverse the head and the tail",
+                duration: "Instant",
+                cooldown: 2,
+                cost: 1,
+                required: 3,
+            },
+            skill2: {
+                name: "Takeover",
+                description: "Control both snakes' directions",
+                longerDescription: "Control both snakes' directions",
+                duration: 1,
+                cooldown: 10,
+                cost: 4,
+                required: 7,
+            }
         }
-    }
-}
-
-let chooseOuroboros = {
-    name: "ouroboros",
-    epithet: "Self-Devouring Titan",
-    color: "magenta",
-    skills: {
-        skill1: {
-            name: "Masochist",
-            description: "Can pass through self",
-            duration: "Passive",
-            cooldown: "Passive"
-        },
-        skill2: {
-            name: "Impenetrable",
-            description: "The body won't take any damage",
-            duration: "3s",
-            cooldown: "10s"
+    },
+    lóng: {
+        name: "lóng",
+        epithet: "God King of Dragons",
+        color: "lime",
+        skills: {
+            skill1: {
+                name: "Petrify",
+                description: "Stun the enemy momentarily",
+                longerDescription: "Stun the enemy momentarily",
+                duration: 1,
+                cooldown: 15,
+                cost: 4,
+                required: 5,
+            },
+            skill2: {
+                name: "Quicken",
+                description: "Speed up momentarily",
+                longerDescription: "Speed up momentarily",
+                duration: "Instant",
+                cooldown: 5,
+                cost: 3,
+                required: 5,
+            },
+            // skill2: {
+            //     name: "Target",
+            //     description: "Shows the coordinates of all targets",
+            //     longerDescription: "Shows the coordinates of all targets",
+            //     duration: 3,
+            //     cooldown: 5,
+            //     cost: 1,
+            //     required: 3,
+            // }
+        }
+    },
+    jörmungandr: {
+        name: "jörmungandr",
+        epithet: "Herald of Ragnarok",
+        color: "cyan",
+        skills: {
+            skill1: {
+                name: "Phase",
+                description: "Can pass through obstacles",
+                longerDescription: "Can pass through obstacles",
+                duration: 3,
+                cooldown: 10,
+                cost: 3,
+                required: 4,
+            },
+            skill2: {
+                name: "Bifrost",
+                description: "The edges of the arena become portals",
+                longerDescription: "The edges of the arena become portals",
+                duration: 3,
+                cooldown: 10,
+                cost: 2,
+                required: 3,
+            },
+        }
+    },
+    ouroboros: {
+        name: "ouroboros",
+        epithet: "Self-Devouring Titan",
+        color: "magenta",
+        skills: {
+            skill1: {
+                name: "Masochist",
+                description: "Can pass through self",
+                longerDescription: "Can pass through self",
+                duration: "Passive",
+                cooldown: "Passive",
+                cost: 0,
+                required: 0,
+            },
+            skill2: {
+                name: "Impenetrable",
+                description: "The body won't take any damage",
+                longerDescription: "The body won't take any damage",
+                duration: 3,
+                cooldown: 10,
+                cost: 5,
+                required: 8,
+            }
         }
     }
 }
 
 let chooseSnakesArray = [
-    chooseApopis, chooseOrochi, chooseQuetzalcoatl,
-    chooseLóng, chooseJörmungandr, chooseOuroboros
+    snakes.apopis, snakes.orochi, snakes.quetzalcoatl,
+    snakes.lóng, snakes.jörmungandr, snakes.ouroboros
 ];
 
 function setChooseSnakesGrid() {
@@ -166,8 +218,18 @@ function setChooseSnakesGrid() {
         for (let i = 1; i <= 2; i++) {
             $(`#${chooseSnakeID}-skill_${i}-name`).html(`${item.skills[`skill${i}`].name}`);
             $(`#${chooseSnakeID}-skill_${i}-desc`).html(`${item.skills[`skill${i}`].description}`);
-            $(`#${chooseSnakeID}-skill_${i}-dura`).html(`<span class="choose-italics">Duration:</span> ${item.skills[`skill${i}`].duration}`);
-            $(`#${chooseSnakeID}-skill_${i}-cool`).html(`<span class="choose-italics">Cooldown:</span> ${item.skills[`skill${i}`].cooldown}`);
+            if (typeof item.skills[`skill${i}`].duration === "number") {
+                console.log(`item.name = ${item.name} ; true`);
+                $(`#${chooseSnakeID}-skill_${i}-dura`).html(`<span class="choose-italics">Duration:</span> ${item.skills[`skill${i}`].duration} seconds`);
+            } else {
+                console.log(`item.name = ${item.name} ; false`);
+                $(`#${chooseSnakeID}-skill_${i}-dura`).html(`<span class="choose-italics">Duration:</span> ${item.skills[`skill${i}`].duration}`);
+            }
+            if (typeof item.skills[`skill${i}`].cooldown === "number") {
+                $(`#${chooseSnakeID}-skill_${i}-cool`).html(`<span class="choose-italics">Cooldown:</span> ${item.skills[`skill${i}`].cooldown} seconds`);
+            } else {
+                $(`#${chooseSnakeID}-skill_${i}-cool`).html(`<span class="choose-italics">Cooldown:</span> ${item.skills[`skill${i}`].cooldown}`);
+            }
         }
     });
 

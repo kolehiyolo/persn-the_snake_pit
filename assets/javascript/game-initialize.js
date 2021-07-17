@@ -1,32 +1,33 @@
-// This variable represents the current game state, which will be used to determine what the keys are supposed to do at a time
-let gameState;
-let key;
-let keyType;
-
-
 // These are the options
-gameState = "choose"; // This is the state when the Players are at the Snake Selection phase
-gameState = "arena"; // This is the state after the Players choose their Snakes and the board is set
-gameState = "paused"; // This is the state when any of the Players pause the game
-gameState = "continued"; // This is the state when the game is resumed after gamePause
-gameState = "over"; // This is the state when one or both Players lose
+game.state = "choose"; // This is the state when the Players are at the Snake Selection phase
+game.state = "arena"; // This is the state after the Players choose their Snakes and the board is set
+game.state = "paused"; // This is the state when any of the Players pause the game
+game.state = "continued"; // This is the state when the game is resumed after gamePause
+game.state = "over"; // This is the state when one or both Players lose
 
 // Here we assign the gameState as "gameChoose" by default
 // This way, the game starts at the Snake Selection phase
 // TEST
-// setGameState("choose");
-player.p1.choose.snake = "apopis";
-player.p2.choose.snake = "orochi";
+// player.p1.choose.snake = "apopis";
+// player.p1.choose.snake = "orochi";
+// player.p1.choose.snake = "quetzalcoatl";
+// player.p1.choose.snake = "lóng";
+// player.p1.choose.snake = "jörmungandr";
+// player.p1.choose.snake = "ouroboros";
+
+player.p1.choose.snake = "lóng";
+player.p2.choose.snake = "jörmungandr";
 setGameState("arena");
+// setGameState("choose");
 
 
 // This function sets the new Game State as well as logs it
 function setGameState(newGameState) {
-    gameState = newGameState;
+    game.state = newGameState;
     console.clear();
-    console.log("GAME STATE = " + gameState);
+    console.log("GAME STATE = " + game.state);
 
-    switch (gameState) {
+    switch (game.state) {
         case "choose":
             console.log("This is the state where Players choose their Snake");
             console.log("\n");
@@ -42,15 +43,19 @@ function setGameState(newGameState) {
 
 // This is the event listener that takes any keypress from the keyboard
 $("html").keypress(function (e) {
+    pressKey(e);
+});
+
+function pressKey(e) {
     // First, for ease of use, we set the key to the variable "key"
-    key = e.key;
+    key.id = e.key;
 
     // Second, we take the key to the translateKey() function which basically extracts more information based on the key
     // It's quite difficult to explain, but the function simply triggers changes to game variables, which helps in determining what the key means in relation to the player
-    translateKey(key);
+    translateKey();
 
     // Then, we trigger the gameState functions
-    switch (gameState) {
+    switch (game.state) {
         case "choose":
             gameChoose();
             break;
@@ -67,9 +72,7 @@ $("html").keypress(function (e) {
             gameOver();
             break;
     }
-
-    // console.log("\n");
-});
+}
 
 // ! These are the functions that are yet to be set-up
 function gamePaused(key) {
