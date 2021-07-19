@@ -131,7 +131,7 @@ function resetArenaElements() {
     console.log(`resetArenaGrid()`);
     remPromptMsgs("quick", 300);
     $(`.cols`).attr("class", "cols");
-    $(`#game-arena-grid`).attr(`class`,`slow-anim arena-border-normal`);
+    $(`#game-arena-grid`).attr(`class`, `slow-anim arena-border-normal`);
     setGameVariables();
     setPlayersArena();
     $(`.player-popup`).remove();
@@ -393,7 +393,9 @@ function gameArena() {
                             console.log(`Activate ${skillName}`);
                             activeSkill.status = true;
                             snakeSkills[activeUser.arena.snake][`skill${skillNum}`](num);
-                            setCooldown(num, skillNum);
+                            if (activeSkill.cooldown.value != `Instant`) {
+                                setCooldown(num, skillNum);
+                            }
                             popSnake(num, activeSkill.cost);
                         }
                     } else {
@@ -413,7 +415,7 @@ function gameArena() {
 
 function popSnake(num, pops) {
     // console.log(`popSnake(${pops})`);
-    if (pops===0 || pops===undefined) {
+    if (pops === 0 || pops === undefined) {
         return;
     }
 

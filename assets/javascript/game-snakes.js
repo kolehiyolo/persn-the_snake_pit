@@ -45,7 +45,7 @@ let snakes = {
                 longerDescription: "Dissect yourself to leave a clone",
                 duration: "Instant",
                 cooldown: 2,
-                cooldown: 1,
+                cooldown: 2,
                 cost: 0,
                 required: 4,
             },
