@@ -136,6 +136,7 @@ function resetArenaElements() {
     setPlayersArena();
     $(`.player-popup`).remove();
     $(`.temp-styling`).remove();
+    $(`.clone-labels`).remove();
     game.state = "arena";
     players.player1.arena.snake = players.player1.choose.snake;
     players.player2.arena.snake = players.player2.choose.snake;
@@ -304,8 +305,7 @@ function clearAllIntervals() {
     clearInterval(players.player2.skills.skill2.cooldown.function);
 
     orochiClones = {
-        active: 1,
-        counter: 1,
+        counter: 0,
         clones: {
             // clone1: {
             //     id: 1,
@@ -380,7 +380,7 @@ function gameArena() {
         let skillName = activeSkill.name;
         if (game.paused === false) {
             if (activeUser.status.disarmed === false) {
-                if (activeUser.arena.size >= activeSkill.required) {
+                if (activeUser.arena.position.length >= activeSkill.required) {
                     if (activeSkill.ready === true) {
                         gamePopUp(num, `activate`, skillName); // Activate the skill
                         if (activeUser.main.skill === `strike` && activeUser.status.canStrike === true) {

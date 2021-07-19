@@ -179,10 +179,28 @@ snakeSkills.orochi.skill1 = function (num) {
     let activeSnake = activeUser.arena.snake;
     activeSkill.status = true;
 
+    if (orochiClones.counter === 7) {
+        orochiClones.counter = 8;
+        orochiClones.clones[`clone8`] = JSON.parse(JSON.stringify(orochiClones.clones[`clone1`]));
+        orochiClones.clones[`clone8`].id = 8;
+        let activeClone = orochiClones.clones[`clone8`];
+        $(`#x${activeClone.position[0][0]}y${activeClone.position[0][1]}`).html(`<p id="clone-8-label" class="clone-labels">8</p>`)
+        for (let i = 1; i < 8; i++) {
+            orochiClones.clones[`clone${i}`] = JSON.parse(JSON.stringify(orochiClones.clones[`clone${i+1}`]));
+            orochiClones.clones[`clone${i}`].id = i;
+            let activeClone = orochiClones.clones[`clone${i}`];
+            $(`#x${activeClone.position[0][0]}y${activeClone.position[0][1]}`).html(`<p id="clone-${i}-label" class="clone-labels">${i}</p>`)
+        }
+        delete orochiClones.clones[`clone8`];
+        orochiClones.counter = 7;
+        return;
+    }
+
     // Here we establish the half of the snake
     let cloneSize = Math.floor(activeUser.arena.position.length / 2);
     let cloneX = activeUser.arena.position[cloneSize][0];
     let cloneY = activeUser.arena.position[cloneSize][1];
+
 
     // First, we create the Clone object
     orochiClones.counter++;
@@ -200,6 +218,7 @@ snakeSkills.orochi.skill1 = function (num) {
     // // First, the head
     let clonePartCount = 1;
     $(`#x${activeUser.arena.position[cloneSize][0]}y${activeUser.arena.position[cloneSize][1]}`).attr(`class`, `cols dead-snake clone-orochi-head`);
+    $(`#x${activeUser.arena.position[cloneSize][0]}y${activeUser.arena.position[cloneSize][1]}`).html(`<p id="clone-${orochiClones.counter}-label" class="clone-labels">${orochiClones.counter}</p>`)
     activeClone.position[0] = [parseInt(cloneX), parseInt(cloneY)];
 
     // // Now, we loop to add the body
@@ -227,14 +246,14 @@ snakeSkills.orochi.skill2 = function (num) {
     activeSkill.status = true;
 
     if (orochiClones.counter === 0) {
-        console.log(`No clones!`); 
+        console.log(`No clones!`);
         gamePopUp(num, `ability`, `No clones!`);
         return
     }
 
     // Let's check to see if the clone body has a head
     let activeClone = orochiClones.clones[`clone1`];
-    if ($(`#x${activeClone.position[0][0]}y${activeClone.position[0][1]}`).hasClass(`dead-snake`) === false) {
+    if ($(`#x${activeClone.position[0][0]}y${activeClone.position[0][1]}`).hasClass(`dead-snake clone-orochi-head`) === false) {
         for (let i = 1; i < activeClone.position.length; i++) {
             if ($(`#x${activeClone.position[i][0]}y${activeClone.position[i][1]}`).hasClass(`dead-snake`)) {
                 $(`#x${activeClone.position[i][0]}y${activeClone.position[i][1]}`).attr(`class`, `cols dead-snake`);
@@ -258,7 +277,7 @@ snakeSkills.orochi.skill2 = function (num) {
         position: JSON.parse(JSON.stringify(activeUser.arena.position))
     };
     let previousClone = orochiClones.clones[`clone${orochiClones.counter}`];
-    // console.log(`orochiClones.counter = ${orochiClones.counter}`);
+    $(`#x${previousClone.position[0][0]}y${previousClone.position[0][1]}`).html(`<p id="clone-${orochiClones.counter}-label" class="clone-labels">${orochiClones.counter}</p>`)
 
     // Now we turn the real body into a clone
     $(`#x${previousClone.position[0][0]}y${previousClone.position[0][1]}`).attr(`class`, `cols dead-snake clone-orochi-head`);
@@ -299,9 +318,29 @@ snakeSkills.orochi.skill2 = function (num) {
     for (let i = 1; i < orochiClones.counter; i++) {
         orochiClones.clones[`clone${i}`] = JSON.parse(JSON.stringify(orochiClones.clones[`clone${i+1}`]));
         orochiClones.clones[`clone${i}`].id = i;
+        let activeClone = orochiClones.clones[`clone${i}`];
+        $(`#clone-${i}-label`).remove();
+        $(`#x${activeClone.position[0][0]}y${activeClone.position[0][1]}`).html(`<p id="clone-${i}-label" class="clone-labels">${i}</p>`)
     }
     delete orochiClones.clones[`clone${orochiClones.counter}`];
+    // $(`#x${activeClone.position[0][0]}y${activeClone.position[0][1]}`).html(`<p id="clone-8-label" class="clone-labels">8</p>`);
+    $(`#clone-${orochiClones.counter}-label`).remove();
     orochiClones.counter--;
+
+    // orochiClones.counter = 8;
+    //     orochiClones.clones[`clone8`] = JSON.parse(JSON.stringify(orochiClones.clones[`clone1`]));
+    //     orochiClones.clones[`clone8`].id = 8;
+    //     let activeClone = orochiClones.clones[`clone8`];
+    //     $(`#x${activeClone.position[0][0]}y${activeClone.position[0][1]}`).html(`<p id="clone-8-label" class="clone-labels">8</p>`)
+    //     for (let i = 1; i < 8; i++) {
+    //         orochiClones.clones[`clone${i}`] = JSON.parse(JSON.stringify(orochiClones.clones[`clone${i+1}`]));
+    //         orochiClones.clones[`clone${i}`].id = i;
+    //         let activeClone = orochiClones.clones[`clone${i}`];
+    //         $(`#x${activeClone.position[0][0]}y${activeClone.position[0][1]}`).html(`<p id="clone-${i}-label" class="clone-labels">${i}</p>`)
+    //     }
+    //     delete orochiClones.clones[`clone8`];
+    //     orochiClones.counter = 7;
+    //     return;
 
     activeSkill.status = false;
 }

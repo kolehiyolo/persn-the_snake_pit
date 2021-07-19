@@ -218,7 +218,10 @@ function checkStrikeSnake(num, enm) {
     }
 
     if ($(`#x${strikeX}y${strikeY}`).hasClass(`dead-snake`)) {
-        $(`#x${strikeX}y${strikeY}`).attr(`class`, `cols`);
+        if ($(`#x${strikeX}y${strikeY}`).hasClass(`clone-orochi-head`) === false &&
+            $(`#x${strikeX}y${strikeY}`).hasClass(`clone-orochi-body`) === false) {
+            $(`#x${strikeX}y${strikeY}`).attr(`class`, `cols`);
+        }
         return true;
     }
     if (activeUser.status.phased === false) {

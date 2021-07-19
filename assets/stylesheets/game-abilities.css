@@ -39,13 +39,25 @@
     height: 10px !important;
     margin: 2.5px !important;
     transition: 0;
+    position: relative;
+}
 
+.clone-labels {
+    color: white;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 15px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .clone-orochi-body{
     border: rgb(122, 80, 0) solid 2px !important;
-    box-sizing: border-box;
-    border-radius: 2px;
-    border-width: 2px;
-    transition: 0;
+    box-sizing: border-box !important;
+    border-radius: 2px !important;
+    border-width: 2px !important;
+    transition: 0 !important;
 }

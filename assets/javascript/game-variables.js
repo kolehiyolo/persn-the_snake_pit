@@ -167,6 +167,7 @@ function setPlayersArena() {
         portable: false, // This means the snake can use the borders as portals
         unstoppable: false, // This means the snake can plow through obstacles, snakes and strikes
         masochist: false, // This means the snake can pass through itself
+        immortal: false,
     }
     players.player1.intervals = {
         run: {
@@ -194,6 +195,7 @@ function setPlayersArena() {
     players.player2.intervals = JSON.parse(JSON.stringify(players.player1.intervals));
 
     // TEST ME
+    players.player2.status.immortal = true;
     // players.player1.intervals.growth.speed = 100;
     // players.player2.intervals.growth.speed = 100000;
     // player.alter1.arena = JSON.parse(JSON.stringify(player.p1.arena));
@@ -213,7 +215,7 @@ function setSkills(num) {
             name: "strike",
             status: true,
             ready: true,
-            required: 2,
+            required: 3,
             cost: 1,
             strike: {
                 status: false,

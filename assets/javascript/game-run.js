@@ -178,8 +178,27 @@ function snakeCrash(num) {
     // FIX
     let activeUser = players[`player${num}`];
     if (activeUser.arena.position.length === 1) {
-        playerDied(num);
-        return;
+        if (activeUser.status.immortal === false) {
+            playerDied(num);
+            return;
+        }
+        switch (activeUser.arena.direction){
+            case `left`:
+                activeUser.arena.direction = `right`;
+                break;
+            case `right`:
+                activeUser.arena.direction = `left`;
+                break;
+            case `up`:
+                activeUser.arena.direction = `down`;
+                break;
+            case `down`:
+                activeUser.arena.direction = `up`;
+                break;
+        }
+        activeUser.main.direction = activeUser.arena.direction;
+        setSnakeSize(num);
+        return;x    
     }
     gamePopUp(num, `crash`, "");
     activeUser.arena.position.reverse();
@@ -217,8 +236,8 @@ function snakeCrash(num) {
         activeUser.arena.direction = `down`;
     }
 
-    activeUser.main.direction = activeUser.arena.direction;
     // activeUser.abilities.ability1.status = false;
+    activeUser.main.direction = activeUser.arena.direction;
     setSnakeSize(num);
     popSnake(num, Math.floor(activeUser.arena.position.length / 2));
 }

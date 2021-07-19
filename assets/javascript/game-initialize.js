@@ -20,10 +20,10 @@ game.state = "over"; // This is the state when one or both Players lose
 // player.p1.choose.snake = "jörmungandr";
 // player.p1.choose.snake = "sheshanaga";
 
-// players.player1.choose.snake = "sheshanaga";
-// players.player2.choose.snake = "apopis";
-// setGameState("arena");
-setGameState("choose");
+players.player1.choose.snake = "orochi";
+players.player2.choose.snake = "sheshanaga";
+setGameState("arena");
+// setGameState("choose");
 
 // This function sets the new Game State as well as logs it
 function setGameState(newGameState) {
