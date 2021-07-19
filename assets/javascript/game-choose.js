@@ -10,7 +10,7 @@ let gameStartCountdownCounter; // This is the counter for the countdown
 
 function logChoose() {
     let logEvent;
-    let activePlayer = player[`p${active.id}`];
+    let activePlayer = players[`player${active.id}`];
     if (key.type != undefined && enableLogGameChoose === true) {
         switch (key.type) {
             case "misc":
@@ -65,17 +65,17 @@ function setChoose() {
     setChooseSnakesGrid();
     selectSnakeGrid = [
         ["apopis", "orochi", "quetzalcoatl"],
-        ["lóng", "jörmungandr", "ouroboros"]
+        ["lóng", "jörmungandr", "sheshanaga"]
     ];
 
-    player.p1.choose = {
+    players.player1.choose = {
         snake: "apopis",
         position: [0, 0],
         ready: false,
         clicked: false
     }
 
-    player.p2.choose = {
+    players.player2.choose = {
         snake: "quetzalcoatl",
         position: [0, 2],
         ready: false,
@@ -87,17 +87,17 @@ function setChoose() {
 
     // $("#game-arena").addClass("hidden");
 
-    $(".snake-player_1-icon").html(player.p1.main.name);
-    $(".snake-player_2-icon").html(player.p2.main.name);
+    $(".snake-player_1-icon").html(players.player1.main.name);
+    $(".snake-player_2-icon").html(players.player2.main.name);
 
-    $("#choose-player_1-button").html(player.p1.main.name + " is Not Ready");
-    $("#choose-player_2-button").html(player.p2.main.name + " is Not Ready");
+    $("#choose-player_1-button").html(players.player1.main.name + " is Not Ready");
+    $("#choose-player_2-button").html(players.player2.main.name + " is Not Ready");
 }
 
 function gameChoose() {
     // Placeholder Variables
-    let activePlayer = player[`p${active.id}`];
-    let enemyPlayer = player[`p${enemy.id}`];
+    let activePlayer = players[`player${active.id}`];
+    let enemyPlayer = players[`player${enemy.id}`];
     let activeID = activePlayer.main.id;
     let activeName = activePlayer.main.name;
     let activeDirection = activePlayer.main.direction;
@@ -143,7 +143,7 @@ function gameChoose() {
 
                 /* Players Ready */
                 // If both Players are ready, then we trigger the gameStartCountdown()
-                if (player.p1.choose.ready === true && player.p2.choose.ready === true) {
+                if (players.player1.choose.ready === true && players.player2.choose.ready === true) {
                     /* Same Snakes */
                     // If the Players have the same snake, the Active Player is "unreadied" and must choose another snake
                     if (activeSnake === enemyPlayer.choose.snake) {
@@ -261,7 +261,7 @@ function gameChoose() {
 }
 
 function setPlayerReady(verdict) {
-    let activePlayer = player[`p${active.id}`];
+    let activePlayer = players[`player${active.id}`];
     let playerReadyButtonID = "choose-player_" + activePlayer.main.id + "-button";
     let activePlayerReadyID = "choose-player_" + activePlayer.main.id + "-button";
 
@@ -288,8 +288,8 @@ function setPlayerReady(verdict) {
 
 function navigateSelection() {
     // Placeholder Variables
-    let activePlayer = player[`p${active.id}`];
-    let enemyPlayer = player[`p${enemy.id}`];
+    let activePlayer = players[`player${active.id}`];
+    let enemyPlayer = players[`player${enemy.id}`];
     
     let playerHover = `choose-player_${activePlayer.main.id}-hover`;
     let enemyHover = `choose-player_${enemyPlayer.main.id}-hover`;
@@ -327,7 +327,7 @@ function navigateSelection() {
 
 function gameStartCountdown() {
     // Obligatory Clog
-    let activePlayer = player[`p${active.id}`];
+    let activePlayer = players[`player${active.id}`];
     let enemyPlayer = (activePlayer === 1) ? 2 : 1;
     if (enableLogGameChoose === true) {
         console.log("----gameChoose: Event = gameStartCountdown Started");

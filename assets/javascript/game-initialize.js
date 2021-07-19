@@ -1,4 +1,9 @@
-// These are the options
+// We initialize the game variables from game-variables.js
+setGameVariables();
+setPlayers();
+setControls();
+
+// These are the game.state options
 game.state = "choose"; // This is the state when the Players are at the Snake Selection phase
 game.state = "arena"; // This is the state after the Players choose their Snakes and the board is set
 game.state = "paused"; // This is the state when any of the Players pause the game
@@ -11,20 +16,19 @@ game.state = "over"; // This is the state when one or both Players lose
 // player.p1.choose.snake = "apopis";
 // player.p1.choose.snake = "orochi";
 // player.p1.choose.snake = "quetzalcoatl";
-// player.p1.choose.snake = "lóng";
+// player.p1.choose.snakex = "lóng";
 // player.p1.choose.snake = "jörmungandr";
-// player.p1.choose.snake = "ouroboros";
+// player.p1.choose.snake = "sheshanaga";
 
-player.p1.choose.snake = "lóng";
-player.p2.choose.snake = "jörmungandr";
-setGameState("arena");
-// setGameState("choose");
-
+// players.player1.choose.snake = "sheshanaga";
+// players.player2.choose.snake = "apopis";
+// setGameState("arena");
+setGameState("choose");
 
 // This function sets the new Game State as well as logs it
 function setGameState(newGameState) {
     game.state = newGameState;
-    console.clear();
+    // console.clear();
     console.log("GAME STATE = " + game.state);
 
     switch (game.state) {
@@ -54,23 +58,25 @@ function pressKey(e) {
     // It's quite difficult to explain, but the function simply triggers changes to game variables, which helps in determining what the key means in relation to the player
     translateKey();
 
-    // Then, we trigger the gameState functions
-    switch (game.state) {
-        case "choose":
-            gameChoose();
-            break;
-        case "arena":
-            gameArena();
-            break;
-        case "gamePaused":
-            gamePaused();
-            break;
-        case "gameContinued":
-            gameContinued();
-            break;
-        case "gameOver":
-            gameOver();
-            break;
+    if (key.valid === true) {
+        // Then, we trigger the gameState functions
+        switch (game.state) {
+            case "choose":
+                gameChoose();
+                break;
+            case "arena":
+                gameArena();
+                break;
+            case "gamePaused":
+                gamePaused();
+                break;
+            case "gameContinued":
+                gameContinued();
+                break;
+            case "gameOver":
+                gameOver();
+                break;
+        }
     }
 }
 

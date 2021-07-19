@@ -4,7 +4,7 @@
     --quetzalcoatl: yellow;
     --long: lime;
     --jormungandr: cyan;
-    --ouroboros: magenta;
+    --sheshanaga: magenta;
 }
 
 #game-choose-grid {
@@ -35,7 +35,7 @@
     display: grid;
     grid-template-areas:
         "game_choose-apopis game_choose-orochi game_choose-quetzalcoatl"
-        "game_choose-long  game_choose-jormungandr game_choose-ouroboros";
+        "game_choose-long  game_choose-jormungandr game_choose-sheshanaga";
     justify-content: center;
     gap: 25px;
 }
@@ -232,8 +232,8 @@
     color: var(--jormungandr);
 }
 
-.choose-ouroboros-font_color {
-    color: var(--ouroboros);
+.choose-sheshanaga-font_color {
+    color: var(--sheshanaga);
 }
 
 .choose-apopis-hover {
@@ -266,8 +266,8 @@
     background-color: #001A1A;
 }
 
-.choose-ouroboros-hover {
-    border-color: var(--ouroboros);
+.choose-sheshanaga-hover {
+    border-color: var(--sheshanaga);
     background-color: rgba(255, 0, 255, 0.1);
     background-color: #1A001A;
 }

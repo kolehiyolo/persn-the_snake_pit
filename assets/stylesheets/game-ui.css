@@ -4,7 +4,7 @@
     --quetzalcoatl: yellow;
     --lóng: lime;
     --jörmungandr: cyan;
-    --ouroboros: magenta;
+    --sheshanaga: magenta;
     font-family: 'VT323', monospace;
 }
 
@@ -345,8 +345,8 @@
     background-color: #001A1A;
 }
 
-.ouroboros-ui-border {
-    border-color: var(--ouroboros);
+.sheshanaga-ui-border {
+    border-color: var(--sheshanaga);
     background-color: rgba(255, 0, 255, 0.1);
     background-color: #1A001A;
 }

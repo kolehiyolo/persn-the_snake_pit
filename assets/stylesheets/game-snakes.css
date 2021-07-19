@@ -4,7 +4,7 @@
     --quetzalcoatl: yellow;
     --lóng: lime;
     --jörmungandr: cyan;
-    --ouroboros: magenta;
+    --sheshanaga: magenta;
 }
 
 .apopis-head {
@@ -47,12 +47,12 @@
     border: var(--jörmungandr) solid 1px;
 }
 
-.ouroboros-head{
-    background-color: var(--ouroboros) !important;
+.sheshanaga-head{
+    background-color: var(--sheshanaga) !important;
 }
 
-.ouroboros-body{
-    border: var(--ouroboros) solid 1px;
+.sheshanaga-body{
+    border: var(--sheshanaga) solid 1px;
 }
 
 .player1-snake-body, .player2-snake-body {
@@ -91,8 +91,8 @@
     background-color: var(--jörmungandr);
 }
 
-.ouroboros-strike{
-    background-color: var(--ouroboros);
+.sheshanaga-strike{
+    background-color: var(--sheshanaga);
 }
 
 .horizontal-strike {
@@ -129,8 +129,8 @@
     color: var(--jormungandr);
 }
 
-.ouroboros-font_color {
-    color: var(--ouroboros);
+.sheshanaga-font_color {
+    color: var(--sheshanaga);
 }
 
 .apopis-border {
@@ -163,8 +163,8 @@
     background-color: #001A1A;
 }
 
-.ouroboros-border {
-    border-color: var(--ouroboros);
+.sheshanaga-border {
+    border-color: var(--sheshanaga);
     background-color: rgba(255, 0, 255, 0.1);
     background-color: #1A001A;
 }

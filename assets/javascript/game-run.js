@@ -1,4 +1,5 @@
 function snakeAI(playerNum) {
+    // PERFECT
     let num = playerNum;
     let e = {
         key: undefined
@@ -7,19 +8,19 @@ function snakeAI(playerNum) {
         case 1:
             break;
         case 2:
-            if (player.p2.intervals.run.count % 7 === 0) {
-                switch (player.p2.arena.direction) {
+            if (players.player2.intervals.run.counter % 7 === 0) {
+                switch (players.player2.arena.direction) {
                     case "up":
-                        e.key = controls.p2.main.direction.right;
+                        e.key = players.player2.controls.main.direction.right;
                         break;
                     case "down":
-                        e.key = controls.p2.main.direction.left;
+                        e.key = players.player2.controls.main.direction.left;
                         break;
                     case "left":
-                        e.key = controls.p2.main.direction.up;
+                        e.key = players.player2.controls.main.direction.up;
                         break;
                     case "right":
-                        e.key = controls.p2.main.direction.down;
+                        e.key = players.player2.controls.main.direction.down;
                         break;
                 }
                 pressKey(e);
@@ -29,141 +30,166 @@ function snakeAI(playerNum) {
 }
 
 function setRunInterval(playerNum) {
+    // Perfect
+    console.log(`setRunInterval(${playerNum})`);
     let num = playerNum;
     let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
+    let activeUser = players[`player${num}`];
+    let enemyUser = players[`player${enm}`];
+
     activeUser.intervals.run.status = true;
     activeUser.intervals.run.function = setInterval(() => {
-        if (game.paused === false && activeUser.arena.immobilized === false) {
-            if (activeUser.arena.canTurn === true) {
+        if (game.paused === false && activeUser.status.immobilized === false) {
+            if (activeUser.status.canTurn === true) {
                 activeUser.arena.direction = activeUser.main.direction;
-                activeUser.arena.canTurn = false;
+                activeUser.status.canTurn = false;
             }
-            player[`p${num}`].intervals.run.count++;
-            player[`p${num}`].arena.position.splice(1, 0, [parseInt(player[`p${num}`].arena.position[0][0]), parseInt(player[`p${num}`].arena.position[0][1])]);
-            player[`p${num}`].arena.position.pop();
-            // snakeAI(num);
-            switch (player[`p${num}`].arena.direction) {
-                case "up":
-                    player[`p${num}`].arena.position[0][0]--;
-                    break;
-                case "down":
-                    player[`p${num}`].arena.position[0][0]++;
-                    break;
+            activeUser.intervals.run.counter++;
+            let headX = parseInt(activeUser.arena.position[0][0]);
+            let headY = parseInt(activeUser.arena.position[0][1]);
+            activeUser.arena.position.splice(1, 0, [(headX), (headY)]);
+            activeUser.arena.position.pop();
+            snakeAI(num);
+            switch (activeUser.arena.direction) {
                 case "left":
-                    player[`p${num}`].arena.position[0][1]--;
+                    headX--;
                     break;
                 case "right":
-                    player[`p${num}`].arena.position[0][1]++;
+                    headX++;
+                    break;
+                case "up":
+                    headY--;
+                    break;
+                case "down":
+                    headY++;
                     break;
             }
-            moveSnake(num, enm);
-            checkForFood(num, enm);
-            checkForSelf(num, enm);
-            if (activeUser.arena.phased === false){
-                checkStrike(num, enm);
-                checkForEnemy(num, enm);
-                checkForObstacles(num, enm);
+            activeUser.arena.position[0][0] = headX;
+            activeUser.arena.position[0][1] = headY;
+            moveSnake(num);
+            checkForFood(num);
+            if (activeUser.skills.strike.status === true) {
+                checkForStrike(num);
             }
-            if (activeUser.arena.portaled === false) {
-                checkForBorder(num, enm);
+            if (activeUser.status.unstoppable === true) {
+                checkForUnstoppable(num);
             }
-            else {
-                portaledFunc(num);
+            if (activeUser.status.masochist != true) {
+                checkForSelf(num);
+            }
+            if (activeUser.status.phased != true && enemyUser.status.phased != true) {
+                checkForEnemy(enm, num);
+            }
+            if (activeUser.status.phased != true) {
+                checkForObstacles(num);
+                // checkForStrike(num, enm);
+            }
+            if (activeUser.status.portable != true) {
+                checkForBorder(num);
+            } else {
+                checkForPortable(num);
             }
         }
-    }, player[`p${num}`].intervals.run.speed);
+    }, activeUser.intervals.run.speed);
 }
 
-function shrinkSnake(num) {
-    player[`p${num}`].arena.position.pop();
-    setSnakeSize(num);
+function moveSnake(num) {
+    // PERFECT
+    let activeUser = players[`player${num}`];
+    let activeSnake = activeUser.arena.snake;
+
+    // We set the head
+    $(`.player${num}-snake-head`).removeClass(`player${num}-snake-head ${activeSnake}-head player${num}-snake`);
+    let headX = activeUser.arena.position[0][0];
+    let headY = activeUser.arena.position[0][1];
+    $(`#x${headX}y${headY}`).addClass(`player${num}-snake-head ${activeSnake}-head player${num}-snake`);
+
+    // We set the body
+    $(`.player${num}-snake-body`).removeClass(`player${num}-snake-body ${activeSnake}-body player${num}-snake`);
+    for (let i = 1; i < activeUser.arena.position.length; i++) {
+        let bodyX = activeUser.arena.position[i][0];
+        let bodyY = activeUser.arena.position[i][1];
+        $(`#x${bodyX}y${bodyY}`).addClass(`player${num}-snake-body ${activeSnake}-body player${num}-snake`);
+    }
+}
+
+function eatFood(player, foodNum) {
+    // PERFECT
+    let num = player;
+    let activeUser = players[`player${num}`];
+
+    $(`.food-${foodNum}`).removeClass(`food-${foodNum}`);
+    switch (foodNum) {
+        case `super`:
+            food.super.count = 0;
+            food.super.active = false;
+            growSnake(num, food.super.value);
+            break;
+        default:
+            food.super.count++;
+            growSnake(num, food[`food${foodNum}`].value);
+            placeFood(foodNum);
+            break;
+    }
+    if (food.super.count === food.super.limit) {
+        food.super.active = true;
+        placeFood(`super`);
+    }
+
+    updateFoodCountDiv();
 }
 
 function growSnake(num, growth) {
+    // PERFECT
+    let activeUser = players[`player${num}`];
+    let activePosition = activeUser.arena.position;
     for (var i = 1; i <= growth; i++) {
-        player[`p${num}`].arena.position.push([]);
-        // TESTME
-        player[`p${num}`].arena.position[player[`p${num}`].arena.position.length - 1][0] = parseInt(player[`p${num}`].arena.position[player[`p${num}`].arena.position.length - 2][0]);
-        player[`p${num}`].arena.position[player[`p${num}`].arena.position.length - 1][1] = parseInt(player[`p${num}`].arena.position[player[`p${num}`].arena.position.length - 2][1]);
+        activePosition.push([]);
+        activePosition[activePosition.length - 1][0] = parseInt(activePosition[activePosition.length - 2][0]);
+        activePosition[activePosition.length - 1][1] = parseInt(activePosition[activePosition.length - 2][1]);
     }
     setSnakeSize(num);
 }
 
-function checkStrike(num, enm) {
-    if ($(`.player${num}-snake-head`).hasClass(`p${num}-strike`)) {
-        $(`.player${num}-snake-head`).removeClass(`p${num}-strike ${player[`p${num}`].arena.snake}-strike`);
-        switch (player[`p${num}`].arena.direction) {
-            case "up":
-            case "down":
-                $(`.player${num}-snake-head`).removeClass(`vertical-strike`);
-                break;
-            case "left":
-            case "right":
-                $(`.player${num}-snake-head`).removeClass(`horizontal-strike`);
-                break;
-        }
-    }
-    if ($(`.player${num}-snake-body`).hasClass(`p${num}-strike`)) {
-        $(`.player${num}-snake-body`).removeClass(`p${num}-strike ${player[`p${num}`].arena.snake}-strike`);
-        switch (player[`p${num}`].arena.direction) {
-            case "up":
-            case "down":
-                $(`.player${num}-snake-body`).removeClass(`vertical-strike`);
-                break;
-            case "left":
-            case "right":
-                $(`.player${num}-snake-body`).removeClass(`horizontal-strike`);
-                break;
-        }
-    }
+function setSnakeSize(num) {
+    // ALMOST
+    let activeUser = players[`player${num}`];
+    activeUser.arena.size = parseInt(activeUser.arena.position.length);
+    updatePlayerUI(num, `size`, ``); // FIXME
 }
 
-function checkForFood(num, enm) {
-    for (let i = 1; i <= 3; i++) {
-        if ($(`.player${num}-snake-head`).hasClass(`food-${i}`)) {
-            food.super.count++;
-            growSnake(num, 2);
-            setFood(i);
-            // updatePlayerUI(num, `size`, ``);
-            setSnakeSize(num);
-            break;
+function autoGrowth(num) {
+    // ALMOST
+    let activeUser = players[`player${num}`];
+    activeUser.intervals.growth.function = setInterval(() => {
+        if (game.paused === false) {
+            if (activeUser.intervals.growth.count > 0) {
+                activeUser.intervals.growth.count--;
+            } else {
+                activeUser.intervals.growth.count = 5;
+                growSnake(num, 1);
+            }
+            $(`#player${num}-ui-growth`).html(`${activeUser.intervals.growth.count}`); // FIXME
         }
-    }
-    if ($(`.player${num}-snake-head`).hasClass(`food-super`)) {
-        $(`.food-super`).removeClass(`food-super`);
-        food.super.active = false;
-        food.super.count = 0;
-        updateFoodCountDiv();
-        growSnake(num, 5);
-        // updatePlayerUI(num, `size`, ``);
-        setSnakeSize(num);
-    }
+    }, activeUser.intervals.growth.speed);
 }
 
-function checkForSelf(num, enm) {
-    if ($(`.player${num}-snake-head`).hasClass(`player${num}-snake-body`)) {
-        snakeCrash(num, enm)
-    }
-}
-
-function snakeCrash(num, enm) {
+function snakeCrash(num) {
     // FIX
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
+    let activeUser = players[`player${num}`];
     if (activeUser.arena.position.length === 1) {
-        playerDied(num, enm);
+        playerDied(num);
         return;
     }
-    abilityPopUp(num, `crash`, "");
+    gamePopUp(num, `crash`, "");
     activeUser.arena.position.reverse();
+
     // Now we set the head immediately to the tail
-    let headRow = player[`p${num}`].arena.position[0][0];
-    let headCol = player[`p${num}`].arena.position[0][1];
-    $(`.player${num}-snake-head`).removeClass(`player${num}-snake-head ${player[`p${num}`].arena.snake}-head player${num}-snake`);
-    $(`#r${headRow}c${headCol}`).addClass(`player${num}-snake-head ${player[`p${num}`].arena.snake}-head player${num}-snake`);
-    $(`#r${headRow}c${headCol}`).removeClass(`player${num}-snake-body ${player[`p${num}`].arena.snake}-body player${num}-snake`);
+    let headX = activeUser.arena.position[0][0];
+    let headY = activeUser.arena.position[0][1];
+    $(`.player${num}-snake-head`).removeClass(`player${num}-snake-head ${activeUser.arena.snake}-head player${num}-snake`);
+    $(`#x${headX}y${headY}`).addClass(`player${num}-snake-head ${activeUser.arena.snake}-head player${num}-snake`);
+    $(`#x${headX}y${headY}`).removeClass(`player${num}-snake-body ${activeUser.arena.snake}-body player${num}-snake`);
 
     // Now we determine the direction of the head by determining it's relation to the next segment
     let snakeHead = activeUser.arena.position[0];
@@ -182,51 +208,26 @@ function snakeCrash(num, enm) {
     }
 
     if (snakeHead[0] < afterSnakeHead[0]) {
-        activeUser.arena.direction = `up`;
-    } else if (snakeHead[0] > afterSnakeHead[0]) {
-        activeUser.arena.direction = `down`;
-    } else if (snakeHead[1] < afterSnakeHead[1]) {
         activeUser.arena.direction = `left`;
-    } else if (snakeHead[1] > afterSnakeHead[1]) {
+    } else if (snakeHead[0] > afterSnakeHead[0]) {
         activeUser.arena.direction = `right`;
+    } else if (snakeHead[1] < afterSnakeHead[1]) {
+        activeUser.arena.direction = `up`;
+    } else if (snakeHead[1] > afterSnakeHead[1]) {
+        activeUser.arena.direction = `down`;
     }
 
     activeUser.main.direction = activeUser.arena.direction;
-    activeUser.abilities.ability1.status = false;
+    // activeUser.abilities.ability1.status = false;
     setSnakeSize(num);
     popSnake(num, Math.floor(activeUser.arena.position.length / 2));
 }
 
-function checkForEnemy(num, enm) {
-    if ($(`.player${num}-snake-head`).hasClass(`player${enm}-snake-body`)) {
-        snakeCrash(num, enm)
-    }
-    if ($(`.player${num}-snake-head`).hasClass(`player${enm}-snake-head`)) {
-        snakeCrash(num, enm)
-    }
-}
-
-function checkForBorder(num, enm) {
-    if (
-        player[`p${num}`].arena.position[0][0] === 0 ||
-        player[`p${num}`].arena.position[0][0] > game.row ||
-        player[`p${num}`].arena.position[0][1] === 0 ||
-        player[`p${num}`].arena.position[0][1] > game.col
-    ) {
-        snakeCrash(num, enm)
-    }
-}
-
-function checkForObstacles(num, enm) {
-    if ($(`.player${num}-snake-head`).hasClass(`dead-snake`)) {
-        snakeCrash(num, enm)
-    }
-}
-
 function playerDied(num) {
+    // FIXME
     let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
+    let activeUser = players[`player${num}`];
+    let enemyUser = players[`player${enm}`];
     enemyUser.main.score += 1;
 
     game.paused = true;
@@ -234,56 +235,21 @@ function playerDied(num) {
     game.loser = activeUser.main.name;
     let winnerSnake = enemyUser.arena.snake;
     let loserSnake = activeUser.arena.snake;
-    console.log(`${game.winner} wins!`);
-    clearAllIntervals();
-
-    activeUser.arena.alive = false;
-
-
     game.winner = `<span class="choose-${winnerSnake}-font_color">${game.winner}</span>`;
     game.loser = `<span class="choose-${loserSnake}-font_color">${game.loser}</span>`;
 
-    // $(`.player${num}-snake`).addClass(`dead-snake`);
-    // $(`.player${num}-snake`).removeClass(`player${num}-snake-head player${num}-snake-body player${num}-snake ${loserSnake}-head ${loserSnake}-body`);
+    activeUser.status.alive = false;
 
+    console.log(`${game.winner} wins!`);
+    clearAllIntervals();
+    gameOver(enm);
+}
+
+function gameOver(num) {
+    // FIXME
     let promptMsgArray = [];
     promptMsgArray[0] = `${game.winner} wins!`;
     setPromptMsgs(`quick`, [`medium`], promptMsgArray);
     game.over = true;
-    updatePlayerScoreDiv(enm);
-}
-
-function moveSnake(num, enm) {
-    // First we remove the head
-    let headRow = player[`p${num}`].arena.position[0][0];
-    let headCol = player[`p${num}`].arena.position[0][1];
-    $(`.player${num}-snake-head`).removeClass(`player${num}-snake-head ${player[`p${num}`].arena.snake}-head player${num}-snake`);
-    // Then we set the head on it's new position
-    $(`#r${headRow}c${headCol}`).addClass(`player${num}-snake-head ${player[`p${num}`].arena.snake}-head player${num}-snake`);
-    let bodyRow;
-    let bodyCol;
-    $(`.player${num}-snake-body`).removeClass(`player${num}-snake-body ${player[`p${num}`].arena.snake}-body player${num}-snake`);
-    for (let i = 1; i < player[`p${num}`].arena.position.length; i++) {
-        bodyRow = player[`p${num}`].arena.position[i][0];
-        bodyCol = player[`p${num}`].arena.position[i][1];
-        $(`#r${bodyRow}c${bodyCol}`).addClass(`player${num}-snake-body ${player[`p${num}`].arena.snake}-body player${num}-snake`);
-    }
-}
-
-function snakeGrowth(num) {
-    let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
-
-    activeUser.intervals.growth.function = setInterval(() => {
-        if (game.paused === false) {
-            if (activeUser.intervals.growth.count > 0) {
-                activeUser.intervals.growth.count--;
-            } else {
-                activeUser.intervals.growth.count = 5;
-                growSnake(num, 1);
-            }
-            $(`#player${num}-ui-growth`).html(`${activeUser.intervals.growth.count}`);
-        }
-    }, 1000);
+    updatePlayerScoreDiv(num);
 }

@@ -20,11 +20,11 @@
     border: white solid 7px;
 }
 
-.row {
+.rows {
     display: flex;
 }
 
-.col {
+.cols {
     background-color: rgb(20, 20, 20);
     background-color: rgb(10, 10, 10);
     width: 10px;

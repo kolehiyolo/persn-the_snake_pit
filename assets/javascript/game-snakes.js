@@ -40,23 +40,34 @@ let snakes = {
         color: "orange",
         skills: {
             skill1: {
-                name: "Sustainable",
-                description: "Any damage taken is halved",
-                longerDescription: "Any damage taken is halved",
-                duration: "Passive",
-                cooldown: "Passive",
-                cost: 0,
-                required: 0,
-            },
-            skill2: {
                 name: "Amputate",
-                description: "Leave a clone without taking damage",
-                longerDescription: "Leave a clone without taking damage",
+                description: "Dissect yourself to leave a clone",
+                longerDescription: "Dissect yourself to leave a clone",
                 duration: "Instant",
-                cooldown: 10,
+                cooldown: 2,
+                cooldown: 5,
                 cost: 0,
                 required: 4,
             },
+            skill2: {
+                name: "Transfer",
+                description: "Transfer to one of the clones",
+                longerDescription: "Transfer to one of the clones",
+                duration: "Instant",
+                cooldown: 2,
+                cooldown: 10,
+                cost: 1,
+                required: 2,
+            },
+            // skill1: {
+            //     name: "Sustainable",
+            //     description: "Any damage taken is halved",
+            //     longerDescription: "Any damage taken is halved",
+            //     duration: "Passive",
+            //     cooldown: "Passive",
+            //     cost: 0,
+            //     required: 0,
+            // },
         }
     },
     quetzalcoatl: {
@@ -81,6 +92,10 @@ let snakes = {
                 cooldown: 10,
                 cost: 4,
                 required: 7,
+                // duration: 9,
+                // cooldown: 10,
+                // cost: 4,
+                // required: 7,
             }
         }
     },
@@ -90,21 +105,21 @@ let snakes = {
         color: "lime",
         skills: {
             skill1: {
+                name: "Quicken",
+                description: "Speed up momentarily",
+                longerDescription: "Speed up momentarily",
+                duration: 0.75,
+                cooldown: 5,
+                cost: 3,
+                required: 5,
+            },
+            skill2: {
                 name: "Petrify",
                 description: "Stun the enemy momentarily",
                 longerDescription: "Stun the enemy momentarily",
                 duration: 1,
                 cooldown: 15,
                 cost: 4,
-                required: 5,
-            },
-            skill2: {
-                name: "Quicken",
-                description: "Speed up momentarily",
-                longerDescription: "Speed up momentarily",
-                duration: "Instant",
-                cooldown: 5,
-                cost: 3,
                 required: 5,
             },
             // skill2: {
@@ -143,36 +158,54 @@ let snakes = {
             },
         }
     },
-    ouroboros: {
-        name: "ouroboros",
-        epithet: "Self-Devouring Titan",
+    sheshanaga: {
+        name: "sheshanaga",
+        epithet: "The Infinite One",
         color: "magenta",
         skills: {
             skill1: {
-                name: "Masochist",
-                description: "Can pass through self",
-                longerDescription: "Can pass through self",
-                duration: "Passive",
-                cooldown: "Passive",
-                cost: 0,
-                required: 0,
+                name: "Drain",
+                description: "Steal half of your enemy's size",
+                longerDescription: "Instantly steal half of your enemy's length to your own",
+                duration: "Instant",
+                cooldown: 20,
+                cost: 4,
+                required: 5,
             },
             skill2: {
-                name: "Impenetrable",
-                description: "The body won't take any damage",
-                longerDescription: "The body won't take any damage",
-                duration: 3,
+                name: "Unstoppable",
+                description: "Plow through everything",
+                longerDescription: "Plow through everything",
+                duration: 4,
                 cooldown: 10,
-                cost: 5,
-                required: 8,
-            }
+                cost: 2,
+                required: 5,
+            },
+            // skill1: {
+            //     name: "Karma",
+            //     description: "Instantly steal half of your enemy's length to your own",
+            //     longerDescription: "Instantly steal half of your enemy's length to your own",
+            //     duration: "Instant",
+            //     cooldown: 20,
+            //     cost: 4,
+            //     required: 5,
+            // },
+            // skill1: {
+            //     name: "Masochist",
+            //     description: "Can pass through self",
+            //     longerDescription: "Can pass through self",
+            //     duration: 5,
+            //     cooldown: 10,
+            //     cost: 2,
+            //     required: 3,
+            // },
         }
     }
 }
 
 let chooseSnakesArray = [
     snakes.apopis, snakes.orochi, snakes.quetzalcoatl,
-    snakes.lóng, snakes.jörmungandr, snakes.ouroboros
+    snakes.lóng, snakes.jörmungandr, snakes.sheshanaga
 ];
 
 function setChooseSnakesGrid() {

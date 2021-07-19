@@ -16,8 +16,8 @@ function setPromptMsgs(speed, sizes, messages) {
             arenaHeight = $(`#game-arena-grid`).outerHeight();
             break;
     }
-    console.log(`arenaWidth = ${arenaWidth}`); 
-    console.log(`arenaHeight = ${arenaHeight}`); 
+    // console.log(`arenaWidth = ${arenaWidth}`); 
+    // console.log(`arenaHeight = ${arenaHeight}`); 
     $(`#game-prompts-div`).attr(`style`, `height:${arenaHeight}px; width:${arenaWidth}px;`);
 
     // Then, set the Prompt Div Messages

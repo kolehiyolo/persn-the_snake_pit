@@ -1,90 +1,76 @@
-let snakeAbilities = {
+let snakeSkills = {
     apopis: {
-        ability1: function () {},
-        ability2: function () {}
+        skill1: function () {},
+        skill2: function () {}
     },
     orochi: {
-        ability1: function () {},
-        ability2: function () {}
+        skill1: function () {},
+        skill2: function () {}
     },
     quetzalcoatl: {
-        ability1: function () {},
-        ability2: function () {}
+        skill1: function () {},
+        skill2: function () {}
     },
     lóng: {
-        ability1: function () {},
-        ability2: function () {}
+        skill1: function () {},
+        skill2: function () {}
     },
     jörmungandr: {
-        ability1: function () {},
-        ability2: function () {}
+        skill1: function () {},
+        skill2: function () {}
     },
-    ouroboros: {
-        ability1: function () {},
-        ability2: function () {}
+    sheshanaga: {
+        skill1: function () {},
+        skill2: function () {}
     },
 }
 
-
 function setCooldown(num, skill) {
-    let activeUser = player[`p${num}`];
-    let eraser = (num === 1) ? 1 : 2;
+    let activeUser = players[`player${num}`];
+    let activeSkill = activeUser.skills[`skill${skill}`];
     let assignWidth;
-    $(`#player${eraser}-ui-skill${skill}`).addClass(`player-ui-skill-anim`);
-    $(`#player${eraser}-ui-skill${skill}`).addClass(`player-ui-disabled`);
-    $(`#player${eraser}-ui-skill${skill}-key`).addClass(`player-ui-skill-anim`);
-    $(`#player${eraser}-ui-skill${skill}-key`).addClass(`player-ui-disabled`);
-    activeUser.abilities[`ability${skill}`].interval.status = true;
-    activeUser.abilities[`ability${skill}`].interval.function = setInterval(() => {
+
+    $(`#player${num}-ui-skill${skill}`).addClass(`player-ui-skill-anim`);
+    $(`#player${num}-ui-skill${skill}`).addClass(`player-ui-disabled`);
+    $(`#player${num}-ui-skill${skill}-key`).addClass(`player-ui-skill-anim`);
+    $(`#player${num}-ui-skill${skill}-key`).addClass(`player-ui-disabled`);
+
+    let countdown = parseFloat(activeSkill.cooldown.value);
+    activeSkill.ready = false;
+    activeSkill.cooldown.status = true;
+    activeSkill.cooldown.function = setInterval(() => {
         if (game.paused === false) {
-            if (activeUser.abilities[`ability${skill}`].interval.counter < ((activeUser.abilities[`ability${skill}`].cooldown) * 250)) {
-                activeUser.abilities[`ability${skill}`].interval.counter++;
-                assignWidth = `${(activeUser.abilities[`ability${skill}`].interval.counter)/activeUser.abilities[`ability${skill}`].cooldown/2.5}`;
-                // console.log(`assignWidth = ${assignWidth}`);
-                $(`#player${eraser}-ui-skill${skill}-time`).css(`width`, `${assignWidth}%`);
+            if (activeSkill.cooldown.counter % 250 === 0) {
+                $(`#player${num}-ui-skill${skill}-key`).html(`<p>${countdown}</p>`);
+                countdown--;
+            }
+            if (activeSkill.cooldown.counter < ((activeSkill.cooldown.value) * 250)) {
+                activeSkill.cooldown.counter++;
+                assignWidth = `${(activeSkill.cooldown.counter)/activeSkill.cooldown.value/2.5}`;
+                $(`#player${num}-ui-skill${skill}-time`).css(`width`, `${assignWidth}%`);
             } else {
-                // console.log(`Stop setCooldown()`);
-                activeUser.abilities[`ability${skill}`].interval.status = false;
-                activeUser.abilities[`ability${skill}`].interval.counter = 0;
-                $(`#player${eraser}-ui-skill${skill}-time`).addClass(`player-ui-skill-anim`);
-                $(`#player${eraser}-ui-skill${skill}-time`).addClass(`player-ui-skill-time-dead`);
-                $(`#player${eraser}-ui-skill${skill}`).removeClass(`player-ui-disabled`);
-                $(`#player${eraser}-ui-skill${skill}-key`).removeClass(`player-ui-disabled`);
-                $(`#player${num}-ui-skill${skill}-key`).html(`<p>${controls[`p${num}`].main.ability[`ability${skill}`]}</p>`);
+                activeSkill.ready = true;
+                activeSkill.cooldown.status = false;
+                activeSkill.cooldown.counter = 0;
+                $(`#player${num}-ui-skill${skill}-time`).addClass(`player-ui-skill-anim`);
+                $(`#player${num}-ui-skill${skill}-time`).addClass(`player-ui-skill-time-dead`);
+                $(`#player${num}-ui-skill${skill}`).removeClass(`player-ui-disabled`);
+                $(`#player${num}-ui-skill${skill}-key`).removeClass(`player-ui-disabled`);
+                $(`#player${num}-ui-skill${skill}-key`).html(`<p>${activeUser.controls.main.skill[`skill${skill}`]}</p>`);
                 setTimeout(() => {
-                    $(`#player${eraser}-ui-skill${skill}-time`).css(`width`, `0%`);
-                    $(`#player${eraser}-ui-skill${skill}-time`).removeClass(`player-ui-skill-time-dead`);
-                    $(`#player${eraser}-ui-skill${skill}-time`).removeClass(`player-ui-skill-anim`);
-                    $(`#player${eraser}-ui-skill${skill}`).removeClass(`player-ui-skill-anim`);
-                    $(`#player${eraser}-ui-skill${skill}-key`).removeClass(`player-ui-skill-anim`);
+                    $(`#player${num}-ui-skill${skill}-time`).css(`width`, `0%`);
+                    $(`#player${num}-ui-skill${skill}-time`).removeClass(`player-ui-skill-time-dead`);
+                    $(`#player${num}-ui-skill${skill}-time`).removeClass(`player-ui-skill-anim`);
+                    $(`#player${num}-ui-skill${skill}`).removeClass(`player-ui-skill-anim`);
+                    $(`#player${num}-ui-skill${skill}-key`).removeClass(`player-ui-skill-anim`);
                 }, 1000);
-                clearInterval(activeUser.abilities[`ability${skill}`].interval.function);
+                clearInterval(activeSkill.cooldown.function);
             }
         }
     }, 1);
-
-    activeUser.abilities[`ability${skill}`].seconds.counter = parseInt(activeUser.abilities[`ability${skill}`].cooldown);
-    let secondsCounter = activeUser.abilities[`ability${skill}`].seconds.counter;
-    $(`#player${num}-ui-skill${skill}-key`).html(`<p>${secondsCounter}</p>`);
-    // console.log(`secondsCounter = ${secondsCounter}`);
-    secondsCounter--;
-    activeUser.abilities[`ability${skill}`].seconds.function = setInterval(() => {
-        if (game.paused === false) {
-            if (secondsCounter > 0) {
-                $(`#player${num}-ui-skill${skill}-key`).html(`<p>${secondsCounter}</p>`);
-                // console.log(`secondsCounter = ${secondsCounter}`);
-                secondsCounter--;
-            } else {
-                // $(`#player${num}-ui-skill${skill}-key`).html(`<p>${controls[`p${num}`].main.ability[`ability${skill}`]}</p>`);
-                // console.log(`secondsCounter = ${secondsCounter}`);
-                secondsCounter = 0;
-                clearInterval(activeUser.abilities[`ability${skill}`].seconds.function);
-            }
-        }
-    }, 1000);
 }
 
-snakeAbilities.apopis.ability1 = function (num) {
+snakeSkills.apopis.skill1 = function (num) {
     let enm = (num === 1) ? 2 : 1;
     let activeUser = player[`p${num}`];
     let enemyUser = player[`p${enm}`];
@@ -96,13 +82,11 @@ snakeAbilities.apopis.ability1 = function (num) {
         clearInterval(activeUser.intervals.useStrike.function);
     }
 
-    // clearInterval(player.p1.intervals.run.function);
-    // clearInterval(player.p2.intervals.run.function);
     player.p1.arena.immobilized = true;
     player.p2.arena.immobilized = true;
 
-    player.p1.arena.disabled = true;
-    player.p2.arena.disabled = true;
+    player.p1.arena.disarmed = true;
+    player.p2.arena.disarmed = true;
 
     // First we set the size, position and direction of the players to their alters
     player.alter1.arena = JSON.parse(JSON.stringify(player.p1.arena));
@@ -167,8 +151,8 @@ snakeAbilities.apopis.ability1 = function (num) {
                 $(`.player2-snake`).removeClass(`slow-anim`);
                 $(`.p${enm}-strike`).removeClass(`slow-anim p${enm}-strike`);
                 game.paused = false;
-                player.p1.arena.disabled = false;
-                player.p2.arena.disabled = false;
+                player.p1.arena.disarmed = false;
+                player.p2.arena.disarmed = false;
                 player.p1.arena.immobilized = false;
                 player.p2.arena.immobilized = false;
             }
@@ -176,24 +160,168 @@ snakeAbilities.apopis.ability1 = function (num) {
     }, 10);
 }
 
-snakeAbilities.quetzalcoatl.ability1 = function (num) {
-    // FIX
-    // When a food is consumed, Quetzalcoatl should not use Reversal immediately
-    // Otherwise, the snake will somehow get sucked into it's tail
-    // We must fix this so that using Reversal after immediately eating food should work as expected
-    // console.log(`Reversal`);
-    let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
+let orochiClones = {
+    counter: 0,
+    clones: {
+        // clone1: {
+        //     id: 1,
+        //     direction: undefined,
+        //     position: [[`x`, `y`]],
+        // },
+    },
+}
 
+snakeSkills.orochi.skill1 = function (num) {
+    console.log(`Amputate!`);
+    let enm = (num === 1) ? 2 : 1;
+    let activeUser = players[`player${num}`];
+    let activeSkill = activeUser.skills.skill1;
+    let activeSnake = activeUser.arena.snake;
+    activeSkill.status = true;
+
+    // Here we establish the half of the snake
+    let cloneSize = Math.floor(activeUser.arena.position.length / 2);
+    let cloneX = activeUser.arena.position[cloneSize][0];
+    let cloneY = activeUser.arena.position[cloneSize][1];
+
+    // First, we create the Clone object
+    orochiClones.counter++;
+    orochiClones.clones[`clone${orochiClones.counter}`] = {
+        id: orochiClones.counter,
+        direction: String(activeUser.arena.direction),
+        position: [
+            [undefined, undefined]
+        ],
+    };
+    let activeClone = orochiClones.clones[`clone${orochiClones.counter}`];
+    // console.log(`orochiClones.counter = ${orochiClones.counter}`);
+
+    // Now we add the clone parts
+    // // First, the head
+    let clonePartCount = 1;
+    $(`#x${activeUser.arena.position[cloneSize][0]}y${activeUser.arena.position[cloneSize][1]}`).attr(`class`, `cols dead-snake clone-orochi-head`);
+    activeClone.position[0] = [parseInt(cloneX), parseInt(cloneY)];
+
+    // // Now, we loop to add the body
+    for (let i = cloneSize + 1; i < activeUser.arena.position.length; i++) {
+        $(`#x${activeUser.arena.position[i][0]}y${activeUser.arena.position[i][1]}`).attr(`class`, `cols dead-snake clone-orochi-body`);
+        let cloneBodyX = parseInt(activeUser.arena.position[i][0]);
+        let cloneBodyY = parseInt(activeUser.arena.position[i][1]);
+        activeClone.position[clonePartCount] = [parseInt(cloneBodyX), parseInt(cloneBodyY)];
+        clonePartCount++;
+    }
+
+    // Finally we split the snake in two
+    activeUser.arena.position.splice(cloneSize, activeUser.arena.size - cloneSize);
+    setSnakeSize(num);
+
+    activeSkill.status = false;
+}
+
+snakeSkills.orochi.skill2 = function (num) {
+    console.log(`Transfer!`);
+    let enm = (num === 1) ? 2 : 1;
+    let activeUser = players[`player${num}`];
+    let activeSkill = activeUser.skills.skill1;
+    let activeSnake = activeUser.arena.snake;
+    activeSkill.status = true;
+
+    if (orochiClones.counter === 0) {
+        console.log(`No clones!`); 
+        gamePopUp(num, `ability`, `No clones!`);
+        return
+    }
+
+    // Let's check to see if the clone body has a head
+    let activeClone = orochiClones.clones[`clone1`];
+    if ($(`#x${activeClone.position[0][0]}y${activeClone.position[0][1]}`).hasClass(`dead-snake`) === false) {
+        for (let i = 1; i < activeClone.position.length; i++) {
+            if ($(`#x${activeClone.position[i][0]}y${activeClone.position[i][1]}`).hasClass(`dead-snake`)) {
+                $(`#x${activeClone.position[i][0]}y${activeClone.position[i][1]}`).attr(`class`, `cols dead-snake`);
+            }
+        }
+        for (let i = 1; i < orochiClones.counter; i++) {
+            orochiClones.clones[`clone${i}`] = JSON.parse(JSON.stringify(orochiClones.clones[`clone${i+1}`]));
+            orochiClones.clones[`clone${i}`].id = i;
+        }
+        delete orochiClones.clones[`clone${orochiClones.counter}`];
+        orochiClones.counter--;
+        snakeSkills.orochi.skill2(num);
+        return;
+    }
+
+    // First, we add the real body as a clone object
+    orochiClones.counter++;
+    orochiClones.clones[`clone${orochiClones.counter}`] = {
+        id: orochiClones.counter,
+        direction: String(activeUser.arena.direction),
+        position: JSON.parse(JSON.stringify(activeUser.arena.position))
+    };
+    let previousClone = orochiClones.clones[`clone${orochiClones.counter}`];
+    // console.log(`orochiClones.counter = ${orochiClones.counter}`);
+
+    // Now we turn the real body into a clone
+    $(`#x${previousClone.position[0][0]}y${previousClone.position[0][1]}`).attr(`class`, `cols dead-snake clone-orochi-head`);
+    for (let i = 1; i < previousClone.position.length; i++) {
+        $(`#x${previousClone.position[i][0]}y${previousClone.position[i][1]}`).attr(`class`, `cols dead-snake clone-orochi-body`);
+    }
+
+    // Now, we set the next clone body in line into the real body
+    activeClone = orochiClones.clones[`clone1`];
+    activeUser.arena.position = JSON.parse(JSON.stringify(activeClone.position));
+    activeUser.arena.direction = JSON.parse(JSON.stringify(activeClone.direction));
+    activeUser.main.direction = String(activeUser.arena.direction);
+
+    // Now we turn the clone body into the real one
+    let activeSnakeHeadClasses = `player${num}-snake-head player${num}-snake orochi-head`;
+    let activeSnakeBodyClasses = `player${num}-snake-body player${num}-snake orochi-body`;
+    $(`#x${activeUser.arena.position[0][0]}y${activeUser.arena.position[0][1]}`).attr(`class`, `cols ${activeSnakeHeadClasses}`);
+    let foundPart = undefined;
+    for (let i = 1; i < activeUser.arena.position.length; i++) {
+        if (foundPart != undefined) {
+            if ($(`#x${activeClone.position[i][0]}y${activeClone.position[i][1]}`).hasClass(`dead-snake`)) {
+                $(`#x${activeClone.position[i][0]}y${activeClone.position[i][1]}`).attr(`class`, `cols dead-snake`);
+            }
+        } else {
+            if ($(`#x${activeClone.position[i][0]}y${activeClone.position[i][1]}`).hasClass(`dead-snake`) === false) {
+                foundPart = parseInt(i);
+            } else {
+                $(`#x${activeUser.arena.position[i][0]}y${activeUser.arena.position[i][1]}`).attr(`class`, `cols ${activeSnakeBodyClasses}`);
+            }
+        }
+    }
+    if (foundPart != undefined) {
+        activeUser.arena.position.splice(foundPart, activeUser.arena.size - foundPart);
+    }
+
+
+    // Finally, we move the clone queue forward
+    for (let i = 1; i < orochiClones.counter; i++) {
+        orochiClones.clones[`clone${i}`] = JSON.parse(JSON.stringify(orochiClones.clones[`clone${i+1}`]));
+        orochiClones.clones[`clone${i}`].id = i;
+    }
+    delete orochiClones.clones[`clone${orochiClones.counter}`];
+    orochiClones.counter--;
+
+    activeSkill.status = false;
+}
+
+snakeSkills.quetzalcoatl.skill1 = function (num) {
+    console.log(`Reversal!`);
+    let enm = (num === 1) ? 2 : 1;
+    let activeUser = players[`player${num}`];
+    let activeSkill = activeUser.skills.skill1;
+    let activeSnake = activeUser.arena.snake;
+
+    activeSkill.status = true;
     activeUser.arena.position.reverse();
 
     // Now we set the head immediately to the tail
-    let headRow = player[`p${num}`].arena.position[0][0];
-    let headCol = player[`p${num}`].arena.position[0][1];
-    $(`.player${num}-snake-head`).removeClass(`player${num}-snake-head ${player[`p${num}`].arena.snake}-head player${num}-snake`);
-    $(`#r${headRow}c${headCol}`).addClass(`player${num}-snake-head ${player[`p${num}`].arena.snake}-head player${num}-snake`);
-    $(`#r${headRow}c${headCol}`).removeClass(`player${num}-snake-body ${player[`p${num}`].arena.snake}-body player${num}-snake`);
+    let headX = activeUser.arena.position[0][0];
+    let headY = activeUser.arena.position[0][1];
+    $(`.player${num}-snake-head`).removeClass(`player${num}-snake-head ${activeSnake}-head player${num}-snake`);
+    $(`#x${headX}y${headY}`).addClass(`player${num}-snake-head ${activeSnake}-head player${num}-snake`);
+    $(`#x${headX}y${headY}`).removeClass(`player${num}-snake-body ${activeSnake}-body player${num}-snake`);
 
     // Now we determine the direction of the head by determining it's relation to the next segment
     let snakeHead = activeUser.arena.position[0];
@@ -212,155 +340,347 @@ snakeAbilities.quetzalcoatl.ability1 = function (num) {
     }
 
     if (snakeHead[0] < afterSnakeHead[0]) {
-        activeUser.arena.direction = `up`;
-    } else if (snakeHead[0] > afterSnakeHead[0]) {
-        activeUser.arena.direction = `down`;
-    } else if (snakeHead[1] < afterSnakeHead[1]) {
         activeUser.arena.direction = `left`;
-    } else if (snakeHead[1] > afterSnakeHead[1]) {
+    } else if (snakeHead[0] > afterSnakeHead[0]) {
         activeUser.arena.direction = `right`;
+    } else if (snakeHead[1] < afterSnakeHead[1]) {
+        activeUser.arena.direction = `up`;
+    } else if (snakeHead[1] > afterSnakeHead[1]) {
+        activeUser.arena.direction = `down`;
     }
 
     activeUser.main.direction = activeUser.arena.direction;
-    activeUser.abilities.ability1.status = false;
+    activeSkill.status = false;
 }
 
-snakeAbilities.quetzalcoatl.ability2 = function (num) {
+snakeSkills.quetzalcoatl.skill2 = function (num) {
     console.log(`Takeover!`);
     let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
+    let activeUser = players[`player${num}`];
+    let enemyUser = players[`player${enm}`];
+    let activeSkill = activeUser.skills.skill2;
 
-    // enemyUser.arena.disabled = true;
-    let originalControls = {
-        up: String(`${controls[`p${enm}`].main.direction.up}`),
-        down: String(`${controls[`p${enm}`].main.direction.down}`),
-        left: String(`${controls[`p${enm}`].main.direction.left}`),
-        right: String(`${controls[`p${enm}`].main.direction.right}`),
-    }
-
-    controls[`p${enm}`].main.direction = {
-        up: String(`${controls[`p${num}`].main.direction.up}`),
-        down: String(`${controls[`p${num}`].main.direction.down}`),
-        left: String(`${controls[`p${num}`].main.direction.left}`),
-        right: String(`${controls[`p${num}`].main.direction.right}`),
-    }
-
-    console.log(`New control:`);
-    console.log(`controls.p${enm}.main.direction.up = ${controls[`p${enm}`].main.direction.up}`);
-    console.log(`controls.p${enm}.main.direction.down = ${controls[`p${enm}`].main.direction.down}`);
-    console.log(`controls.p${enm}.main.direction.left = ${controls[`p${enm}`].main.direction.left}`);
-    console.log(`controls.p${enm}.main.direction.right = ${controls[`p${enm}`].main.direction.right}`);
-
+    activeSkill.status = true;
+    let originalControls = JSON.parse(JSON.stringify(enemyUser.controls.main.direction));
+    enemyUser.controls.main.direction = JSON.parse(JSON.stringify(activeUser.controls.main.direction));
     let takeoverStyle = `box-shadow: 0 0 5px 2px rgb(255, 255, 0)`;
     $(`head`).append(`<style id="quetzalcoatl-takeover" class="temp-styling"> .player${enm}-snake{ ${takeoverStyle}; } </style>`);
 
-    // Takeover Interval
-    let takeoverCounter = 0;
-    let takeoverIntervalSpeed = 5;
-    let takeoverInterval = setInterval(() => {
+    let countdown = parseFloat(activeSkill.duration.value);
+    let durationCounter = 0;
+    activeSkill.duration.function = setInterval(() => {
         if (game.paused === false) {
-            if (takeoverCounter <= snakes.quetzalcoatl.skills.skill2.duration * 200) {
-                takeoverCounter++;
-                enemyUser.main.direction = String(activeUser.arena.direction);
-                if (
-                    enemyUser.arena.direction === `up` && enemyUser.main.direction === `down` ||
-                    enemyUser.arena.direction === `down` && enemyUser.main.direction === `up` ||
-                    enemyUser.arena.direction === `left` && enemyUser.main.direction === `right` ||
-                    enemyUser.arena.direction === `right` && enemyUser.main.direction === `left`
-                ) {
-                    let mainDirection = enemyUser.main.direction.toUpperCase();
-                    let arenaDirection = enemyUser.arena.direction.toUpperCase();
-                    console.log(`${mainDirection} is opposite of ${arenaDirection}`);
-                    enemyUser.arena.canTurn = false;
-                } else {
-                    enemyUser.arena.canTurn = true;
-                }
-
+            if (durationCounter % 25 === 0) {
+                gamePopUp(enm, `ability`, `${activeSkill.name} ${countdown}`)
+                countdown -= 0.1;
+                countdown = (Math.round(countdown * 100) / 100).toFixed(2);
+            }
+            if (durationCounter <= (activeSkill.duration.value * 250)) {
+                durationCounter++;
+                takeoverControl();
             } else {
+                activeSkill.status = false;
+                clearInterval(activeSkill.duration.function);
+                gamePopUp(enm, `ability`, `${activeSkill.name} over!`);
+
                 $(`#quetzalcoatl-takeover`).remove();
-                // enemyUser.arena.disabled = false;
-                controls[`p${enm}`].main.direction = {
-                    up: String(`${originalControls.up}`),
-                    down: String(`${originalControls.down}`),
-                    left: String(`${originalControls.left}`),
-                    right: String(`${originalControls.right}`),
-                }
-                console.log(`Original Controls:`);
-                console.log(`controls.p${enm}.main.direction.up = ${controls[`p${enm}`].main.direction.up}`);
-                console.log(`controls.p${enm}.main.direction.down = ${controls[`p${enm}`].main.direction.down}`);
-                console.log(`controls.p${enm}.main.direction.left = ${controls[`p${enm}`].main.direction.left}`);
-                console.log(`controls.p${enm}.main.direction.right = ${controls[`p${enm}`].main.direction.right}`);
-                clearInterval(takeoverInterval);
+                enemyUser.controls.main.direction = JSON.parse(JSON.stringify(originalControls));
             }
         }
-    }, takeoverIntervalSpeed);
-}
+    }, 1);
 
-snakeAbilities.lóng.ability1 = function (num) {
-    let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
-
-    // enemyUser.arena.disabled = true;
-    enemyUser.arena.immobilized = true;
-
-    $(`.player${enm}-snake`).addClass(`quick-anim`);
-    $(`.player${enm}-snake`).addClass(`lóng-petrify`);
-
-    let stunCountdown = 0;
-    let petrifyIntervalSpeed = 10;
-    let petrifyInterval = setInterval(() => {
-        if (game.paused === false) {
-            if (stunCountdown <= (snakes.lóng.skills.skill1.duration * 1000) / petrifyIntervalSpeed) {
-                stunCountdown++;
-            } else {
-                $(`.quick-anim`).removeClass(`quick-anim`);
-                // enemyUser.arena.disabled = false;
-                enemyUser.arena.immobilized = false;
-                clearInterval(petrifyInterval);
-            }
-            if (stunCountdown === ((snakes.lóng.skills.skill1.duration * 1000) / petrifyIntervalSpeed) - 10) {
-                $(`.lóng-petrify`).removeClass(`lóng-petrify`);
-            }
+    function takeoverControl() {
+        enemyUser.main.direction = String(activeUser.arena.direction);
+        if (
+            enemyUser.arena.direction === `up` && enemyUser.main.direction === `down` ||
+            enemyUser.arena.direction === `down` && enemyUser.main.direction === `up` ||
+            enemyUser.arena.direction === `left` && enemyUser.main.direction === `right` ||
+            enemyUser.arena.direction === `right` && enemyUser.main.direction === `left`
+        ) {
+            enemyUser.status.canTurn = false;
+        } else {
+            enemyUser.status.canTurn = true;
         }
-    }, petrifyIntervalSpeed);
-
+    }
 }
 
-let returnSpeed;
-snakeAbilities.lóng.ability2 = function (num) {
-    let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
-    console.log(`Activated Dash Yo!`);
+snakeSkills.lóng.skill1 = function (num) {
+    console.log(`Quicken!`);
+    let activeUser = players[`player${num}`];
+    let activeSkill = activeUser.skills.skill1;
 
-    // activeUser.arena.disabled = true;
+    activeSkill.status = true;
     activeUser.intervals.run.speed = 25;
     clearInterval(activeUser.intervals.run.function);
     setRunInterval(num);
 
-    let returnSpeedCounter = 0;
-    returnSpeed = setInterval(() => {
+    let countdown = parseFloat(activeSkill.duration.value);
+    let durationCounter = 0;
+    activeSkill.duration.function = setInterval(() => {
         if (game.paused === false) {
-            if (returnSpeedCounter <= 0.5 * 100) {
-                returnSpeedCounter++;
+            if (durationCounter % 25 === 0) {
+                gamePopUp(num, `ability`, `${activeSkill.name} ${countdown}`)
+                countdown -= 0.1;
+                countdown = (Math.round(countdown * 100) / 100).toFixed(2);
+            }
+            if (durationCounter <= (activeSkill.duration.value * 250)) {
+                durationCounter++;
             } else {
-                // activeUser.arena.disabled = false;
+                activeSkill.status = false;
+                clearInterval(activeSkill.duration.function);
+                gamePopUp(num, `ability`, `${activeSkill.name} over!`);
+
                 activeUser.intervals.run.speed = 100;
                 clearInterval(activeUser.intervals.run.function);
                 setRunInterval(num);
-                clearInterval(returnSpeed);
             }
         }
-    }, 10);
+    }, 1);
 }
 
-// snakeAbilities.lóng.ability2 = function (num) {
-//     let enm = (num === 1) ? 2 : 1;
-//     let activeUser = \[`p${num}`];
-//     let enemyUser = player[`p$ {enm}`];
+snakeSkills.lóng.skill2 = function (num) {
+    console.log(`Petrify!`);
+    let enm = (num === 1) ? 2 : 1;
+    let activeUser = players[`player${num}`];
+    let enemyUser = players[`player${enm}`];
+    let activeSkill = activeUser.skills.skill2;
 
+    activeSkill.status = true;
+    enemyUser.status.immobilized = true;
+    $(`.player${enm}-snake`).addClass(`quick-anim`);
+    $(`.player${enm}-snake`).addClass(`lóng-petrify`);
+
+    let countdown = parseFloat(activeSkill.duration.value);
+    let durationCounter = 0;
+    activeSkill.duration.function = setInterval(() => {
+        if (game.paused === false) {
+            if (durationCounter === ((activeSkill.duration.value * 250)) - 100) {
+                $(`.lóng-petrify`).removeClass(`lóng-petrify`);
+            }
+            if (durationCounter % 25 === 0) {
+                gamePopUp(num, `ability`, `${activeSkill.name} ${countdown}`)
+                countdown -= 0.1;
+                countdown = (Math.round(countdown * 100) / 100).toFixed(2);
+            }
+            if (durationCounter <= (activeSkill.duration.value * 250)) {
+                durationCounter++;
+            } else {
+                activeSkill.status = false;
+                clearInterval(activeSkill.duration.function);
+                gamePopUp(num, `ability`, `${activeSkill.name} over!`);
+
+                $(`.quick-anim`).removeClass(`quick-anim`);
+                enemyUser.status.immobilized = false;
+            }
+        }
+    }, 1);
+}
+
+snakeSkills.jörmungandr.skill1 = function (num) {
+    // Placeholder Variables
+    console.log(`Phase!`);
+    let enm = (num === 1) ? 2 : 1;
+    let activeUser = players[`player${num}`];
+    let enemyUser = players[`player${enm}`];
+    let activeSkill = activeUser.skills.skill1;
+
+    // Now we establish the skill
+    activeSkill.status = true;
+    activeUser.status.phased = true;
+    let skillStyle = "box-shadow: 0 0 5px 2px cyan; ";
+    $(`head`).append(`<style id="jörmungandr-phase" class="temp-styling"> .player${num}-snake{ ${skillStyle} } </style>`);
+
+    // Finallly, we set up the duration countdown
+    let countdown = parseFloat(activeSkill.duration.value);
+    let durationCounter = 0;
+    activeSkill.duration.function = setInterval(() => {
+        if (game.paused === false) {
+            // This activates the gamePopUp in intervals for the duration countdown
+            if (durationCounter % 25 === 0) {
+                gamePopUp(num, `ability`, `${activeSkill.name} ${countdown}`)
+                countdown -= 0.1;
+                countdown = (Math.round(countdown * 100) / 100).toFixed(2);
+            }
+            if (durationCounter <= (activeSkill.duration.value * 250)) {
+                durationCounter++;
+            } else {
+                activeSkill.status = false;
+                clearInterval(activeSkill.duration.function);
+                gamePopUp(num, `ability`, `${activeSkill.name} over!`);
+
+                activeUser.status.phased = false;
+                $(`#jörmungandr-phase`).remove();
+                durationEnds();
+            }
+        }
+    }, 1);
+
+    function durationEnds() {
+        // Now we chop
+        let partX;
+        let partY;
+        $(`#x${activeUser.arena.position[0][0]}y${activeUser.arena.position[0][1]}`).removeClass(`dead-snake`);
+        $(`#x${activeUser.arena.position[1][0]}y${activeUser.arena.position[1][1]}`).removeClass(`dead-snake`);
+        $(`#x${activeUser.arena.position[2][0]}y${activeUser.arena.position[2][1]}`).removeClass(`dead-snake`);
+        LoopFindPart: {
+            for (let i = 3; i < activeUser.arena.position.length; i++) {
+                partX = parseInt(activeUser.arena.position[i][0]);
+                partY = parseInt(activeUser.arena.position[i][1]);
+                let beforeX = parseInt(activeUser.arena.position[i - 1][0]);
+                let beforeY = parseInt(activeUser.arena.position[i - 1][1]);
+                if (
+                    $(`#x${partX}y${partY}`).hasClass(`dead-snake`) ||
+                    $(`#x${partX}y${partY}`).hasClass(`player${enm}-snake`)
+                ) {
+                    partX = beforeX;
+                    partY = beforeY;
+                    chopSnake(num, partX, partY);
+                    break LoopFindPart;
+                }
+            }
+        }
+    }
+}
+
+snakeSkills.jörmungandr.skill2 = function (num) {
+    // Placeholder Variables
+    console.log(`Bifrost!`);
+    let enm = (num === 1) ? 2 : 1;
+    let activeUser = players[`player${num}`];
+    let enemyUser = players[`player${enm}`];
+    let activeSkill = activeUser.skills.skill2;
+
+    // Now we establish the skill
+    activeSkill.status = true;
+    activeUser.status.portable = true;
+    $(`#game-arena-grid`).addClass(`medium-anim`);
+    setTimeout(() => {
+        $(`#game-arena-grid`).addClass(`arena-border-portal`);
+    }, )
+
+    // Finallly, we set up the duration countdown
+    let countdown = parseFloat(activeSkill.duration.value);
+    let durationCounter = 0;
+    activeSkill.duration.function = setInterval(() => {
+        if (game.paused === false) {
+            // This activates the gamePopUp in intervals for the duration countdown
+            if (durationCounter % 25 === 0) {
+                gamePopUp(num, `ability`, `${activeSkill.name} ${countdown}`)
+                countdown -= 0.1;
+                countdown = (Math.round(countdown * 100) / 100).toFixed(2);
+            }
+            if (durationCounter <= (activeSkill.duration.value * 250)) {
+                durationCounter++;
+            } else {
+                activeSkill.status = false;
+                clearInterval(activeSkill.duration.function);
+                gamePopUp(num, `ability`, `${activeSkill.name} over!`);
+
+                activeUser.status.portable = false;
+                durationEnds();
+            }
+        }
+    }, 1);
+
+    function durationEnds() {
+        // Now find the part that we can cut
+        let partX;
+        let partY;
+        LoopFindPart: {
+            for (let i = 1; i < activeUser.arena.position.length; i++) {
+                partX = parseInt(activeUser.arena.position[i][0]);
+                partY = parseInt(activeUser.arena.position[i][1]);
+                let beforeX = parseInt(activeUser.arena.position[i - 1][0]);
+                let beforeY = parseInt(activeUser.arena.position[i - 1][1]);
+                if (
+                    (partX - beforeX === 1 || partX - beforeX === -1) ||
+                    (partY - beforeY === 1 || partY - beforeY === -1)
+                ) {
+
+                } else {
+                    partX = beforeX;
+                    partY = beforeY;
+                    chopSnake(num, partX, partY);
+                    break LoopFindPart;
+                }
+            }
+        }
+
+        $(`#game-arena-grid`).removeClass(`arena-border-portal`);
+        setTimeout(() => {
+            $(`#game-arena-grid`).removeClass(`medium-anim`);
+        }, 1000);
+    }
+}
+
+snakeSkills.sheshanaga.skill1 = function (num) {
+    let enm = (num === 1) ? 2 : 1;
+    let activeUser = players[`player${num}`];
+    let enemyUser = players[`player${enm}`];
+    let activeSkill = activeUser.skills.skill1;
+
+    // Now we establish the skill
+    activeSkill.status = true;
+
+    let stealSize = Math.floor(enemyUser.arena.position.length / 2);
+    let stealX = enemyUser.arena.position[stealSize][0];
+    let stealY = enemyUser.arena.position[stealSize][1];
+    chopSnake(enm, stealX, stealY);
+    growSnake(num, stealSize);
+
+    // Finally, we close the function
+    activeSkill.status = false;
+}
+
+snakeSkills.sheshanaga.skill2 = function (num) {
+    let enm = (num === 1) ? 2 : 1;
+    let activeUser = players[`player${num}`];
+    let activeSkill = activeUser.skills.skill2;
+
+    // Now we establish the skill
+    activeSkill.status = true;
+    activeUser.status.unstoppable = true;
+    // let skillStyle = "";
+    let skillStyle = `.player${num}-snake{ box-shadow: 0 0 5px 2px magenta; }`;
+    $(`head`).append(`<style id="ouroboros-unstoppable" class="temp-styling"></style>`);
+    $(`#ouroboros-unstoppable`).html(`${skillStyle}`);
+
+    activeUser.intervals.run.speed = 90;
+    clearInterval(activeUser.intervals.run.function);
+    setRunInterval(num);
+
+    // Finallly, we set up the duration countdown
+    let countdown = parseFloat(activeSkill.duration.value);
+    let durationCounter = 0;
+    activeSkill.duration.function = setInterval(() => {
+        if (game.paused === false) {
+            if (durationCounter % 25 === 0) {
+                gamePopUp(num, `ability`, `${activeSkill.name} ${countdown}`)
+                countdown -= 0.1;
+                countdown = (Math.round(countdown * 100) / 100).toFixed(2);
+            }
+            if (durationCounter <= (activeSkill.duration.value * 250)) {
+                durationCounter++;
+            } else {
+                activeSkill.status = false;
+                clearInterval(activeSkill.duration.function);
+                gamePopUp(num, `ability`, `${activeSkill.name} over!`);
+
+                activeUser.intervals.run.speed = 100;
+                clearInterval(activeUser.intervals.run.function);
+                setRunInterval(num);
+                $(`#ouroboros-unstoppable`).remove();
+                activeUser.status.unstoppable = false;
+            }
+        }
+    }, 1);
+}
+
+// snakeAbilities.lóng.skill2 = function (num) {
+// console.log(`Target!`);
+// let enm = (num === 1) ? 2 : 1;
+//     let activeUser = player[`p${num}`];
+//     let enemyUser = player[`p$ {enm}`]
 //     for (let j = 1; j <= 3; j++) {
 //         for (let i = 1; i < game.col; i++) {
 //             $(`#r${food[`food${j}`].position[0]}c${i}`).addClass(`quick-anim`);
@@ -369,194 +689,53 @@ snakeAbilities.lóng.ability2 = function (num) {
 //         for (let i = 1; i < game.row; i++) {
 //             $(`#r${food[`food${j}`].position[0]}c${i}`).addClass(`quick - anim `);
 //             $(`#r${i}c${food[`food${j}`].position[1]}`).addClass(`lóng - target `);
+//         }
 //     }
-// }
-// $(`.food - 1 `).removeClass(`lóng - target `);
-// $(`.food - 2 `).removeClass(`lóng - target `);
-// $(`.food - 3 `).removeClass(`lóng - target `);
-// setTimeout(() => {
-//     $(`.lóng - target `).removeClass(`lóng - target `);
+//     $(`.food - 1 `).removeClass(`lóng - target `);
+//     $(`.food - 2 `).removeClass(`lóng - target `);
+//     $(`.food - 3 `).removeClass(`lóng - target `);
 //     setTimeout(() => {
-//         $(`.quick - anim `).removeClass(`quick - anim `);
-//     }, 1000);
-// }, 3000);}
+//         $(`.lóng - target `).removeClass(`lóng - target `);
+//         setTimeout(() => {
+//             $(`.quick - anim `).removeClass(`quick - anim `);
+//         }, 1000);
+//     }, 3000);
+// }
 
-let phaseCounter;
-snakeAbilities.jörmungandr.ability1 = function (num) {
-    let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
-    console.log(`Phase!`);
+// snakeSkills.sheshanaga.skill1 = function (num) {
+//     console.log(`Masochist!`); 
+//     let enm = (num === 1) ? 2 : 1;
+//     let activeUser = players[`player${num}`];
+//     let enemyUser = players[`player${enm}`];
+//     let activeSkill = activeUser.skills.skill1;
 
-    activeUser.arena.phased = true;
-    let phaseStyle = "box-shadow: 0 0 5px 2px cyan; ";
-    // phaseStyle = phaseStyle + "border: none ";
-    // phaseStyle = phaseStyle + "border: none ";
+//     // Now we establish the skill
+//     activeSkill.status = true;
+//     activeUser.status.masochist = true;
+//     let skillStyle = `.player${num}-snake-body {border-color: rgb(124, 46, 124);}`;
+//     $(`head`).append(`<style id="ouroboros-masochist" class="temp-styling"></style>`);
+//     $(`#ouroboros-masochist`).html(`${skillStyle}`);
 
-    $(`head`).append(`<style id="jörmungandr-phase" class="temp-styling"> .player${num}-snake{ ${phaseStyle} } </style>`);
-    // FIX
-    // Set up a duration countdown popup system
-    phaseCounter = 0;
-    let popMsg;
-    phaseInterval = setInterval(() => {
-        if (game.paused === false) {
-            if (phaseCounter <= activeUser.abilities.ability1.duration * 100) {
-                phaseCounter++;
-            } else {
-                console.log(`Phase Over!`);
-                // Now find the part that we can cut
-                let partRow;
-                let partCol;
-                let chopped = false;
-                clearInterval(phaseInterval);
-                $(`#r${activeUser.arena.position[0][0]}c${activeUser.arena.position[0][1]}`).removeClass(`dead-snake`);;
-                $(`#r${activeUser.arena.position[1][0]}c${activeUser.arena.position[1][1]}`).removeClass(`dead-snake`);;
-                $(`#r${activeUser.arena.position[2][0]}c${activeUser.arena.position[2][1]}`).removeClass(`dead-snake`);;
-                LoopFindPart: {
-                    for (let i = 3; i < activeUser.arena.size; i++) {
-                        let blocked = false;
-                        partRow = parseInt(activeUser.arena.position[i][0]);
-                        partCol = parseInt(activeUser.arena.position[i][1]);
-                        let beforeRow = parseInt(activeUser.arena.position[i - 1][0]);
-                        let beforeCol = parseInt(activeUser.arena.position[i - 1][1]);
-                        console.log(`position[${i}] = [${partRow}, ${partCol}]`);
-                        // console.log(`before[${i-1}] = [${beforeRow}, ${beforeCol}]`);
-                        if (
-                            $(`#r${partRow}c${partCol}`).hasClass(`dead-snake`) ||
-                            $(`#r${partRow}c${partCol}`).hasClass(`player${enm}-snake`)
-                        ) {
-                            blocked = true;
-                            chopped = true;
-                            partRow = beforeRow;
-                            partCol = beforeCol;
-                            break LoopFindPart;
-                        }
-                        if (blocked === true) {
-                            console.log(`position[${i}] is blocked`);
-                        }
-                    }
-                }
-                if (chopped === true) {
+//     // Finallly, we set up the duration countdown
+//     let countdown = parseFloat(activeSkill.duration.value);
+//     let durationCounter = 0;
+//     activeSkill.duration.function = setInterval(() => {
+//         if (game.paused === false) {
+//             if (durationCounter % 25 === 0) {
+//                 gamePopUp(num, `ability`, `${activeSkill.name} ${countdown}`)
+//                 countdown -= 0.1;
+//                 countdown = (Math.round(countdown * 100) / 100).toFixed(2);
+//             }
+//             if (durationCounter <= (activeSkill.duration.value * 250)) {
+//                 durationCounter++;
+//             } else {
+//                 activeSkill.status = false;
+//                 clearInterval(activeSkill.duration.function);
+//                 gamePopUp(num, `ability`, `${activeSkill.name} over!`);
 
-                    chopSnake(num, partRow, partCol);
-                } else {}
-                $(`#jörmungandr-phase`).remove();
-                // setTimeout(()=>{
-                //     $(`#game-arena-grid`).removeClass(`medium-anim`);
-                // },1000);
-                phaseCounter = 0;
-                activeUser.arena.phased = false;
-            }
-            if (phaseCounter % 100 === 0 && phaseCounter < activeUser.abilities.ability1.duration * 100) {
-                switch (phaseCounter) {
-                    case 100:
-                        popMsg = `2`;
-                        break;
-                    case 200:
-                        popMsg = `1`;
-                        break;
-                    case 0:
-                        popMsg = `Phase Over!`;
-                        break;
-                }
-                abilityPopUp(num, `ability`, `${popMsg}`);
-            }
-        }
-    }, 10);
-}
-
-let bifrostInterval
-
-snakeAbilities.jörmungandr.ability2 = function (num) {
-    let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
-    console.log(`Bifrost!`);
-
-    activeUser.arena.portaled = true;
-    $(`#game-arena-grid`).addClass(`medium-anim`);
-    setTimeout(() => {
-        $(`#game-arena-grid`).addClass(`arena-border-portal`);
-    }, )
-    // $(`#game-arena-grid`).removeClass(`arena-border-normal`);
-
-    let bifrostCounter = 0;
-
-    bifrostInterval = setInterval(() => {
-        if (game.paused === false) {
-            if (bifrostCounter <= activeUser.abilities.ability2.duration * 100) {
-                bifrostCounter++;
-
-            } else {
-                console.log(`Bifrost Over!`);
-                // Now find the part that we can cut
-                let partRow;
-                let partCol;
-                let chopped = false;
-                clearInterval(bifrostInterval);
-                LoopFindPart: {
-                    for (let i = 1; i < activeUser.arena.size; i++) {
-                        let adjacent = false;
-                        partRow = parseInt(activeUser.arena.position[i][0]);
-                        partCol = parseInt(activeUser.arena.position[i][1]);
-                        let beforeRow = parseInt(activeUser.arena.position[i - 1][0]);
-                        let beforeCol = parseInt(activeUser.arena.position[i - 1][1]);
-                        console.log(`position[${i}] = [${partRow}, ${partCol}]`);
-                        console.log(`before[${i-1}] = [${beforeRow}, ${beforeCol}]`);
-                        if (partRow - beforeRow === 1 || partRow - beforeRow === -1) {
-                            adjacent = true;
-                        } else if (partCol - beforeCol === 1 || partCol - beforeCol === -1) {
-                            adjacent = true;
-                        } else {
-                            console.log(`Not adjacent at position[${i}]`);
-                            chopped = true;
-                            partRow = beforeRow;
-                            partCol = beforeCol;
-                            break LoopFindPart;
-                        }
-                        if (adjacent === true) {
-                            console.log(`position[${i}] is adjacent with position[${i-1}]`);
-                        }
-                    }
-
-                }
-                if (chopped === true) {
-                    chopSnake(num, partRow, partCol);
-                } else {
-
-                }
-                // $(`#game-arena-grid`).addClass(`arena-border-normal`);
-                $(`#game-arena-grid`).removeClass(`arena-border-portal`);
-                setTimeout(() => {
-                    $(`#game-arena-grid`).removeClass(`medium-anim`);
-                }, 1000);
-                activeUser.arena.portaled = false;
-                clearInterval(bifrostInterval);
-            }
-        }
-    }, 10);
-}
-
-function portaledFunc(num) {
-    let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
-    for (let i = 0; i < activeUser.arena.size; i++) {
-        let partRow = parseInt(activeUser.arena.position[i][0]);
-        let partCol = parseInt(activeUser.arena.position[i][1]);
-        // console.log(`position[${i}] = [${partRow}, ${partCol}]`); 
-        if (partRow <= 0) {
-            console.log(`position[${i}] is beyond the top border`);
-            activeUser.arena.position[i][0] = game.row;
-        } else if (partRow > game.row) {
-            console.log(`position[${i}] is beyond the bottom border`);
-            activeUser.arena.position[i][0] = 1;
-        } else if (partCol <= 0) {
-            console.log(`position[${i}] is beyond the left border`);
-            activeUser.arena.position[i][1] = game.col;
-        } else if (partCol > game.col) {
-            console.log(`position[${i}] is beyond the right border`);
-            activeUser.arena.position[i][1] = 1;
-        }
-    }
-}
+//                 $(`#ouroboros-masochist`).remove();
+//                 activeUser.status.masochist = false;
+//             }
+//         }
+//     }, 1);
+// }

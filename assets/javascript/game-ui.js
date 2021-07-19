@@ -3,7 +3,7 @@ function setPlayerUI(num) {
     let arenaWidth = $(`#game-arena-grid`).outerWidth();
     let arenaHeight = $(`#game-arena-grid`).outerWidth();
 
-    let activeUI = player[`p${num}`];
+    let activeUI = players[`player${num}`];
 
     $(`body main`).append(`<div id="player${num}-ui" class="player-ui hidden slow-anim"></div>`);
     switch (num) {
@@ -15,15 +15,17 @@ function setPlayerUI(num) {
             break;
     }
 
-    $(`#player${num}-ui`).addClass(`${player[`p${num}`].arena.snake}-border`);
+    // FIXME - Handle Instant durations
+
+    $(`#player${num}-ui`).addClass(`${activeUI.arena.snake}-border`);
     $(`#player${num}-ui`).append(`<div id="player${num}-ui-header" class="player-ui-header"></div>`);
     $(`#player${num}-ui`).append(`<div id="player${num}-ui-stats" class="player-ui-stats"></div>`)
     $(`#player${num}-ui`).append(`<div id="player${num}-ui-skills" class="player-ui-skills"></div>`);
 
     $(`#player${num}-ui-header`).append(`<p id="player${num}-ui-name" class="player-ui-name"></p>`);
     $(`#player${num}-ui-header`).append(`<p id="player${num}-ui-snake" class="player-ui-snake"></p>`);
-    $(`#player${num}-ui-name`).html(`${player[`p${num}`].main.name}`);
-    $(`#player${num}-ui-snake`).html(`${player[`p${num}`].arena.snake}`);
+    $(`#player${num}-ui-name`).html(`${activeUI.main.name}`);
+    $(`#player${num}-ui-snake`).html(`${activeUI.arena.snake}`);
 
     $(`#player${num}-ui-stats`).append(`<p id="player${num}-ui-size-label" class="player-ui-size-label"></p>`);
     $(`#player${num}-ui-stats`).append(`<p id="player${num}-ui-growth-label" class="player-ui-growth-label"></p>`);
@@ -40,7 +42,7 @@ function setPlayerUI(num) {
     // $(`#player${num}-ui-stats-size`).addClass(`${activeUI.arena.snake}-border`);
     // $(`#player${num}-ui-stats-size`).addClass(`${activeUI.arena.snake}-border`);
 
-    $(`#player${num}-ui-snake`).addClass(`${player[`p${num}`].arena.snake}-font_color`);
+    $(`#player${num}-ui-snake`).addClass(`${activeUI.arena.snake}-font_color`);
 
     // Add the skills
     $(`#player${num}-ui-skills`).append(`<div id="player${num}-ui-strike" class="player-ui-skill"></div>`);
@@ -51,7 +53,7 @@ function setPlayerUI(num) {
 
     $(`#player${num}-ui-strike-name`).html(`Strike`);
     // $(`#player${num}-ui-strike-desc`).html(`Attack in a straight line. You won't be able to move or use abilities while the strike is out`);
-    $(`#player${num}-ui-strike-key`).html(`<p>${controls[`p${num}`].main.ability.strike}</p>`);
+    $(`#player${num}-ui-strike-key`).html(`<p>${players[`player${num}`].controls.main.skill.strike}</p>`);
 
     // Add the Required
     $(`#player${num}-ui-strike`).append(`<div id="player${num}-ui-strike-req" class="player-ui-skill-req"></div>`);
@@ -87,7 +89,7 @@ function setPlayerUI(num) {
 
             // Add the Key
             $(`#player${num}-ui-skill${i}`).append(`<div id="player${num}-ui-skill${i}-key" class="player-ui-skill-key"></div>`);
-            $(`#player${num}-ui-skill${i}-key`).html(`<p>${controls[`p${num}`].main.ability[`ability${i}`]}</p>`);
+            $(`#player${num}-ui-skill${i}-key`).html(`<p>${players[`player${num}`].controls.main.skill[`skill${i}`]}</p>`);
 
             // Add the Required
             $(`#player${num}-ui-skill${i}`).append(`<div id="player${num}-ui-skill${i}-req" class="player-ui-skill-req"></div>`);
@@ -111,38 +113,36 @@ function setPlayerUI(num) {
     $(`#player${num}-ui-skills .player-ui-skill`).addClass(`${activeUI.arena.snake}-border`);
 
     setTimeout(() => {
-        $(`#player${num}-ui`).removeClass(`hidden slow-anim`);
+        $(`#player${num}-ui`).removeClass(`hidden `);
         $(`#player${num}-ui`).addClass(`show`);
     }, 1);
 
+    setTimeout(() => {
+        $(`#player${num}-ui`).removeClass(`slow-anim`);
+    }, 1000);
 }
 
-function scoreBoard() {
+function setScoreBoard() {
     $(`body main`).append(`<div id="score-board"></div>`);
     $(`#score-board`).addClass(`hidden slow-anim`);
 
     $(`#score-board`).append(`<div id="food-count-div"></div>`);
-    $(`#food-count-div`).append(`<div id="food-count-1" class="food-count"></div>`);
-    $(`#food-count-div`).append(`<div id="food-count-2" class="food-count"></div>`);
-    $(`#food-count-div`).append(`<div id="food-count-3" class="food-count"></div>`);
-    $(`#food-count-div`).append(`<div id="food-count-4" class="food-count"></div>`);
-    $(`#food-count-div`).append(`<div id="food-count-5" class="food-count"></div>`);
+    for (let i = 1; i <= food.super.limit; i++) {
+        $(`#food-count-div`).append(`<div id="food-count-${i}" class="food-count"></div>`);
+    }
     $(`.food-count`).addClass(`slow-anim`);
-
-    $(`#score-board`).append(`<div id="player1-score-div"></div>`);
-    // $(`#player-1-score-div`).append(`<div id="player1-score-1" class="player1-score"></div>`);
-    // $(`#player-1-score-div`).append(`<div id="player1-score-2" class="player1-score"></div>`);
-    // $(`#player-1-score-div`).append(`<div id="player1-score-3" class="player1-score"></div>`);
     
+    $(`#score-board`).append(`<div id="player1-score-div"></div>`);
     $(`#score-board`).append(`<div id="player2-score-div"></div>`);
-    // $(`#player-2-score-div`).append(`<div id="player2-score-1" class="player2-score"></div>`);
-    // $(`#player-2-score-div`).append(`<div id="player2-score-2" class="player2-score"></div>`);
-    // $(`#player-2-score-div`).append(`<div id="player2-score-3" class="player2-score"></div>`);
 
     setTimeout(() => {
-        $(`#score-board`).removeClass(`hidden slow-anim`);
+        $(`#score-board`).removeClass(`hidden`);
         $(`#score-board`).addClass(`show`);
     }, 1);
+    
+    setTimeout(()=>{
+        $(`#score-board`).removeClass(`slow-anim`);
+    },2000);
 }
 
 function updateFoodCountDiv() {
@@ -156,11 +156,12 @@ function updateFoodCountDiv() {
 }
 
 function updatePlayerScoreDiv(num) {
-    let score = parseInt(player[`p${num}`].main.score);
-    let snake = player[`p${num}`].arena.snake;
-    console.log(`updatePlayerScoreDiv(${num})`); 
-    console.log(`--player${num}-score-count = ${score}`); 
-    $(`#player${num}-score-div`).append(`<div id="player${num}-score-${score}" class="player${num}-score"></div>`);
+    // FIXME
+    let score = parseInt(players[`player${num}`].main.score);
+    let snake = players[`player${num}`].arena.snake;
+    console.log(`updatePlayerScoreDiv(${num})`);
+    console.log(`--player${num}-score-count = ${score}`);
+    $(`#player${num}-score-div`).append(`<div id="player${num}-score-${score}" class="player${num}-score slow-anim"></div>`);
     $(`#player${num}-score-${score}`).addClass(`player${num}-score`);
     $(`#player${num}-score-${score}`).addClass(`${snake}-border`);
 }
@@ -170,7 +171,7 @@ function updatePlayerScoreDiv(num) {
 function updatePlayerUI(num, item, value) {
     switch (item) {
         case "size":
-            $(`#player${num}-ui-size`).html(`${player[`p${num}`].arena.size}`);
+            $(`#player${num}-ui-size`).html(`${players[`player${num}`].arena.size}`);
             break;
         case "score":
             break;

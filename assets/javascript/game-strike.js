@@ -1,265 +1,266 @@
 let strike = function (num) {
     let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
+    let activeUser = players[`player${num}`];
+    let enemyUser = players[`player${enm}`];
+    let activeSkill = activeUser.skills.strike;
 
-    activeUser.arena.disabled = true;
-    activeUser.intervals.useStrike.status = true;
-    activeUser.intervals.useStrike.count = 0;
-    shrinkSnake(num);
+    activeSkill.status = true;
+    activeSkill.ready = false;
+    activeUser.status.disarmed = true;
+    activeUser.status.canStrike = false;
+    activeUser.arena.position.pop();
 
     switch (activeUser.arena.direction) {
-        case "up":
-            activeUser.intervals.useStrike.count = activeUser.arena.position[0][0] - 1;
-            setUseStrike(num);
+        case `left`:
+            activeSkill.strike.counter = activeUser.arena.position[0][0] - 1;
             break;
-        case "down":
-            activeUser.intervals.useStrike.count = activeUser.arena.position[0][0] + 1;
-            setUseStrike(num);
+        case `right`:
+            activeSkill.strike.counter = activeUser.arena.position[0][0] + 1;
             break;
-        case "left":
-            activeUser.intervals.useStrike.count = activeUser.arena.position[0][1] - 1;
-            setUseStrike(num);
+        case `up`:
+            activeSkill.strike.counter = activeUser.arena.position[0][1] - 1;
             break;
-        case "right":
-            activeUser.intervals.useStrike.count = activeUser.arena.position[0][1] + 1;
-            setUseStrike(num);
+        case `down`:
+            activeSkill.strike.counter = activeUser.arena.position[0][1] + 1;
             break;
     }
+    setStrike(num);
 }
 
-function setUseStrike(num) {
+function setStrike(num) {
+    // console.log(`setStrike(${num})`);
     let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
+    let activeUser = players[`player${num}`];
+    let enemyUser = players[`player${enm}`];
+    let activeSkill = activeUser.skills.strike;
+
+    activeSkill.strike.status = true;
 
     let strikeCondition;
     let addOrMinus;
     switch (activeUser.arena.direction) {
-        case "up":
-            strikeCondition = (i) => {
-                return i > 0;
-            };
+        case `left`:
+            strikeCondition = (i) => i > 0;
             addOrMinus = -1;
             break;
-        case "down":
-            strikeCondition = (i) => {
-                return i <= game.row;
-            }
+        case `right`:
+            strikeCondition = (i) => i <= game.arena.xAxis;
             addOrMinus = 1;
             break;
-        case "left":
-            strikeCondition = (i) => {
-                return i > 0;
-            }
+        case `up`:
+            strikeCondition = (i) => i > 0;
             addOrMinus = -1;
             break;
-        case "right":
-            strikeCondition = (i) => {
-                return i <= game.col;
-            }
+        case `down`:
+            strikeCondition = (i) => i <= game.arena.yAxis;
             addOrMinus = 1;
             break;
     }
-    activeUser.intervals.useStrike.function = setInterval(() => {
+    activeSkill.strike.function = setInterval(() => {
         if (game.paused === false) {
-            let i = activeUser.intervals.useStrike.count;
+            let i = activeSkill.strike.counter;
             if (strikeCondition(i)) {
                 switch (activeUser.arena.direction) {
-                    case "up":
-                    case "down":
-                        $(`#r${i}c${activeUser.arena.position[0][1]}`).addClass(`vertical-strike p${num}-strike ${activeUser.arena.snake}-strike`);
-                        break;
                     case "left":
                     case "right":
-                        $(`#r${activeUser.arena.position[0][0]}c${i}`).addClass(`horizontal-strike p${num}-strike ${activeUser.arena.snake}-strike`);
+                        $(`#x${i}y${activeUser.arena.position[0][1]}`).addClass(`horizontal-strike p${num}-strike ${activeUser.arena.snake}-strike`);
+                        break;
+                    case "up":
+                    case "down":
+                        $(`#x${activeUser.arena.position[0][0]}y${i}`).addClass(`vertical-strike p${num}-strike ${activeUser.arena.snake}-strike`);
                         break;
                 }
-                if (strikeFood(num, enm) || strikeSnake(num, enm)) {
+                if (checkStrikeFood(num) || checkStrikeSnake(num, enm)) {
                     strikeCondition = (i) => {
                         return false;
                     }
                 };
-                activeUser.intervals.useStrike.count += addOrMinus;
+                activeSkill.strike.counter += addOrMinus;
             } else {
-                activeUser.intervals.useStrike.status = false;
-                clearInterval(activeUser.intervals.useStrike.function);
-                setFetchStrike(num);
+                activeSkill.strike.status = false;
+                clearInterval(activeSkill.strike.function);
+                setFetch(num);
             }
         }
-    }, activeUser.intervals.useStrike.speed);
+    }, activeSkill.strike.speed);
 }
 
-function strikeFood(num, enm) {
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
+function setFetch(num) {
+    // console.log(`setFetch(${num})`);
+    let enm = (num === 1) ? 2 : 1;
+    let activeUser = players[`player${num}`];
+    let enemyUser = players[`player${enm}`];
+    let activeSkill = activeUser.skills.strike;
 
-    let strikeRow;
-    let strikeCol;
+    activeSkill.fetch.status = true;
+    activeSkill.fetch.counter = parseInt(activeSkill.strike.counter);
+
+    let strikeCondition;
+    let addOrMinus;
     switch (activeUser.arena.direction) {
-        case "up":
-        case "down":
-            strikeRow = activeUser.intervals.useStrike.count;
-            strikeCol = activeUser.arena.position[0][1];
+        case "left":
+            strikeCondition = (i) => i < activeUser.arena.position[0][0];
+            addOrMinus = 1;
             break;
+        case "right":
+            strikeCondition = (i) => i > activeUser.arena.position[0][0];
+            addOrMinus = -1;
+            break;
+        case "up":
+            strikeCondition = (i) => i < activeUser.arena.position[0][1];
+            addOrMinus = 1;
+            break;
+        case "down":
+            strikeCondition = (i) => i > activeUser.arena.position[0][1];
+            addOrMinus = -1;
+            break;
+    }
+    activeSkill.fetch.function = setInterval(() => {
+        if (game.paused === false) {
+            let i = activeSkill.fetch.counter;
+            if (strikeCondition(i)) {
+                switch (activeUser.arena.direction) {
+                    case "left":
+                    case "right":
+                        $(`#x${i}y${activeUser.arena.position[0][1]}`).removeClass(`horizontal-strike p${num}-strike ${activeUser.arena.snake}-strike`);
+                        break;
+                    case "up":
+                    case "down":
+                        $(`#x${activeUser.arena.position[0][0]}y${i}`).removeClass(`vertical-strike p${num}-strike ${activeUser.arena.snake}-strike`);
+                        break;
+                }
+                activeSkill.fetch.counter += addOrMinus;
+            } else {
+                $(`.p${num}-strike`).removeClass(`vertical-strike horizontal-strike p${num}-strike ${activeUser.arena.snake}-strike`);
+                activeSkill.fetch.status = false;
+                clearInterval(activeSkill.fetch.function);
+
+                // TESTME
+                activeSkill.status = false;
+                activeSkill.ready = true;
+                activeUser.status.disarmed = false;
+                activeUser.status.canStrike = true;
+            }
+        }
+    }, activeSkill.fetch.speed);
+}
+
+function checkStrikeSnip(num, enm) {
+    // if ($(`.p${num}-strike`).hasClass(`player${enm}-snake-head`)) {
+    //     // console.log(`Oh NO!`);
+    //     abilityPopUp(num, `snip`, "");
+    //     $(`.p${num}-strike`).addClass(`quick-anim`);
+    //     $(`.p${num}-strike`).removeClass(`vertical-strike horizontal-strike ${activeUser.arena.snake}-strike`);
+    //     activeUser.abilities.strike.status = false;
+    //     activeUser.intervals.fetchStrike.status = false;
+    //     activeUser.arena.disarmed = false;
+    //     setTimeout(() => {
+    //         // console.log(`Remove animation`);
+    //         $(`.p${num}-strike`).removeClass(`p${num}-strike quick-anim`);
+    //         $(`#game-arena-grid .quick-anim`).removeClass(`quick-anim`);
+    //         clearInterval(activeUser.intervals.fetchStrike.function);
+    //     }, 250);
+    //     popSnake(num, Math.floor(activeUser.arena.position.length / 2));
+    // }
+}
+
+function checkStrikeFood(num) {
+    let enm = (num === 1) ? 2 : 1;
+    let activeUser = players[`player${num}`];
+    let activeSkill = activeUser.skills.strike;
+
+    let strikeX;
+    let strikeY;
+    switch (activeUser.arena.direction) {
         case "left":
         case "right":
-            strikeRow = activeUser.arena.position[0][0];
-            strikeCol = activeUser.intervals.useStrike.count;
+            strikeX = activeSkill.strike.counter;
+            strikeY = activeUser.arena.position[0][1];
+            break;
+        case "up":
+        case "down":
+            strikeX = activeUser.arena.position[0][0];
+            strikeY = activeSkill.strike.counter;
             break;
     }
     for (let i = 1; i <= 3; i++) {
-        if ($(`#r${strikeRow}c${strikeCol}`).hasClass(`food-${i}`)) {
-            food.super.count++;
-            growSnake(num, 2);
-            setFood(i);
-            // updatePlayerUI(num, `size`, ``);
+        if ($(`#x${strikeX}y${strikeY}`).hasClass(`food-${i}`)) {
+            eatFood(num, i);
             setSnakeSize(num);
             return true;
         }
-        if ($(`#r${strikeRow}c${strikeCol}`).hasClass(`food-super`)) {
-            $(`.food-super`).removeClass(`food-super`);
-            food.super.active = false;
-            food.super.count = 0;
-            updateFoodCountDiv();
-            growSnake(num, 5);
-            // updatePlayerUI(num, `size`, ``);
+        if ($(`#x${strikeX}y${strikeY}`).hasClass(`food-super`)) {
+            eatFood(num, `super`);
             setSnakeSize(num);
             return true;
         }
     }
 }
 
-function strikeSnake(num, enm) {
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
+function checkStrikeSnake(num, enm) {
+    let activeUser = players[`player${num}`];
+    let enemyUser = players[`player${enm}`];
+    let activeSkill = activeUser.skills.strike;
 
-    let strikeRow;
-    let strikeCol;
+    let strikeX;
+    let strikeY;
     switch (activeUser.arena.direction) {
-        case "up":
-        case "down":
-            strikeRow = activeUser.intervals.useStrike.count;
-            strikeCol = activeUser.arena.position[0][1];
-            break;
         case "left":
         case "right":
-            strikeRow = activeUser.arena.position[0][0];
-            strikeCol = activeUser.intervals.useStrike.count;
+            strikeX = activeSkill.strike.counter;
+            strikeY = activeUser.arena.position[0][1];
+            break;
+        case "up":
+        case "down":
+            strikeX = activeUser.arena.position[0][0];
+            strikeY = activeSkill.strike.counter;
             break;
     }
-    if ($(`#r${strikeRow}c${strikeCol}`).hasClass(`dead-snake`)) {
-        $(`#r${strikeRow}c${strikeCol}`).attr(`class`, `col`);
+
+    if ($(`#x${strikeX}y${strikeY}`).hasClass(`dead-snake`)) {
+        $(`#x${strikeX}y${strikeY}`).attr(`class`, `cols`);
         return true;
     }
-    if ($(`#r${strikeRow}c${strikeCol}`).hasClass(`player${num}-snake-body`)) {
-        chopSnake(num, strikeRow, strikeCol);
-        return true;
+    if (activeUser.status.phased === false) {
+        if ($(`#x${strikeX}y${strikeY}`).hasClass(`player${num}-snake-body`)) {
+            if (activeUser.status.unstoppable === false) {
+                chopSnake(num, strikeX, strikeY);
+            }
+            return true;
+        }
     }
-    if ($(`#r${strikeRow}c${strikeCol}`).hasClass(`player${enm}-snake-body`)) {
-        chopSnake(enm, strikeRow, strikeCol);
-        return true;
-    }
-    if ($(`#r${strikeRow}c${strikeCol}`).hasClass(`player${enm}-snake-head`)) {
-        playerDied(enm, num);
-        return true;
+    if (enemyUser.status.phased === false) {
+        if ($(`#x${strikeX}y${strikeY}`).hasClass(`player${enm}-snake-body`)) {
+            if (enemyUser.status.unstoppable === false) {
+                chopSnake(enm, strikeX, strikeY);
+            }
+            return true;
+        }
+        if (
+            strikeX === enemyUser.arena.position[0][0] &&
+            strikeY === enemyUser.arena.position[0][1]
+        ) {
+            if (enemyUser.status.unstoppable === false) {
+                playerDied(enm, num);
+            }
+            return true;
+        }
     }
 }
 
-function chopSnake(num, row, col) {
-    let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
-    setSnakeSize(num);
-    let strikeRow = row;
-    let strikeCol = col;
+function chopSnake(num, chopX, chopY) {
+    let activeUser = players[`player${num}`];
+
     let foundPart = undefined;
-    for (let i = 1; i < activeUser.arena.size; i++) {
+    for (let i = 1; i < activeUser.arena.position.length; i++) {
         if (foundPart != undefined) {
-            $(`#r${activeUser.arena.position[i][0]}c${activeUser.arena.position[i][1]}`).attr(`class`, `col dead-snake`);
+            $(`#x${activeUser.arena.position[i][0]}y${activeUser.arena.position[i][1]}`).attr(`class`, `cols dead-snake`);
         }
-        if (strikeRow === activeUser.arena.position[i][0] && strikeCol === activeUser.arena.position[i][1]) {
-            $(`#r${activeUser.arena.position[i][0]}c${activeUser.arena.position[i][1]}`).attr(`class`, `col`);
+        if (chopX === activeUser.arena.position[i][0] && chopY === activeUser.arena.position[i][1]) {
+            $(`#x${activeUser.arena.position[i][0]}y${activeUser.arena.position[i][1]}`).attr(`class`, `cols`);
             foundPart = i;
         }
     }
     activeUser.arena.position.splice(foundPart, activeUser.arena.size - foundPart);
-}
-
-function setFetchStrike(num) {
-    let enm = (num === 1) ? 2 : 1;
-    let activeUser = player[`p${num}`];
-    let enemyUser = player[`p${enm}`];
-
-    activeUser.intervals.fetchStrike.count = parseInt(activeUser.intervals.useStrike.count);
-    activeUser.intervals.fetchStrike.status = true;
-    let strikeCondition;
-    let addOrMinus;
-    switch (activeUser.arena.direction) {
-        case "up":
-            strikeCondition = (i) => {
-                return i < activeUser.arena.position[0][0];
-            };
-            addOrMinus = 1;
-            break;
-        case "down":
-            strikeCondition = (i) => {
-                return i > activeUser.arena.position[0][0];
-            }
-            addOrMinus = -1;
-            break;
-        case "left":
-            strikeCondition = (i) => {
-                return i < activeUser.arena.position[0][1];
-            }
-            addOrMinus = 1;
-            break;
-        case "right":
-            strikeCondition = (i) => {
-                return i > activeUser.arena.position[0][1];
-            }
-            addOrMinus = -1;
-            break;
-    }
-    activeUser.intervals.fetchStrike.function = setInterval(() => {
-        if (game.paused === false) {
-            let i = activeUser.intervals.fetchStrike.count;
-            if (strikeCondition(i)) {
-                switch (activeUser.arena.direction) {
-                    case "up":
-                    case "down":
-                        $(`#r${i}c${activeUser.arena.position[0][1]}`).removeClass(`vertical-strike p${num}-strike ${activeUser.arena.snake}-strike`);
-                        break;
-                    case "left":
-                    case "right":
-                        $(`#r${activeUser.arena.position[0][0]}c${i}`).removeClass(`horizontal-strike p${num}-strike ${activeUser.arena.snake}-strike`);
-                        break;
-                }
-                // console.log($(`.p${num}-strike`).hasClass(`player${enm}-snake-head`)); 
-                if ($(`.p${num}-strike`).hasClass(`player${enm}-snake-head`)) {
-                    // console.log(`Oh NO!`);
-                    abilityPopUp(num, `snip`, "");
-                    $(`.p${num}-strike`).addClass(`quick-anim`);
-                    $(`.p${num}-strike`).removeClass(`vertical-strike horizontal-strike ${activeUser.arena.snake}-strike`);
-                    activeUser.abilities.strike.status = false;
-                    activeUser.intervals.fetchStrike.status = false;
-                    activeUser.arena.disabled = false;
-                    setTimeout(() => {
-                        // console.log(`Remove animation`);
-                        $(`.p${num}-strike`).removeClass(`p${num}-strike quick-anim`);
-                        $(`#game-arena-grid .quick-anim`).removeClass(`quick-anim`);
-                        clearInterval(activeUser.intervals.fetchStrike.function);
-                    }, 250);
-                    popSnake(num, Math.floor(activeUser.arena.position.length / 2));
-                }
-                activeUser.intervals.fetchStrike.count += addOrMinus;
-            } else {
-                $(`.p${num}-strike`).removeClass(`vertical-strike horizontal-strike p${num}-strike ${activeUser.arena.snake}-strike`);
-                activeUser.abilities.strike.status = false;
-                activeUser.intervals.fetchStrike.status = false;
-                activeUser.arena.disabled = false;
-                clearInterval(activeUser.intervals.fetchStrike.function);
-            }
-        }
-    }, activeUser.intervals.fetchStrike.speed);
+    setSnakeSize(num);
 }
