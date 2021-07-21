@@ -10,6 +10,10 @@ body {
 .zero-anim {
     transition: 0s;
 }
+
+.anim-200 {
+    transition: 0.2s;
+}
 .quick-anim {
     transition: 0.3s;
 }

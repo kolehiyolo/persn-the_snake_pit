@@ -56,8 +56,12 @@
 
 .clone-orochi-body{
     border: rgb(122, 80, 0) solid 2px !important;
+    background-color: black;
     box-sizing: border-box !important;
     border-radius: 2px !important;
     border-width: 2px !important;
     transition: 0 !important;
+    width: 10px !important;
+    height: 10px !important;
+    margin: 2.5px !important;
 }

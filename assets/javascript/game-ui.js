@@ -1,4 +1,5 @@
 function setPlayerUI(num) {
+    // FIXME - Refactor this shit like crazy
     $(`#player${num}-ui`).remove();
     let arenaWidth = $(`#game-arena-grid`).outerWidth();
     let arenaHeight = $(`#game-arena-grid`).outerWidth();
@@ -82,8 +83,18 @@ function setPlayerUI(num) {
         // Add the Stats
         $(`#player${num}-ui-skill${i}-text`).append(`<p id="player${num}-ui-skill${i}-dura" class="player-ui-skill-dura"></p>`);
         $(`#player${num}-ui-skill${i}-text`).append(`<p id="player${num}-ui-skill${i}-cool" class="player-ui-skill-cool"></p>`);
-        $(`#player${num}-ui-skill${i}-dura`).html(`Duration: ${snakes[activeUI.arena.snake].skills[`skill${i}`].duration}`);
-        $(`#player${num}-ui-skill${i}-cool`).html(`Cooldown: ${snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown} secs`);
+        if (snakes[activeUI.arena.snake].skills[`skill${i}`].duration === `Instant`) {
+            $(`#player${num}-ui-skill${i}-dura`).html(`Duration: ${snakes[activeUI.arena.snake].skills[`skill${i}`].duration}`);
+        }
+        else {
+            $(`#player${num}-ui-skill${i}-dura`).html(`Duration: ${snakes[activeUI.arena.snake].skills[`skill${i}`].duration} secs`);
+        }
+        if (snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown === `Instant`) {
+            $(`#player${num}-ui-skill${i}-cool`).html(`Cooldown: ${snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown}`);
+        }
+        else {
+            $(`#player${num}-ui-skill${i}-cool`).html(`Cooldown: ${snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown} secs`);
+        }
 
         if (snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown != "Passive") {
             // Add the Time Bar
@@ -128,32 +139,28 @@ function updateSkillUI(num, skill) {
     let activeUI = players[`player${num}`];
     let i = skill;
 
-    // Now we a dd the skills
-    // $(`#player${num}-ui-skills`).append(`<div id="player${num}-ui-skill${i}" class="player-ui-skill"></div>`);
-
     // Add the Text
-    // $(`#player${num}-ui-skill${i}`).append(`<div id="player${num}-ui-skill${i}-text" class="player-ui-skill-text"></div>`);
-    // $(`#player${num}-ui-skill${i}-text`).append(`<p id="player${num}-ui-skill${i}-name" class="player-ui-skill-name"></p>`);
-    // $(`#player${num}-ui-skill${i}-text`).append(`<p id="player${num}-ui-skill${i}-desc" class="player-ui-skill-desc"></p>`);
     $(`#player${num}-ui-skill${i}-name`).html(`${snakes[activeUI.arena.snake].skills[`skill${i}`].name}`);
     $(`#player${num}-ui-skill${i}-desc`).html(`${snakes[activeUI.arena.snake].skills[`skill${i}`].longerDescription}`);
 
     // Add the Stats
-    // $(`#player${num}-ui-skill${i}-text`).append(`<p id="player${num}-ui-skill${i}-dura" class="player-ui-skill-dura"></p>`);
-    // $(`#player${num}-ui-skill${i}-text`).append(`<p id="player${num}-ui-skill${i}-cool" class="player-ui-skill-cool"></p>`);
-    $(`#player${num}-ui-skill${i}-dura`).html(`Duration: ${snakes[activeUI.arena.snake].skills[`skill${i}`].duration}`);
-    $(`#player${num}-ui-skill${i}-cool`).html(`Cooldown: ${snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown} secs`);
-
-    // if (snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown != "Passive") {
-    // Add the Time Bar
-    // $(`#player${num}-ui-skill${i}`).append(`<div id="player${num}-ui-skill${i}-time" class="player-ui-skill-time"></div>`);
+    if (snakes[activeUI.arena.snake].skills[`skill${i}`].duration === `Instant`) {
+        $(`#player${num}-ui-skill${i}-dura`).html(`Duration: ${snakes[activeUI.arena.snake].skills[`skill${i}`].duration}`);
+    }
+    else {
+        $(`#player${num}-ui-skill${i}-dura`).html(`Duration: ${snakes[activeUI.arena.snake].skills[`skill${i}`].duration} secs`);
+    }
+    if (snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown === `Instant`) {
+        $(`#player${num}-ui-skill${i}-cool`).html(`Cooldown: ${snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown}`);
+    }
+    else {
+        $(`#player${num}-ui-skill${i}-cool`).html(`Cooldown: ${snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown} secs`);
+    }
 
     // Add the Key
-    // $(`#player${num}-ui-skill${i}`).append(`<div id="player${num}-ui-skill${i}-key" class="player-ui-skill-key"></div>`);
     $(`#player${num}-ui-skill${i}-key`).html(`<p>${players[`player${num}`].controls.main.skill[`skill${i}`]}</p>`);
-
-    // $(`#player${num}-ui-skill${i}-req`).append(`<div id="player${num}-ui-skill${i}-req" class="player-ui-skill-req"></div>`);
     $(`#player${num}-ui-skill${i}-req`).remove();
+
     // Add the Required
     $(`#player${num}-ui-skill${i}`).append(`<div id="player${num}-ui-skill${i}-req" class="player-ui-skill-req"></div>`);
     for (let j = 1; j <= snakes[activeUI.arena.snake].skills[`skill${i}`].required; j++) {
@@ -165,12 +172,6 @@ function updateSkillUI(num, skill) {
         $(`#player${num}-ui-skill${i}-req${j}`).addClass(`player${num}-ui-skill${i}-cost-part`);
     }
     $(`.player${num}-ui-skill${i}-cost-part`).addClass(`${activeUI.arena.snake}-ui-border`);
-    // } else {
-    //     console.log(`${snakes[activeUI.arena.snake].skills[`skill${i}`].name} is a Passive Skill`);
-    //     $(`#player${num}-ui-skill${i}`).append(`<div id="player${num}-ui-skill${i}-pass" class="player-ui-skill-pass"></div>`);
-    //     $(`#player${num}-ui-skill${i}-pass`).html(`<p>Passive</p>`);
-    //     $(`#player${num}-ui-skill${i}`).addClass(`player-ui-skill-pass-border`);
-    // }
 }
 
 function setScoreBoard() {

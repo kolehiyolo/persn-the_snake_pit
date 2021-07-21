@@ -61,6 +61,7 @@ function setArena() {
     setTimeout(() => {
         buildArenaGrid();
         placeArenaElements();
+        setSkillFunctions();
     }, 500);
 }
 
@@ -134,6 +135,7 @@ function resetArenaElements() {
     $(`#game-arena-grid`).attr(`class`, `slow-anim arena-border-normal`);
     setGameVariables();
     setPlayersArena();
+    resetSkills();
     $(`.player-popup`).remove();
     $(`.temp-styling`).remove();
     $(`.clone-labels`).remove();
@@ -148,6 +150,7 @@ function resetArenaElements() {
     setPlayerUI(2);
     placeSnake(1);
     placeSnake(2);
+    setSkillFunctions();
     $(`.cols`).addClass(`slow-anim`);
     let foodNum = 1;
     let foodInterval = setInterval(() => {
@@ -317,17 +320,20 @@ function clearAllIntervals() {
 
 function pauseGame() {
     game.paused = true;
-
-    let promptMsgArray = [];
-    promptMsgArray[0] = `${players[`player${active.id}`].main.name} paused the game`;
-    promptMsgArray[1] = `Press '${players[`player${active.id}`].controls.main.misc.aux}' or `;
-    promptMsgArray[1] += `'${players[`player${enemy.id}`].controls.main.misc.aux}' to resume`;
-    setPromptMsgs(`quick`, [`medium`, `small`], promptMsgArray);
+    setArenaMenu();
+    game.state = `paused`;
+    // let promptMsgArray = [];
+    // promptMsgArray[0] = `${players[`player${active.id}`].main.name} paused the game`;
+    // promptMsgArray[1] = `Press '${players[`player${active.id}`].controls.main.misc.aux}' or `;
+    // promptMsgArray[1] += `'${players[`player${enemy.id}`].controls.main.misc.aux}' to resume`;
+    // setPromptMsgs(`quick`, [`medium`, `small`], promptMsgArray);
 }
 
 function resumeGame() {
     game.paused = false;
-    remPromptMsgs(`quick`, 200);
+    remArenaMenu();
+    game.state = `arena`;
+    // remPromptMsgs(`quick`, 200);
 }
 
 function gameArena() {
@@ -392,7 +398,8 @@ function gameArena() {
                             // Now we activate the skill
                             console.log(`Activate ${skillName}`);
                             activeSkill.status = true;
-                            snakeSkills[activeUser.arena.snake][`skill${skillNum}`](num);
+                            // snakeSkills[activeUser.arena.snake][`skill${skillNum}`](num);
+                            snakes[activeUser.arena.snake].skills[`skill${skillNum}`].function(num);
                             if (activeSkill.cooldown.value != `Instant`) {
                                 setCooldown(num, skillNum);
                             }

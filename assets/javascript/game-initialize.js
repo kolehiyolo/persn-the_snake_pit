@@ -20,8 +20,8 @@ game.state = "over"; // This is the state when one or both Players lose
 // player.p1.choose.snake = "jörmungandr";
 // player.p1.choose.snake = "sheshanaga";
 
-players.player1.choose.snake = "lóng";
-players.player2.choose.snake = "orochi";
+players.player1.choose.snake = "orochi";
+players.player2.choose.snake = "quetzalcoatl";
 setGameState("arena");
 // setGameState("choose");
 
@@ -54,6 +54,10 @@ function pressKey(e) {
     // First, for ease of use, we set the key to the variable "key"
     key.id = e.key;
 
+    if (controlWait === true) {
+        checkNewControl(active.id);
+        return;
+    }
     // Second, we take the key to the translateKey() function which basically extracts more information based on the key
     // It's quite difficult to explain, but the function simply triggers changes to game variables, which helps in determining what the key means in relation to the player
     translateKey();
@@ -67,10 +71,10 @@ function pressKey(e) {
             case "arena":
                 gameArena();
                 break;
-            case "gamePaused":
+            case "paused":
                 gamePaused();
                 break;
-            case "gameContinued":
+            case "continued":
                 gameContinued();
                 break;
             case "gameOver":
