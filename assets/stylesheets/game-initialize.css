@@ -14,6 +14,11 @@ body {
 .anim-200 {
     transition: 0.2s;
 }
+
+.anim-1000 {
+    transition: 1s;
+}
+
 .quick-anim {
     transition: 0.3s;
 }

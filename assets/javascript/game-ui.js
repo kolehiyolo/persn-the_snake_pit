@@ -6,7 +6,7 @@ function setPlayerUI(num) {
 
     let activeUI = players[`player${num}`];
 
-    $(`body main`).append(`<div id="player${num}-ui" class="player-ui hidden slow-anim"></div>`);
+    $(`body main`).append(`<div id="player${num}-ui" class="player-ui hidden slow-anim game-arena-element"></div>`);
     switch (num) {
         case 1:
             $(`#player1-ui`).attr(`style`, `min-height:${arenaHeight}px; left:50%; transform: translate(-${arenaWidth/2 + 265}px,-50%);`);
@@ -176,7 +176,7 @@ function updateSkillUI(num, skill) {
 
 function setScoreBoard() {
     $(`body main`).append(`<div id="score-board"></div>`);
-    $(`#score-board`).addClass(`hidden slow-anim`);
+    $(`#score-board`).addClass(`hidden slow-anim game-arena-element`);
 
     $(`#score-board`).append(`<div id="food-count-div"></div>`);
     for (let i = 1; i <= food.super.limit; i++) {

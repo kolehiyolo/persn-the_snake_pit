@@ -1,5 +1,5 @@
 function setArenaMenu() {
-    $(`body main`).append(`<div id="arena-menu" class="hidden anim-200"></div>`);
+    $(`body main`).append(`<div id="arena-menu" class="hidden anim-200 game-arena-element"></div>`);
     let arenaWidth = $(`#game-arena-grid`).outerWidth();
     let arenaHeight = $(`#game-arena-grid`).outerWidth();
     let arenaMenuStyling = `min-width:${arenaWidth}px; min-height:${arenaHeight}px;`;
@@ -30,26 +30,45 @@ function setArenaMenu() {
         menu.main.position = `resume`;
     }, 200);
 
-    setMenuControls();
     setMenuSettings();
+    setMenuControls();
+    setMenuExit();
 }
 
 function setMenuSettings() {}
+
+function setMenuExit() {
+    $(`#arena-menu`).append(`<div id="arena-menu-exit" class="hidden anim-200"></div>`);
+    $(`#arena-menu-exit`).append(`<div id="ame-label" class="anim-200"></div>`);
+    $(`#ame-label`).html(`<p>Are you sure you want to exit?</p>`);
+
+    $(`#arena-menu-exit`).append(`<div id="ame-options" class="anim-200"></div>`);
+    $(`#ame-options`).append(`<div id="ameo-yes" class="anim-200 ame-option"></div>`);
+    $(`#ame-options`).append(`<div id="ameo-no" class="anim-200 ame-option"></div>`);
+    $(`#ameo-yes`).html(`<p>Yes</p>`);
+    $(`#ameo-no`).html(`<p>No</p>`);
+
+    $(`#ameo-no`).addClass(`ame-option-active`);
+    menu.exit.item = `no`;
+}
 
 function setMenuControls() {
     $(`#arena-menu`).append(`<div id="arena-menu-controls" class="hidden anim-200"></div>`);
     $(`#arena-menu-controls`).append(`<div id="amc-player1" class="anim-200 amc-player"></div>`);
     $(`#arena-menu-controls`).append(`<div id="amc-player2" class="anim-200 amc-player"></div>`);
-    $(`#amc-player1`).append(`<div id="amc-player1-label" class="anim-200 amc-player-label"></div>`);
-    $(`#amc-player2`).append(`<div id="amc-player2-label" class="anim-200 amc-player-label"></div>`);
-    $(`#amc-player1-label`).append(`<p>${players.player1.main.name}</p>`);
-    $(`#amc-player2-label`).append(`<p>${players.player2.main.name}</p>`);
 
     let directions = [`up`, `down`, `left`, `right`];
     let skills = [`strike`, `skill1`, `skill2`];
     let misc = [`aux`, `exit`];
 
     for (let i = 1; i <= 2; i++) {
+        // Header
+        $(`#amc-player${i}`).append(`<div id="amc-player${i}-header" class="anim-200 amc-player-header"></div>`);
+        $(`#amc-player${i}-header`).append(`<div id="amc-player${i}-label" class="anim-200 amc-player-label"></div>`);
+        $(`#amc-player${i}-header`).append(`<div id="amcp${i}-reset" class="anim-200 amc-reset"></div>`);
+        $(`#amc-player${i}-label`).append(`<p>${players[`player${i}`].main.name}</p>`);
+        $(`#amcp${i}-reset`).append(`<p>Reset</p>`);
+
         // Direction
         $(`#amc-player${i}`).append(`<div id="amcp${i}-direction" class="anim-200 amc-category"></div>`);
         $(`#amcp${i}-direction`).append(`<div id="amcp${i}-direction-label" class="anim-200 amc-category-label"></div>`);
@@ -100,8 +119,8 @@ function remArenaMenu() {
 }
 
 let amMainOptions = [`resume`, `settings`, `controls`, `exit`];
-let amControlsCategories = [`direction`, `skill`, `misc`];
-let amControlsItems = [`up`, `down`, `left`, `right`, `strike`, `skill1`, `skill2`, `aux`, `exit`];
+let amControlsCategories = [`reset`, `direction`, `skill`, `misc`];
+let amControlsItems = [`reset`, `up`, `down`, `left`, `right`, `strike`, `skill1`, `skill2`, `aux`, `exit`];
 
 function navMainMenu() {
     $(`.arena-main-active`).removeClass(`arena-main-active`);
@@ -109,6 +128,10 @@ function navMainMenu() {
 }
 
 function returnToMainMenu() {
+    console.log(`controlsChanged = ${controlsChanged}`);
+    if (controlsChanged === true) {
+        updateControlsUI();
+    }
     menu.state = `main`;
     $(`#arena-menu-controls`).addClass(`hidden`);
     $(`#arena-menu-controls`).removeClass(`show`);
@@ -116,8 +139,19 @@ function returnToMainMenu() {
     $(`#arena-menu-settings`).addClass(`hidden`);
     $(`#arena-menu-settings`).removeClass(`show`);
 
+    $(`#arena-menu-exit`).addClass(`hidden`);
+    $(`#arena-menu-exit`).removeClass(`show`);
+
     $(`#arena-menu-main`).addClass(`show`);
     $(`#arena-menu-main`).removeClass(`hidden`);
+}
+
+function updateControlsUI() {
+    for (let i = 1; i <= 2; i++) {
+        $(`#player${i}-ui-strike-key`).html(`<p>${players[`player${i}`].controls.main.skill.strike}</p>`);
+        $(`#player${i}-ui-skill1-key`).html(`<p>${players[`player${i}`].controls.main.skill.skill1}</p>`);
+        $(`#player${i}-ui-skill2-key`).html(`<p>${players[`player${i}`].controls.main.skill.skill2}</p>`);
+    }
 }
 
 function gamePaused() {
@@ -130,14 +164,15 @@ function gamePaused() {
                 case `aux`:
                     if (menu.main.position === `resume`) {
                         resumeGame();
-                    }
-                    if (menu.main.position === `settings`) {
+                    } else if (menu.main.position === `settings`) {
                         menu.state = `settings`;
                         showMenuSettings();
-                    }
-                    if (menu.main.position === `controls`) {
+                    } else if (menu.main.position === `controls`) {
                         menu.state = `controls`;
                         showMenuControls();
+                    } else if (menu.main.position === `exit`) {
+                        menu.state = `exit`;
+                        showMenuExit();
                     }
                     break;
                 case `exit`:
@@ -156,10 +191,25 @@ function gamePaused() {
         } else if (menu.state === `controls`) {
             switch (activeUser.main.misc) {
                 case `aux`:
-                    if (controlWait === false) {
+                    if (menu.controls[`player${num}`].category === `reset`) {
+                        resetControls(num);
+                    } else if (controlWait === false) {
                         waitForControl(num);
-                    } 
-                    // console.log(`Pressing Enter in Controls`);
+                    }
+                    break;
+                case `exit`:
+                    returnToMainMenu();
+                    break;
+            }
+        } else if (menu.state === `exit`) {
+            switch (activeUser.main.misc) {
+                case `aux`:
+                    if (menu.exit.item === `yes`) {
+                        console.log(`Exit to gameChoose()`);
+                        exitToChoose();
+                    } else {
+                        returnToMainMenu();
+                    }
                     break;
                 case `exit`:
                     returnToMainMenu();
@@ -182,7 +232,6 @@ function gamePaused() {
             }
             menu.main.position = `${amMainOptions[menu.main.count]}`;
             navMainMenu();
-            // console.log(`menu.main.position = ${menu.main.position}`);
         } else if (menu.state === `controls`) {
             switch (activeUser.main.direction) {
                 case `up`:
@@ -196,12 +245,28 @@ function gamePaused() {
                     }
                     break;
             }
-            // amControlsItems = [`up`, `down`, `left`, `right`, `strike`, `skill1`, `skill2`, `aux`, `exit`];
             menu.controls[`player${num}`].item = `${amControlsItems[menu.controls[`player${num}`].count]}`;
-            menu.controls[`player${num}`].category = (menu.controls[`player${num}`].count <= 3) ? `direction` :
-                (menu.controls[`player${num}`].count <= 6) ? `skill` : `misc`;
+            menu.controls[`player${num}`].category =
+                (menu.controls[`player${num}`].count === 0) ? `reset` :
+                (menu.controls[`player${num}`].count <= 4) ? `direction` :
+                (menu.controls[`player${num}`].count <= 7) ? `skill` : `misc`
             navMenuControls(num);
-            // console.log(`menu.main.position = ${menu.main.position}`);
+        } else if (menu.state === `exit`) {
+            switch (activeUser.main.direction) {
+                case `up`:
+                    if (menu.exit.item === `no`) {
+                        menu.exit.item = `yes`;
+                        navMenuExit();
+                    }
+                    break;
+                case `down`:
+                    if (menu.exit.item === `yes`) {
+                        menu.exit.item = `no`;
+                        navMenuExit();
+                    }
+                    break;
+            }
+
         }
     } else if (key.type === `skill`) {
         console.log(`No effect!`);
@@ -220,6 +285,9 @@ function showMenuControls() {
     $(`#arena-menu-main`).addClass(`hidden`);
     $(`#arena-menu-main`).removeClass(`show`);
 
+    $(`#arena-menu-controls`).addClass(`show`);
+    $(`#arena-menu-controls`).addClass(`hidden`);
+
     $(`#amc-player1 .amc-category-active`).removeClass(`amc-category-active`);
     $(`#amc-player1 .amc-category-label-active`).removeClass(`amc-category-label-active`);
     $(`#amc-player1 .amc-item-active`).removeClass(`amc-item-active`);
@@ -228,12 +296,10 @@ function showMenuControls() {
     $(`#amc-player2 .amc-category-label-active`).removeClass(`amc-category-label-active`);
     $(`#amc-player2 .amc-item-active`).removeClass(`amc-item-active`);
 
-    $(`#arena-menu-controls`).addClass(`show`);
-    $(`#arena-menu-controls`).addClass(`hidden`);
-    menu.controls.player1.count = 0;
+    menu.controls.player1.count = 1;
     menu.controls.player1.category = `direction`;
     menu.controls.player1.item = `up`;
-    menu.controls.player2.count = 0;
+    menu.controls.player2.count = 1;
     menu.controls.player2.category = `direction`;
     menu.controls.player2.item = `up`;
 
@@ -249,17 +315,26 @@ function showMenuControls() {
 }
 
 function navMenuControls(num) {
-    controlWait = false;
+    // controlWait = false;
+    $(`#amcp${num}-reset`).removeClass(`amc-reset-active`);
     $(`#amc-player${num} .amc-category-active`).removeClass(`amc-category-active`);
     $(`#amc-player${num} .amc-category-label-active`).removeClass(`amc-category-label-active`);
     $(`#amc-player${num} .amc-item-active`).removeClass(`amc-item-active`);
 
-    $(`#amcp${num}-${menu.controls[`player${num}`].category}`).addClass(`amc-category-active`);
+    if (menu.controls[`player${num}`].category === `reset`) {
+        $(`#amcp${num}-reset`).addClass(`amc-reset-active`);
+        return
+    }
+
     $(`#amcp${num}-${menu.controls[`player${num}`].category}-label`).addClass(`amc-category-label-active`);
+    $(`#amcp${num}-${menu.controls[`player${num}`].category}`).addClass(`amc-category-active`);
 
     let catFirst = String(menu.controls[`player${num}`].category)[0];
     $(`#amcp${num}${catFirst}-${menu.controls[`player${num}`].item}-label`).addClass(`amc-item-active`);
     $(`#amcp${num}${catFirst}-${menu.controls[`player${num}`].item}-value`).addClass(`amc-item-active`);
+
+    // console.log(`menu.controls.player${num}.category = ${menu.controls[`player${num}`].category}`);
+    // console.log(`menu.controls.player${num}.item = ${menu.controls[`player${num}`].item}`);
 }
 
 function waitForControl(num) {
@@ -267,6 +342,28 @@ function waitForControl(num) {
     console.log(`Press anything for a new control`);
     let catFirst = String(menu.controls[`player${num}`].category)[0];
     $(`#amcp${num}${catFirst}-${menu.controls[`player${num}`].item}-value`).html(`<p style="font-style:italic;">Press Key</p>`);
+}
+
+function resetControls(num) {
+    controlsChanged = true;
+    // console.log(`Reset the Controls for Player ${num}`);
+    setControls(num);
+    amControlsCategories = [`reset`, `direction`, `skill`, `misc`];
+    amControlsItems = [`reset`, `up`, `down`, `left`, `right`, `strike`, `skill1`, `skill2`, `aux`, `exit`];
+
+    let directions = [`up`, `down`, `left`, `right`];
+    let skills = [`strike`, `skill1`, `skill2`];
+    let misc = [`aux`, `exit`];
+
+    directions.forEach(j => {
+        $(`#amcp${num}d-${j}-value`).html(`<p>'${players[`player${num}`].controls.main.direction[j]}'</p>`);
+    });
+    skills.forEach(j => {
+        $(`#amcp${num}s-${j}-value`).html(`<p>'${players[`player${num}`].controls.main.skill[j]}'</p>`);
+    });
+    misc.forEach(j => {
+        $(`#amcp${num}m-${j}-value`).html(`<p>'${players[`player${num}`].controls.main.misc[j]}'</p>`);
+    });
 }
 
 function setNewControl(num) {
@@ -279,16 +376,26 @@ function setNewControl(num) {
     players[`player${num}`].controls.alt[contCategory][contItem] = String(key.id).toUpperCase();
 
     $(`#amcp${num}${catFirst}-${contItem}-value`).html(`<p>'${players[`player${num}`].controls.main[contCategory][contItem]}'</p>`);
+
+
 }
 
 function checkNewControl(num) {
     let unique = true;
+    controlsChanged = true;
     FindMatchingControls: {
         for (let i in players) {
             for (let j in players[i].controls) {
                 for (let k in players[i].controls[j]) {
                     for (let l in players[i].controls[j][k]) {
                         if (key.id === players[i].controls[j][k][l]) {
+                            let contCategory = String(menu.controls[`player${num}`].category);
+                            let contItem = String(menu.controls[`player${num}`].item);
+                            controlsChanged = false;
+                            if (key.id === players[`player${num}`].controls.main[contCategory][contItem]) {
+                                console.log(`Same controls`);
+                                break FindMatchingControls;
+                            }
                             unique = false;
                             let catFirst = String(menu.controls[`player${num}`].category)[0];
                             $(`#amcp${num}${catFirst}-${menu.controls[`player${num}`].item}-value`).html(`<p style="font-style:italic;">Already Used</p>`);
@@ -305,10 +412,43 @@ function checkNewControl(num) {
     if (unique === true) {
         setNewControl(num);
     }
-    
+}
+
+function showMenuExit() {
+    $(`#arena-menu-main`).addClass(`hidden`);
+    $(`#arena-menu-main`).removeClass(`show`);
+
+    $(`#arena-menu-exit`).addClass(`show`);
+    $(`#arena-menu-exit`).removeClass(`hidden`);
+
+    $(`.ame-option-active`).removeClass(`ame-option-active`);
+    $(`#ameo-no`).addClass(`ame-option-active`);
+    menu.exit.item = `no`;
+}
+
+function navMenuExit() {
+    $(`.ame-option-active`).removeClass(`ame-option-active`);
+    $(`#ameo-${menu.exit.item}`).addClass(`ame-option-active`);
+}
+
+function exitToChoose() {
+    console.log(`exitToChoose()`);
+    $(`.game-arena-element`).addClass(`anim-1000`);
+    setTimeout(() => {
+        $(`.game-arena-element`).removeClass(`show`);
+        $(`.game-arena-element`).addClass(`hidden`);
+    }, 1);
+
+    clearAllIntervals();
+    setTimeout(() => {
+        $(`.game-arena-element`).remove();
+        // console.log(`Delete .game-arena-element`); 
+        setGameState(`choose`);
+    }, 1000);
 }
 
 let controlWait = false;
+let controlsChanged = false;
 
 let menu = {
     state: undefined,
@@ -333,6 +473,9 @@ let menu = {
             item: undefined,
         },
     },
+    exit: {
+        item: undefined,
+    }
 }
 
 // menu.state = `main`;

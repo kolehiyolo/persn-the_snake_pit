@@ -222,7 +222,7 @@ let chooseSnakesArray = [
 
 function setChooseSnakesGrid() {
     console.log(`activated setChooseSnakesGrid()`);
-    $(`body main`).append(`<div id="game-choose-grid"></div>`);
+    $(`body main`).append(`<div id="game-choose-grid" class="hidden anim-1000"></div>`);
     $(`#game-choose-grid`).append(`<div id="choose-snakes-grid"></div>`);
     $(`#game-choose-grid`).append(`<div id="choose-ready-grid"></div>`);
     $(`#choose-ready-grid`).append(`<button id="choose-player_1-button" class="choose-player-button"></button>`);
@@ -278,4 +278,8 @@ function setChooseSnakesGrid() {
         }
     });
 
+    setTimeout(() => {
+        $(`#game-choose-grid`).addClass(`show`);
+        $(`#game-choose-grid`).addClass(`hidden`);
+    }, 1);
 }

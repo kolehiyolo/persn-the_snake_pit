@@ -128,12 +128,32 @@
     padding: 10px 0px;
 }
 
+.amc-player-header {
+    display: flex;
+    gap: 10px;
+    width: 300px;
+    box-sizing: border-box;
+}
+
 .amc-player-label {
     box-sizing: border-box;
-    width: 300px;
+    width: 50%;
     border: solid 3px white;
     border-radius: 5px;
     color: white;
+}
+
+.amc-reset {
+    box-sizing: border-box;
+    width: 50%;
+    border: solid 3px grey;
+    border-radius: 5px;
+    color: grey;
+}
+
+.amc-reset-active {
+    color: white;
+    border-color: white;
 }
 
 .amc-category-label {
@@ -165,3 +185,58 @@
     color: white;
     width: 120px;
 }
+
+#arena-menu-exit {
+    padding: 20px;
+    margin: 0;
+    box-sizing: border-box;
+    color: white;
+    font-family: monospace;
+    font-family: 'VT323', monospace;
+    text-transform: uppercase;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 500px;
+    text-align: center;
+}
+
+#ame-label {
+    border: solid 7px white;
+    background-color: black;
+    padding: 20px;
+    margin: 0;
+}
+
+#ame-options {
+    gap: 20px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.ame-option {
+    background-color: black;
+    border: solid 7px grey;
+    color: grey;
+    padding: 20px;
+    margin: 0 auto;
+    width: 150px;
+}
+
+#arena-menu-exit p{
+    margin: 0;
+    font-size: 30px;
+}
+
+.ame-option-active {
+    color: white;
+    border-color: white;
+    width: 250px;
+    border-radius: 25px;
+}
+

@@ -85,9 +85,12 @@ function checkForUnstoppable(num) {
     let enm = (num === 1) ? 2 : 1;
     let activeUser = players[`player${num}`];
     let enemyUser = players[`player${enm}`];
+    let activeSnake = String(players[`player${num}`].arena.snake);
 
     if ($(`.player${num}-snake-head`).hasClass(`dead-snake`)) {
-        $(`.player${num}-snake-head`).removeClass(`dead-snake`);
+        // $(`.player${num}-snake-head`).removeClass(`dead-snake`);
+        $(`.player${num}-snake-head`).attr(`class`,`cols player${num}-snake-head ${activeSnake}-head player${num}-snake`);
+        $(`.player${num}-snake-head`).html(``);
     }
 
     let headX = parseInt(activeUser.arena.position[0][0]);

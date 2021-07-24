@@ -70,7 +70,7 @@ function buildArenaGrid() {
     console.log(`buildArenaGrid()`);
 
     // This creates the arena by adding the grid itself and all the cells
-    $(`body main`).append(`<div id="game-arena-grid" class="hidden slow-anim arena-border-dead"></div>`);
+    $(`body main`).append(`<div id="game-arena-grid" class="hidden slow-anim arena-border-dead game-arena-element"></div>`);
     for (var i = 1; i <= game.arena.yAxis; i++) { // This first layer of the nest adds the rows
         $(`#game-arena-grid`).append(`<div id="row${i}" class="rows"></div>`);
         for (var j = 1; j <= game.arena.xAxis; j++) { // This second layer adds the column cells for each row
@@ -132,7 +132,7 @@ function resetArenaElements() {
     console.log(`resetArenaGrid()`);
     remPromptMsgs("quick", 300);
     $(`.cols`).attr("class", "cols");
-    $(`#game-arena-grid`).attr(`class`, `slow-anim arena-border-normal`);
+    $(`#game-arena-grid`).attr(`class`, `slow-anim arena-border-normal game-arena-element`);
     setGameVariables();
     setPlayersArena();
     resetSkills();

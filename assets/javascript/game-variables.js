@@ -92,62 +92,67 @@ function setPlayers() {
     // players.alter2 = JSON.parse(JSON.stringify(players.player2));
 }
 
-function setControls() {
-    players.player1.controls = {
-        // Here are the Primary Controls for Player 1
-        main: {
-            direction: {
-                up: "w",
-                down: "s",
-                left: "a",
-                right: "d",
-            },
-            skill: {
-                strike: "c",
-                skill1: "v",
-                skill2: "b",
-            },
-            misc: {
-                aux: " ",
-                exit: "t",
+function setControls(num) {
+    switch (num) {
+        case 1:
+            players.player1.controls = {
+                // Here are the Primary Controls for Player 1
+                main: {
+                    direction: {
+                        up: "w",
+                        down: "s",
+                        left: "a",
+                        right: "d",
+                    },
+                    skill: {
+                        strike: "c",
+                        skill1: "v",
+                        skill2: "b",
+                    },
+                    misc: {
+                        aux: " ",
+                        exit: "t",
+                    }
+                }
             }
-        }
-    }
-    players.player2.controls = {
-        // Here are the Primary Controls for Player 2
-        main: {
-            direction: {
-                up: "i",
-                down: "k",
-                left: "j",
-                right: "l",
-            },
-            skill: {
-                strike: "[",
-                skill1: "]",
-                skill2: "\\",
-                // skill2: "Enter",
-            },
-            misc: {
-                aux: "Enter",
-                exit: "8",
+            break;
+        case 2:
+            players.player2.controls = {
+                // Here are the Primary Controls for Player 2
+                main: {
+                    direction: {
+                        up: "i",
+                        down: "k",
+                        left: "j",
+                        right: "l",
+                    },
+                    skill: {
+                        strike: "[",
+                        skill1: "]",
+                        skill2: "\\",
+                        // skill2: "Enter",
+                    },
+                    misc: {
+                        aux: "Enter",
+                        exit: "8",
+                    }
+                }
             }
-        }
+            break;
     }
 
-    // Now we build the Alternate Controls for each player
-    players.player1.controls.alt = JSON.parse(JSON.stringify(players.player1.controls.main));
-    players.player2.controls.alt = JSON.parse(JSON.stringify(players.player2.controls.main));
+    // Now we build the Alternate Controls for the player
+    players[`player${num}`].controls.alt = JSON.parse(JSON.stringify(players[`player${num}`].controls.main));
 
     // Now we define the Alternative Controls for each player
     // For now, these are just the uppercase versions of the main controls
-    for (let i = 1; i <= 2; i++) {
-        for (let j in players[`player${i}`].controls.main) {
-            for (let k in players[`player${i}`].controls.main[j]) {
-                players[`player${i}`].controls.alt[j][k] = players[`player${i}`].controls.main[j][k].toUpperCase();
-            }
+    // for (let i = 1; i <= 2; i++) {
+    for (let j in players[`player${num}`].controls.main) {
+        for (let k in players[`player${num}`].controls.main[j]) {
+            players[`player${num}`].controls.alt[j][k] = players[`player${num}`].controls.main[j][k].toUpperCase();
         }
     }
+    // }
 }
 
 function setPlayersArena() {

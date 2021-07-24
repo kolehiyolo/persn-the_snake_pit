@@ -1,7 +1,8 @@
 // We initialize the game variables from game-variables.js
 setGameVariables();
 setPlayers();
-setControls();
+setControls(1);
+setControls(2);
 
 // These are the game.state options
 game.state = "choose"; // This is the state when the Players are at the Snake Selection phase
@@ -20,10 +21,10 @@ game.state = "over"; // This is the state when one or both Players lose
 // player.p1.choose.snake = "jörmungandr";
 // player.p1.choose.snake = "sheshanaga";
 
-players.player1.choose.snake = "orochi";
-players.player2.choose.snake = "quetzalcoatl";
-setGameState("arena");
-// setGameState("choose");
+// players.player1.choose.snake = "orochi";
+// players.player2.choose.snake = "quetzalcoatl";
+// setGameState("arena");
+setGameState("choose");
 
 // This function sets the new Game State as well as logs it
 function setGameState(newGameState) {
