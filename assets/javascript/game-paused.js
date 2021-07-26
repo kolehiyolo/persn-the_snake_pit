@@ -35,7 +35,11 @@ function setArenaMenu() {
     setMenuExit();
 }
 
-function setMenuSettings() {}
+function setMenuSettings() {
+    $(`#arena-menu`).append(`<div id="arena-menu-settings" class="hidden anim-200"></div>`);
+    $(`#arena-menu-settings`).append(`<h1>I haven't built this yet</h1>`);
+    $(`#arena-menu-settings`).append(`<h2>I don't even know what I would put here lol</h2>`);
+}
 
 function setMenuExit() {
     $(`#arena-menu`).append(`<div id="arena-menu-exit" class="hidden anim-200"></div>`);

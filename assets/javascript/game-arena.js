@@ -53,6 +53,7 @@ function setArena() {
     players.player2.arena.snake = players.player2.choose.snake;
     setSkills(1);
     setSkills(2);
+    testVariables();
 
     console.log("Player 1's Active Snake = " + players.player1.arena.snake);
     console.log("Player 2's Active Snake = " + players.player2.arena.snake);

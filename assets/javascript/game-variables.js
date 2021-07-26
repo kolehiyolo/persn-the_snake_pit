@@ -85,6 +85,8 @@ function setPlayers() {
     players.player2.main.id = 2;
     players.player1.main.name = "Tristan";
     players.player2.main.name = "Theolo";
+    players.player1.main.name = "Player 1";
+    players.player2.main.name = "Player 2";
 
     // Finally, we set-up what I call "alter" profiles, which is primarily used for Apopis' Switch skill
     // FIXME - Find a better way to implement Switch skill
@@ -172,6 +174,7 @@ function setPlayersArena() {
         portable: false, // This means the snake can use the borders as portals
         unstoppable: false, // This means the snake can plow through obstacles, snakes and strikes
         masochist: false, // This means the snake can pass through itself
+        ai: false,
         immortal: false,
     }
     players.player1.intervals = {
@@ -200,7 +203,8 @@ function setPlayersArena() {
     players.player2.intervals = JSON.parse(JSON.stringify(players.player1.intervals));
 
     // TEST ME
-    players.player2.status.immortal = true;
+    // players.player2.status.ai = true;
+    // players.player2.status.immortal = true;
     // players.player1.intervals.growth.speed = 100;
     // players.player2.intervals.growth.speed = 100000;
     // player.alter1.arena = JSON.parse(JSON.stringify(player.p1.arena));
@@ -209,6 +213,11 @@ function setPlayersArena() {
     // players.alter2.intervals = JSON.parse(JSON.stringify(players.player2.intervals));
     // players.alter1.status = JSON.parse(JSON.stringify(players.player1.status));
     // players.alter2.status = JSON.parse(JSON.stringify(players.player2.status));
+}
+
+function testVariables() {
+    // players.player2.status.ai = true;
+    // players.player2.status.immortal = true;
 }
 
 

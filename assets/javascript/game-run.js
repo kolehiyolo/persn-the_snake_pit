@@ -1,31 +1,26 @@
 function snakeAI(playerNum) {
     // PERFECT
     let num = playerNum;
+    let activeUser = players[`player${num}`];
     let e = {
         key: undefined
     };
-    switch (num) {
-        case 1:
-            break;
-        case 2:
-            if (players.player2.intervals.run.counter % 7 === 0) {
-                switch (players.player2.arena.direction) {
-                    case "up":
-                        e.key = players.player2.controls.main.direction.right;
-                        break;
-                    case "down":
-                        e.key = players.player2.controls.main.direction.left;
-                        break;
-                    case "left":
-                        e.key = players.player2.controls.main.direction.up;
-                        break;
-                    case "right":
-                        e.key = players.player2.controls.main.direction.down;
-                        break;
-                }
-                pressKey(e);
-            }
-            break;
+    if (activeUser.intervals.run.counter % 7 === 0) {
+        switch (activeUser.arena.direction) {
+            case "up":
+                e.key = activeUser.controls.main.direction.right;
+                break;
+            case "down":
+                e.key = activeUser.controls.main.direction.left;
+                break;
+            case "left":
+                e.key = activeUser.controls.main.direction.up;
+                break;
+            case "right":
+                e.key = activeUser.controls.main.direction.down;
+                break;
+        }
+        pressKey(e);
     }
 }
 
@@ -49,7 +44,9 @@ function setRunInterval(playerNum) {
             let headY = parseInt(activeUser.arena.position[0][1]);
             activeUser.arena.position.splice(1, 0, [(headX), (headY)]);
             activeUser.arena.position.pop();
-            snakeAI(num);
+            if (activeUser.status.ai === true) {
+                snakeAI(num);
+            }
             switch (activeUser.arena.direction) {
                 case "left":
                     headX--;
@@ -182,7 +179,7 @@ function snakeCrash(num) {
             playerDied(num);
             return;
         }
-        switch (activeUser.arena.direction){
+        switch (activeUser.arena.direction) {
             case `left`:
                 activeUser.arena.direction = `right`;
                 break;
@@ -198,7 +195,8 @@ function snakeCrash(num) {
         }
         activeUser.main.direction = activeUser.arena.direction;
         setSnakeSize(num);
-        return;x    
+        return;
+        x
     }
     gamePopUp(num, `crash`, "");
     activeUser.arena.position.reverse();

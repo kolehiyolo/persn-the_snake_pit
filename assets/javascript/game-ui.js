@@ -85,14 +85,12 @@ function setPlayerUI(num) {
         $(`#player${num}-ui-skill${i}-text`).append(`<p id="player${num}-ui-skill${i}-cool" class="player-ui-skill-cool"></p>`);
         if (snakes[activeUI.arena.snake].skills[`skill${i}`].duration === `Instant`) {
             $(`#player${num}-ui-skill${i}-dura`).html(`Duration: ${snakes[activeUI.arena.snake].skills[`skill${i}`].duration}`);
-        }
-        else {
+        } else {
             $(`#player${num}-ui-skill${i}-dura`).html(`Duration: ${snakes[activeUI.arena.snake].skills[`skill${i}`].duration} secs`);
         }
         if (snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown === `Instant`) {
             $(`#player${num}-ui-skill${i}-cool`).html(`Cooldown: ${snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown}`);
-        }
-        else {
+        } else {
             $(`#player${num}-ui-skill${i}-cool`).html(`Cooldown: ${snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown} secs`);
         }
 
@@ -133,6 +131,8 @@ function setPlayerUI(num) {
     setTimeout(() => {
         $(`#player${num}-ui`).removeClass(`slow-anim`);
     }, 1000);
+
+    addConfig();
 }
 
 function updateSkillUI(num, skill) {
@@ -146,14 +146,12 @@ function updateSkillUI(num, skill) {
     // Add the Stats
     if (snakes[activeUI.arena.snake].skills[`skill${i}`].duration === `Instant`) {
         $(`#player${num}-ui-skill${i}-dura`).html(`Duration: ${snakes[activeUI.arena.snake].skills[`skill${i}`].duration}`);
-    }
-    else {
+    } else {
         $(`#player${num}-ui-skill${i}-dura`).html(`Duration: ${snakes[activeUI.arena.snake].skills[`skill${i}`].duration} secs`);
     }
     if (snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown === `Instant`) {
         $(`#player${num}-ui-skill${i}-cool`).html(`Cooldown: ${snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown}`);
-    }
-    else {
+    } else {
         $(`#player${num}-ui-skill${i}-cool`).html(`Cooldown: ${snakes[activeUI.arena.snake].skills[`skill${i}`].cooldown} secs`);
     }
 
@@ -228,4 +226,76 @@ function updatePlayerUI(num, item, value) {
         case "score":
             break;
     }
+}
+
+function addConfig() {
+    for (let i = 1; i <= 2; i++) {
+        $(`#p${i}-ui-config`).remove();
+        $(`#player${i}-ui`).append(`<div id="p${i}-ui-config" class="pui-config"></div>`)
+        $(`#p${i}-ui-config`).append(`<button id="p${i}-ui-config-immortal"></button>`)
+        $(`#p${i}-ui-config`).append(`<button id="p${i}-ui-config-ai"></button>`)
+        $(`#p${i}-ui-config-immortal`).html(`immortal`)
+        $(`#p${i}-ui-config-ai`).addClass(`pui-config-ai`)
+        $(`#p${i}-ui-config-immortal`).addClass(`pui-config-immortal`)
+        $(`#p${i}-ui-config-ai`).html(`ai`)
+        $(`#p${i}-ui-config-immortal`).click(function (e) {
+            if (this.id === `p1-ui-config-immortal`) {
+                changeImmortal(1);
+            } else if (this.id === `p2-ui-config-immortal`) {
+                changeImmortal(2);
+            }
+        });
+        $(`#p${i}-ui-config-ai`).click(function (e) {
+            if (this.id === `p1-ui-config-ai`) {
+                changeAI(1);
+            } else if (this.id === `p2-ui-config-ai`) {
+                changeAI(2);
+            }
+        });
+
+        if (players[`player${i}`].status.immortal === true) {
+            $(`#p${i}-ui-config-immortal`).removeClass(`pui-config-inactive`);
+            $(`#p${i}-ui-config-immortal`).addClass(`pui-config-active`);
+        } else {
+            $(`#p${i}-ui-config-immortal`).removeClass(`pui-config-active`);
+            $(`#p${i}-ui-config-immortal`).addClass(`pui-config-inactive`);
+        }
+        if (players[`player${i}`].status.ai === true) {
+            $(`#p${i}-ui-config-ai`).removeClass(`pui-config-inactive`);
+            $(`#p${i}-ui-config-ai`).addClass(`pui-config-active`);
+        } else {
+            $(`#p${i}-ui-config-ai`).removeClass(`pui-config-active`);
+            $(`#p${i}-ui-config-ai`).addClass(`pui-config-inactive`);
+        }
+    }
+}
+
+function changeImmortal(num) {
+    let activeUser = players[`player${num}`];
+
+    if (activeUser.status.immortal === true) {
+        activeUser.status.immortal = false;
+        $(`#p${num}-ui-config-immortal`).removeClass(`pui-config-active`);
+        $(`#p${num}-ui-config-immortal`).addClass(`pui-config-inactive`);
+    } else {
+        activeUser.status.immortal = true;
+        $(`#p${num}-ui-config-immortal`).removeClass(`pui-config-inactive`);
+        $(`#p${num}-ui-config-immortal`).addClass(`pui-config-active`);
+    }
+    console.log(`Player ${num} Immortality = ${activeUser.status.immortal}`);
+}
+
+function changeAI(num) {
+    let activeUser = players[`player${num}`];
+
+    if (activeUser.status.ai === true) {
+        activeUser.status.ai = false;
+        $(`#p${num}-ui-config-ai`).removeClass(`pui-config-active`);
+        $(`#p${num}-ui-config-ai`).addClass(`pui-config-inactive`);
+    } else {
+        activeUser.status.ai = true;
+        $(`#p${num}-ui-config-ai`).removeClass(`pui-config-inactive`);
+        $(`#p${num}-ui-config-ai`).addClass(`pui-config-active`);
+    }
+    console.log(`Player ${num} AI = ${activeUser.status.ai}`);
 }

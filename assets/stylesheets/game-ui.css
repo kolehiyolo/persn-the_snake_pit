@@ -449,3 +449,30 @@
 #player2-score-div {
     grid-area: player2-score-div;
 }
+
+.pui-config {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%,0);
+    display: flex;
+    gap: 10px;
+}
+
+.pui-config button {
+    background-color: rgba(255, 255, 255, 0);
+    padding: 5px;
+    font-size: 20px;
+    font-family: 'VT323', monospace;
+    transition: 0.5s;
+}
+
+.pui-config-active {
+    color: white;
+    border: solid 3px white;
+}
+
+.pui-config-inactive {
+    color: grey;
+    border: solid 3px grey;
+}
