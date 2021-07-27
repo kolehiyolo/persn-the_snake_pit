@@ -40,6 +40,15 @@ function setGameVariables() {
             active: false,
             count: 0,
             limit: 5,
+        },
+        item: {
+            position: [undefined, undefined],
+            snake: undefined,
+            skill: undefined,
+            value: 5,
+            active: false,
+            count: 0,
+            limit: 1,
         }
     }
 
@@ -110,6 +119,7 @@ function setControls(num) {
                         strike: "c",
                         skill1: "v",
                         skill2: "b",
+                        item: "n",
                     },
                     misc: {
                         aux: " ",
@@ -129,9 +139,10 @@ function setControls(num) {
                         right: "l",
                     },
                     skill: {
-                        strike: "[",
-                        skill1: "]",
-                        skill2: "\\",
+                        strike: "p",
+                        skill1: "[",
+                        skill2: "]",
+                        item: "\\",
                         // skill2: "Enter",
                     },
                     misc: {
@@ -148,13 +159,11 @@ function setControls(num) {
 
     // Now we define the Alternative Controls for each player
     // For now, these are just the uppercase versions of the main controls
-    // for (let i = 1; i <= 2; i++) {
     for (let j in players[`player${num}`].controls.main) {
         for (let k in players[`player${num}`].controls.main[j]) {
             players[`player${num}`].controls.alt[j][k] = players[`player${num}`].controls.main[j][k].toUpperCase();
         }
     }
-    // }
 }
 
 function setPlayersArena() {

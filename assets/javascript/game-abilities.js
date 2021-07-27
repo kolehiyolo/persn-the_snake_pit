@@ -49,25 +49,33 @@ function setCooldown(num, skill) {
                 assignWidth = `${(activeSkill.cooldown.counter)/activeSkill.cooldown.value/2.5}`;
                 $(`#player${num}-ui-skill${skill}-time`).css(`width`, `${assignWidth}%`);
             } else {
-                activeSkill.ready = true;
-                activeSkill.cooldown.status = false;
-                activeSkill.cooldown.counter = 0;
-                $(`#player${num}-ui-skill${skill}-time`).addClass(`player-ui-skill-anim`);
-                $(`#player${num}-ui-skill${skill}-time`).addClass(`player-ui-skill-time-dead`);
-                $(`#player${num}-ui-skill${skill}`).removeClass(`player-ui-disabled`);
-                $(`#player${num}-ui-skill${skill}-key`).removeClass(`player-ui-disabled`);
-                $(`#player${num}-ui-skill${skill}-key`).html(`<p>${activeUser.controls.main.skill[`skill${skill}`]}</p>`);
-                setTimeout(() => {
-                    $(`#player${num}-ui-skill${skill}-time`).css(`width`, `0%`);
-                    $(`#player${num}-ui-skill${skill}-time`).removeClass(`player-ui-skill-time-dead`);
-                    $(`#player${num}-ui-skill${skill}-time`).removeClass(`player-ui-skill-anim`);
-                    $(`#player${num}-ui-skill${skill}`).removeClass(`player-ui-skill-anim`);
-                    $(`#player${num}-ui-skill${skill}-key`).removeClass(`player-ui-skill-anim`);
-                }, 1000);
-                clearInterval(activeSkill.cooldown.function);
+                endCountdown(num, skill);
             }
         }
     }, 1);
+}
+
+function endCountdown(num, skill) {
+    let activeUser = players[`player${num}`];
+    let activeSkill = activeUser.skills[`skill${skill}`];
+
+    activeSkill.ready = true;
+    activeSkill.cooldown.status = false;
+    activeSkill.cooldown.counter = 0;
+    $(`#player${num}-ui-skill${skill}-time`).addClass(`player-ui-skill-anim`);
+    $(`#player${num}-ui-skill${skill}-time`).addClass(`player-ui-skill-time-dead`);
+    $(`#player${num}-ui-skill${skill}`).removeClass(`player-ui-disabled`);
+    $(`#player${num}-ui-skill${skill}-key`).removeClass(`player-ui-disabled`);
+    $(`#player${num}-ui-skill${skill}-key`).html(`<p>${activeUser.controls.main.skill[`skill${skill}`]}</p>`);
+    setTimeout(() => {
+        $(`#player${num}-ui-skill${skill}-time`).css(`width`, `0%`);
+        $(`#player${num}-ui-skill${skill}-time`).removeClass(`player-ui-skill-time-dead`);
+        $(`#player${num}-ui-skill${skill}-time`).removeClass(`player-ui-skill-anim`);
+        $(`#player${num}-ui-skill${skill}`).removeClass(`player-ui-skill-anim`);
+        $(`#player${num}-ui-skill${skill}-key`).removeClass(`player-ui-skill-anim`);
+    }, 1000);
+    clearInterval(activeSkill.cooldown.function);
+
 }
 
 function resetSkills() {
@@ -106,7 +114,7 @@ function setSkillFunctions() {
         let activeUser = players[`player${num}`];
         let activeSkill = activeUser.skills.skill1;
         let activeSnake = activeUser.arena.snake;
-        let enemyUser = players[`player${num}`];
+        let enemyUser = players[`player${enm}`];
         let enemySkill = activeUser.skills.skill1;
         let enemySnake = activeUser.arena.snake;
         activeSkill.status = true;
@@ -119,77 +127,47 @@ function setSkillFunctions() {
             enemyUser.skills.strike.fetch.status = false;
             $(`.p${enm}-strike`).addClass(`slow-anim`);
             $(`.p${enm}-strike`).removeClass(`${enemyUser.arena.snake}-strike vertical-strike horizontal-strike`);
-            // clearInterval(activeUser.intervals.fetchStrike.function);
-            // clearInterval(activeUser.intervals.useStrike.function);
         }
 
-        // if (enemyUser.abilities.strike.status === true) {
-        //     activeUser.abilities.strike.status = false;
-        //     activeUser.intervals.fetchStrike.status = false;
-        //     activeUser.intervals.useStrike.status = false;
-        // }
-
+        let bucket = {
+            p1: {},
+            p2: {},
+        };
+        // WORKME
+        // First we set the size, position and direction of the players to their buckets
         for (let i = 1; i <= 2; i++) {
             players[`player${i}`].status.immobilized = true;
             players[`player${i}`].status.disarmed = true;
-            // player.p1.arena.immobilized = true;
-            // player.p2.arena.immobilized = true;
-            // player.p1.arena.disarmed = true;
-            // player.p2.arena.disarmed = true;
+
+            bucket[`p${i}`].arena = JSON.parse(JSON.stringify(players[`player${i}`].arena));
+            bucket[`p${i}`].direction = JSON.parse(JSON.stringify(players[`player${i}`].main.direction));
         }
 
-//         arena: {direction: "right", snake: "apopis", position: Array(10), size: 10}
-// choose: {snake: "apopis", position: Array(2), ready: true, clicked: true}
-// controls: {main: {…}, alt: {…}}
-// intervals: {run: {…}, growth: {…}, popUp: {…}}
-// main: {id: 1, name: "Player 1", direction: "right", skill: undefined, misc: "aux", …}
-// skills: {strike: {…}, skill1: {…}, skill2: {…}}
-// status: {alive: false, disarmed: false, canTurn: false, canStrike: true, immobilized: false, …}
-// __proto__: Object
+        // Then we swap the buckets except for the player's snake
+        for (let i = 1; i <= 2; i++) {
+            let j = (i === 1) ? 2 : 1;
 
-        let alter1 = {};
-        let alter2 = {};
-        // First we set the size, position and direction of the players to their alters
-        alter1.arena = JSON.parse(JSON.stringify(players.player1.arena));
-        alter2.arena = JSON.parse(JSON.stringify(players.player2.arena));
-        alter1.direction = JSON.parse(JSON.stringify(players.player1.main.direction));
-        alter2.direction = JSON.parse(JSON.stringify(players.player2.main.direction));
-        // alter1.intervals = JSON.parse(JSON.stringify(player.p1.intervals));
-        // alter2.intervals = JSON.parse(JSON.stringify(player.p2.intervals));
+            players[`player${i}`].arena = JSON.parse(JSON.stringify(bucket[`p${j}`].arena));
+            players[`player${i}`].main.direction = JSON.parse(JSON.stringify(bucket[`p${j}`].direction));
+            players[`player${i}`].arena.snake = JSON.parse(JSON.stringify(bucket[`p${i}`].arena.snake));
+            setSnakeSize(i);
+        }
 
-        // Then we swap the alters except for the player's snake
+        // Set the styles
+        for (let i = 1; i <= 2; i++) {
+            let j = (i === 1) ? 2 : 1;
+            $(`.player${i}-snake`).addClass(`slow-anim`);
+            $(`.player${i}-snake-head`).addClass(`${players[`player${j}`].arena.snake}-head switch${i}-head`);
+            $(`.player${i}-snake-body`).addClass(`${players[`player${j}`].arena.snake}-body switch${i}-body`);
+        }
+        for (let i = 1; i <= 2; i++) {
+            let j = (i === 1) ? 2 : 1;
+            $(`.switch${i}-head`).addClass(`player${j}-snake-head`);
+            $(`.switch${i}-body`).addClass(`player${j}-snake-body`);
 
-        players.player1.arena = JSON.parse(JSON.stringify(alter2.arena));
-        players.player2.arena = JSON.parse(JSON.stringify(alter1.arena));
-        players.player1.arena.snake = JSON.parse(JSON.stringify(alter1.arena.snake));
-        players.player2.arena.snake = JSON.parse(JSON.stringify(alter2.arena.snake));
-        players.player1.main.direction = JSON.parse(JSON.stringify(alter2.direction));
-        players.player2.main.direction = JSON.parse(JSON.stringify(alter1.direction));
-        // players.player1.intervals = JSON.parse(JSON.stringify(player.alter2.intervals));
-        // players.player2.intervals = JSON.parse(JSON.stringify(player.alter1.intervals));
-        // updatePlayerUI(1, `size`, ``);
-        // updatePlayerUI(2, `size`, ``);
-        setSnakeSize(1);
-        setSnakeSize(2);
-
-        $(`.player1-snake`).addClass(`slow-anim`);
-        $(`.player2-snake`).addClass(`slow-anim`);
-
-        $(`.player1-snake-head`).addClass(`${players.player2.arena.snake}-head switch1-head`);
-        $(`.player1-snake-body`).addClass(`${players.player2.arena.snake}-body switch1-body`);
-        $(`.player2-snake-head`).addClass(`${players.player1.arena.snake}-head switch2-head`);
-        $(`.player2-snake-body`).addClass(`${players.player1.arena.snake}-body switch2-body`);
-
-        $(`.switch1-head`).addClass(`player2-snake-head`);
-        $(`.switch1-body`).addClass(`player2-snake-body`);
-        $(`.switch2-head`).addClass(`player1-snake-head`);
-        $(`.switch2-body`).addClass(`player1-snake-body`);
-
-        $(`.switch1-head`).removeClass(`${players.player1.arena.snake}-head player2-snake-head switch1-head`);
-        $(`.switch1-body`).removeClass(`${players.player1.arena.snake}-body player2-snake-body switch1-body`);
-        $(`.switch2-head`).removeClass(`${players.player2.arena.snake}-head player1-snake-head switch2-head`);
-        $(`.switch2-body`).removeClass(`${players.player2.arena.snake}-body player1-snake-body switch2-body`);
-
+            $(`.switch${i}-head`).removeClass(`${players[`player${i}`].arena.snake}-head player${i}-snake-head switch${i}-head`);
+            $(`.switch${i}-body`).removeClass(`${players[`player${i}`].arena.snake}-body player${i}-snake-body switch${i}-body`);
+        }
 
         let switchIntervalCounter = 1;
         let switchInterval = setInterval(() => {
@@ -201,23 +179,63 @@ function setSkillFunctions() {
                     $(`.player1-snake`).removeClass(`slow-anim`);
                     $(`.player2-snake`).removeClass(`slow-anim`);
                     $(`.p${enm}-strike`).removeClass(`slow-anim p${enm}-strike`);
-                    game.paused = false;
+                    // game.paused = false;
                     for (let i = 1; i <= 2; i++) {
                         players[`player${i}`].status.immobilized = false;
                         players[`player${i}`].status.disarmed = false;
-                        // player.p1.arena.immobilized = true;
-                        // player.p2.arena.immobilized = true;
-                        // player.p1.arena.disarmed = true;
-                        // player.p2.arena.disarmed = true;
                     }
-            
-                    // player.p1.arena.disarmed = false;
-                    // player.p2.arena.disarmed = false;
-                    // player.p1.arena.immobilized = false;
-                    // player.p2.arena.immobilized = false;
                 }
             }
         }, 10);
+    }
+
+    snakes.apopis.skills.skill2.function = function (num) {
+        console.log(`Confusion!`);
+        let enm = (num === 1) ? 2 : 1;
+        let activeUser = players[`player${num}`];
+        let activeSkill = activeUser.skills.skill2;
+        let activeSnake = activeUser.arena.snake;
+        let enemyUser = players[`player${enm}`];
+        activeSkill.status = true;
+
+        let confusionStyle = `box-shadow: 0 0 5px 2px red`;
+        $(`head`).append(`<style id="apopis-takeover" class="temp-styling"> .player${enm}-snake{ ${confusionStyle}; } </style>`);
+
+        let originalControls = JSON.parse(JSON.stringify(enemyUser.controls.main.direction));
+
+        enemyUser.controls.main.direction.up = JSON.parse(JSON.stringify(originalControls.down));
+        enemyUser.controls.main.direction.down = JSON.parse(JSON.stringify(originalControls.up));
+        enemyUser.controls.main.direction.left = JSON.parse(JSON.stringify(originalControls.right));
+        enemyUser.controls.main.direction.right = JSON.parse(JSON.stringify(originalControls.left));
+
+        for (let i in enemyUser.controls.main.direction) {
+            enemyUser.controls.alt.direction[i] = enemyUser.controls.main.direction[i].toUpperCase();
+        }
+
+        let countdown = parseFloat(activeSkill.duration.value);
+        let durationCounter = 0;
+        activeSkill.duration.function = setInterval(() => {
+            if (game.paused === false) {
+                if (durationCounter % 25 === 0) {
+                    gamePopUp(num, `ability`, `${activeSkill.name} ${countdown}`)
+                    countdown -= 0.1;
+                    countdown = (Math.round(countdown * 100) / 100).toFixed(2);
+                }
+                if (durationCounter <= (activeSkill.duration.value * 250)) {
+                    durationCounter++;
+                } else {
+                    activeSkill.status = false;
+                    clearInterval(activeSkill.duration.function);
+                    gamePopUp(num, `ability`, `${activeSkill.name} over!`);
+
+                    enemyUser.controls.main.direction = JSON.parse(JSON.stringify(originalControls));
+                    for (let i in enemyUser.controls.main.direction) {
+                        enemyUser.controls.alt.direction[i] = enemyUser.controls.main.direction[i].toUpperCase();
+                    }
+                    $(`#apopis-takeover`).remove();
+                }
+            }
+        }, 1);
     }
 
     snakes.orochi.skills.skill1.function = function (num) {
@@ -495,6 +513,7 @@ function setSkillFunctions() {
         activeSkill.status = true;
         let originalControls = JSON.parse(JSON.stringify(enemyUser.controls.main.direction));
         enemyUser.controls.main.direction = JSON.parse(JSON.stringify(activeUser.controls.main.direction));
+
         let takeoverStyle = `box-shadow: 0 0 5px 2px rgb(255, 255, 0)`;
         $(`head`).append(`<style id="quetzalcoatl-takeover" class="temp-styling"> .player${enm}-snake{ ${takeoverStyle}; } </style>`);
 

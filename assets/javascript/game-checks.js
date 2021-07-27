@@ -8,6 +8,10 @@ function checkForFood(num) {
     if ($(`.player${num}-snake-head`).hasClass(`food-super`)) {
         eatFood(num, `super`);
     }
+    if ($(`.player${num}-snake-head`).hasClass(`food-item`)) {
+        $(`.food-item`).removeClass(`${food.item.snake}-border`);
+        eatFood(num, `item`);
+    }
 }
 
 function checkForSelf(num) {

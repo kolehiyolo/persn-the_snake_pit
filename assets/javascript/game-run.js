@@ -117,9 +117,19 @@ function eatFood(player, foodNum) {
 
     $(`.food-${foodNum}`).removeClass(`food-${foodNum}`);
     switch (foodNum) {
+        case `item`:
+            food.item.count = 0;
+            food.item.active = false;
+            console.log(`Add ${food.item.snake}'s ${food.item.skill}`);
+            addItemToSnake(num);
+            growSnake(num, food.item.value);
+            break;
         case `super`:
             food.super.count = 0;
             food.super.active = false;
+            // food.item.count++;
+            endCountdown(num, 1);
+            endCountdown(num, 2);
             growSnake(num, food.super.value);
             break;
         default:
@@ -131,6 +141,10 @@ function eatFood(player, foodNum) {
     if (food.super.count === food.super.limit) {
         food.super.active = true;
         placeFood(`super`);
+    }
+    if (food.item.count === food.item.limit) {
+        food.item.active = true;
+        placeFood(`item`);
     }
 
     updateFoodCountDiv();
@@ -160,13 +174,13 @@ function autoGrowth(num) {
     let activeUser = players[`player${num}`];
     activeUser.intervals.growth.function = setInterval(() => {
         if (game.paused === false) {
-            if (activeUser.intervals.growth.count > 0) {
-                activeUser.intervals.growth.count--;
+            if (activeUser.intervals.growth.counter > 0) {
+                activeUser.intervals.growth.counter--;
             } else {
-                activeUser.intervals.growth.count = 5;
+                activeUser.intervals.growth.counter = 5;
                 growSnake(num, 1);
             }
-            $(`#player${num}-ui-growth`).html(`${activeUser.intervals.growth.count}`); // FIXME
+            $(`#player${num}-ui-growth`).html(`${activeUser.intervals.growth.counter}`); // FIXME
         }
     }, activeUser.intervals.growth.speed);
 }
@@ -199,6 +213,7 @@ function snakeCrash(num) {
         x
     }
     gamePopUp(num, `crash`, "");
+
     activeUser.arena.position.reverse();
 
     // Now we set the head immediately to the tail
@@ -233,7 +248,7 @@ function snakeCrash(num) {
     } else if (snakeHead[1] > afterSnakeHead[1]) {
         activeUser.arena.direction = `down`;
     }
-
+    activeUser.arena.position.pop();
     // activeUser.abilities.ability1.status = false;
     activeUser.main.direction = activeUser.arena.direction;
     setSnakeSize(num);

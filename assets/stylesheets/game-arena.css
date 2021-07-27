@@ -64,6 +64,15 @@
     z-index: 10;
 }
 
+.food-item {
+    /* background-color: grey; */
+    border: solid 2px white;
+    box-sizing: border-box;
+    box-shadow: 0 0 20px 2.5px white;
+    position: relative;
+    z-index: 10;
+}
+
 .dead-snake {
     background-color: black;
     border: solid 2px rgb(119, 119, 119) !important;

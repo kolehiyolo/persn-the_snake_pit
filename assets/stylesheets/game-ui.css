@@ -83,11 +83,11 @@
 /* - Food ! */
 
 .player-ui-skills {
-    margin: 40px 0 0;
+    margin: 30px 0 0;
 }
 
 .player-ui-skill {
-    margin: 40px 20px;
+    margin: 30px 20px;
     padding: 15px;
     color: white;
     text-transform: capitalize;
@@ -205,7 +205,7 @@
     flex-direction: row;
 }
 
-.player1-ui-skill1-req-part,
+/* .player1-ui-skill1-req-part,
 .player1-ui-skill2-req-part,
 .player2-ui-skill1-req-part,
 .player2-ui-skill2-req-part,
@@ -218,6 +218,20 @@
     height: 10px;
     margin: 2.5px;
     border-radius: 2px;
+} */
+.player-ui-skill-req-part {
+    /* position: relative; */
+    background-color: black;
+    border: solid 2px white;
+    box-sizing: border-box;
+    width: 10px;
+    height: 10px;
+    margin: 2.5px;
+    border-radius: 2px;
+}
+
+#player1-ui-item, #player2-ui-item {
+    transition: 1s;
 }
 
 
@@ -257,7 +271,8 @@
     gap: 10px;
     grid-template-columns: 1fr 70px;
     padding-bottom: 30px;
-    border-bottom: 3px solid white;
+    padding-bottom: 0px;
+    /* border-bottom: 3px solid white; */
 }
 
 .player-ui-size-label {

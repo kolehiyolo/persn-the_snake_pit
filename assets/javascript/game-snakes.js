@@ -22,6 +22,9 @@ let snakes = {
                 cooldown: 20,
                 cost: 5,
                 required: 8,
+                // cooldown: 15,
+                // cost: 1,
+                // required: 4,
                 function: undefined,
             },
             skill2: {
@@ -108,10 +111,6 @@ let snakes = {
                     cost: 4,
                     required: 7,
                     function: undefined,
-                    // duration: 9,
-                    // cooldown: 10,
-                    // cost: 4,
-                    // required: 7,
                 }
             }
         },
@@ -125,9 +124,9 @@ let snakes = {
                     description: "Speed up momentarily",
                     longerDescription: "Speed up momentarily",
                     duration: 0.75,
-                    cooldown: 5,
-                    cost: 3,
-                    required: 5,
+                    cooldown: 3,
+                    cost: 1,
+                    required: 3,
                     function: undefined,
                 },
                 skill2: {

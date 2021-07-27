@@ -60,6 +60,7 @@ function setPlayerUI(num) {
     $(`#player${num}-ui-strike`).append(`<div id="player${num}-ui-strike-req" class="player-ui-skill-req"></div>`);
     for (let j = 1; j <= 3; j++) {
         $(`#player${num}-ui-strike-req`).append(`<div id="player${num}-ui-strike-req${j}" class="player${num}-ui-strike-req-part"></div>`);
+        $(`#player${num}-ui-strike-req${j}`).addClass(`player-ui-skill-req-part`);
     }
 
     // Add the Cost
@@ -69,7 +70,7 @@ function setPlayerUI(num) {
     $(`.player${num}-ui-strike-cost-part`).addClass(`${activeUI.arena.snake}-ui-border`);
 
 
-    // Now we a dd the skills
+    // Now we add the skills
     for (let i = 1; i <= 2; i++) {
         $(`#player${num}-ui-skills`).append(`<div id="player${num}-ui-skill${i}" class="player-ui-skill"></div>`);
 
@@ -106,6 +107,7 @@ function setPlayerUI(num) {
             $(`#player${num}-ui-skill${i}`).append(`<div id="player${num}-ui-skill${i}-req" class="player-ui-skill-req"></div>`);
             for (let j = 1; j <= snakes[activeUI.arena.snake].skills[`skill${i}`].required; j++) {
                 $(`#player${num}-ui-skill${i}-req`).append(`<div id="player${num}-ui-skill${i}-req${j}" class="player${num}-ui-skill${i}-req-part"></div>`);
+                $(`#player${num}-ui-skill${i}-req${j}`).addClass(`player-ui-skill-req-part`);
             }
 
             // Add the Cost
@@ -122,6 +124,19 @@ function setPlayerUI(num) {
     }
 
     $(`#player${num}-ui-skills .player-ui-skill`).addClass(`${activeUI.arena.snake}-border`);
+
+    // Add the item slot
+    // $(`#player${num}-ui-skills`).append(`<div id="player${num}-ui-item" class="player-ui-skill"></div>`);
+    // $(`#player${num}-ui-item`).append(`<div id="player${num}-ui-item-text" class="player-ui-skill-text"></div>`);
+    // $(`#player${num}-ui-item-text`).append(`<p id="player${num}-ui-item-name" class="player-ui-skill-name"></p>`);
+    // $(`#player${num}-ui-item-text`).append(`<p id="player${num}-ui-item-desc" class="player-ui-skill-desc"></p>`);
+    // $(`#player${num}-ui-item`).append(`<div id="player${num}-ui-item-key" class="player-ui-skill-key"></div>`);
+
+    // $(`#player${num}-ui-item-name`).html(`Item`);
+    // $(`#player${num}-ui-item-desc`).html(`This slot is reserved for borrowed skills`);
+    // $(`#player${num}-ui-item-key`).html(`<p>${players[`player${num}`].controls.main.skill.item}</p>`);
+    // $(`#player${num}-ui-item-text`).append(`<p id="player${num}-ui-item-dura" class="player-ui-skill-dura"></p>`);
+    // $(`#player${num}-ui-item-text`).append(`<p id="player${num}-ui-item-cool" class="player-ui-skill-cool"></p>`);
 
     setTimeout(() => {
         $(`#player${num}-ui`).removeClass(`hidden `);
@@ -209,8 +224,6 @@ function updatePlayerScoreDiv(num) {
     // FIXME
     let score = parseInt(players[`player${num}`].main.score);
     let snake = players[`player${num}`].arena.snake;
-    console.log(`updatePlayerScoreDiv(${num})`);
-    console.log(`--player${num}-score-count = ${score}`);
     $(`#player${num}-score-div`).append(`<div id="player${num}-score-${score}" class="player${num}-score slow-anim"></div>`);
     $(`#player${num}-score-${score}`).addClass(`player${num}-score`);
     $(`#player${num}-score-${score}`).addClass(`${snake}-border`);

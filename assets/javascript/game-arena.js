@@ -11,11 +11,12 @@ let displaySpeed = {
 
 function logArena() {
     // FIXME - Refactor
+    let activeUser = players[`player${active.id}`];
     let logEvent;
     if (key.type != undefined && enableLogGameArena === true) {
         switch (key.type) {
             case `misc`:
-                switch (activePlayer.main.misc) {
+                switch (activeUser.main.misc) {
                     case `aux`:
                         break;
                     case `exit`:
@@ -23,7 +24,7 @@ function logArena() {
                 }
                 break;
             case `ability`:
-                switch (activePlayer.main.ability) {
+                switch (activeUser.main.ability) {
                     case 0:
                         logEvent = `'Strike'`;
                         break;
@@ -36,7 +37,7 @@ function logArena() {
                 }
                 break;
             case `direction`:
-                logEvent = `Go '${activePlayer.main.direction}'`;
+                logEvent = `Go '${activeUser.main.direction}'`;
                 break;
         }
         console.log(`--gameArena: Player ${active.id} -> ${key.type}: '${key.id}' = ${logEvent}`);
@@ -244,7 +245,11 @@ function placeFood(num) {
         }
     }
 
-    if (foodNum === "super") {
+    if (foodNum === "item") {
+        food.item.position[0] = foodX;
+        food.item.position[1] = foodY;
+        setItemFood();
+    } else if (foodNum === "super") {
         food.super.position[0] = foodX;
         food.super.position[1] = foodY;
     } else {
@@ -252,6 +257,69 @@ function placeFood(num) {
         food[`food${num}`].position[1] = foodY;
     }
     updateFoodCountDiv();
+}
+
+
+function setItemFood() {
+    let snakeChoices = [`apopis`, `orochi`, `quetzalcoatl`, `lóng`, `jörmungandr`, `sheshanaga`];
+    let activeSnake = snakeChoices[Math.floor((Math.random() * 6))];
+
+    food.item.snake = activeSnake;
+    food.item.skill = Math.floor((Math.random() * 2) + 1);
+
+    $(`.food-item`).addClass(`${activeSnake}-border`);
+}
+
+function addItemToSnake(num) {
+    let s = `skill${food.item.skill}`;
+    // $(`#player${num}-ui-item`).append(`<div id="player${num}-ui-item-text" class="player-ui-item-text"></div>`);
+    // $(`#player${num}-ui-item-text`).append(`<p id="player${num}-ui-item-name" class="player-ui-item-name"></p>`);
+    // $(`#player${num}-ui-item-text`).append(`<p id="player${num}-ui-item-desc" class="player-ui-item-desc"></p>`);
+    $(`#player${num}-ui-item-name`).html(`${snakes[food.item.snake].skills[`${s}`].name}`);
+    $(`#player${num}-ui-item-desc`).html(`${snakes[food.item.snake].skills[`${s}`].longerDescription}`);
+
+    // Add the Stats
+    $(`#player${num}-ui-item-text`).append(`<p id="player${num}-ui-item-dura" class="player-ui-skill-dura"></p>`);
+    $(`#player${num}-ui-item-text`).append(`<p id="player${num}-ui-item-cool" class="player-ui-skill-cool"></p>`);
+    if (snakes[food.item.snake].skills[`${s}`].duration === `Instant`) {
+        $(`#player${num}-ui-item-dura`).html(`Duration: ${snakes[food.item.snake].skills[`${s}`].duration}`);
+    } else {
+        $(`#player${num}-ui-item-dura`).html(`Duration: ${snakes[food.item.snake].skills[`${s}`].duration} secs`);
+    }
+    if (snakes[food.item.snake].skills[`${s}`].cooldown === `Instant`) {
+        $(`#player${num}-ui-item-cool`).html(`Duration: ${snakes[food.item.snake].skills[`${s}`].cooldown}`);
+    } else {
+        $(`#player${num}-ui-item-cool`).html(`Duration: ${snakes[food.item.snake].skills[`${s}`].cooldown} secs`);
+    }
+
+    if (snakes[food.item.snake].skills[`${s}`].cooldown != "Passive") {
+        // Add the Time Bar
+        $(`#player${num}-ui-item`).append(`<div id="player${num}-ui-item-time" class="player-ui-skill-time"></div>`);
+
+        // Add the Key
+        // $(`#player${num}-ui-item`).append(`<div id="player${num}-ui-item-key" class="player-ui-skill-key"></div>`);
+        // $(`#player${num}-ui-item-key`).html(`<p>${players[`player${num}`].controls.main.skill.item}</p>`);
+
+        // Add the Required
+        $(`#player${num}-ui-item`).append(`<div id="player${num}-ui-item-req" class="player-ui-skill-req"></div>`);
+        for (let j = 1; j <= snakes[food.item.snake].skills[`${s}`].required; j++) {
+            $(`#player${num}-ui-item-req`).append(`<div id="player${num}-ui-item-req${j}" class="player${num}-ui-item-req-part"></div>`);
+            $(`#player${num}-ui-item-req${j}`).addClass(`player-ui-skill-req-part`);
+        }
+
+        // Add the Cost
+        for (let j = 1; j <= snakes[food.item.snake].skills[`${s}`].cost; j++) {
+            $(`#player${num}-ui-item-req${j}`).addClass(`player${num}-ui-item-cost-part`);
+        }
+        $(`.player${num}-ui-item-cost-part`).addClass(`${food.item.snake}-ui-border`);
+    } else {
+        // console.log(`${snakes[food.item.snake].skills[`${s}`].name} is a Passive Skill`);
+        // $(`#player${num}-ui-skill${i}`).append(`<div id="player${num}-ui-skill${i}-pass" class="player-ui-skill-pass"></div>`);
+        // $(`#player${num}-ui-skill${i}-pass`).html(`<p>Passive</p>`);
+        // $(`#player${num}-ui-skill${i}`).addClass(`player-ui-skill-pass-border`);
+    }
+    $(`#player${num}-ui-item`).addClass(`${food.item.snake}-border`);
+
 }
 
 function fightCountdown() {
@@ -422,11 +490,9 @@ function gameArena() {
 }
 
 function popSnake(num, pops) {
-    // console.log(`popSnake(${pops})`);
     if (pops === 0 || pops === undefined) {
         return;
     }
-
     // FIXME
     // When a snake eats food, any snake-size altering event gets hella confused and throws errors
     // This affects abilities like Quetzalcoatl's Reversal and even this popSnake() function
@@ -434,10 +500,10 @@ function popSnake(num, pops) {
     let enm = (num === 1) ? 2 : 1;
     let activeUser = players[`player${num}`];
     // let enemyUser = players[`player${enm}`];
-    pops = (activeUser.arena.size - pops <= 1) ? 1 : pops;
-    activeUser.arena.position.pop();
+    pops = (activeUser.arena.size === 1) ? 0 : (activeUser.arena.size - pops <= 1) ? 1 : pops;
     setSnakeSize(num);
     for (let i = activeUser.arena.size - 1, j = 1; j <= pops; i--, j++) {
+        // activeUser.arena.position.pop();
         $(`#x${activeUser.arena.position[i][0]}y${activeUser.arena.position[i][1]}`).attr(`class`, `cols dead-snake`);
         foundPart = i;
     }
