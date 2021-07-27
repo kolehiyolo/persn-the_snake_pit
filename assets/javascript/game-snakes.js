@@ -25,15 +25,25 @@ let snakes = {
                 function: undefined,
             },
             skill2: {
-                name: "Chaos",
-                description: "Randomly scatter all objects and the snakes",
+                name: "Confusion",
+                description: "Switch your opponent's directions to their opposites",
                 longerDescription: "Randomly scatter all objects and the snakes",
-                duration: "Instant",
+                duration: 4,
                 cooldown: 10,
                 cost: 3,
                 required: 5,
                 function: undefined,
-            }
+            },
+            // skill2: {
+            //     name: "Chaos",
+            //     description: "Randomly scatter all objects and the snakes",
+            //     longerDescription: "Randomly scatter all objects and the snakes",
+            //     duration: "Instant",
+            //     cooldown: 10,
+            //     cost: 3,
+            //     required: 5,
+            //     function: undefined,
+            // },  
         }
     },
     orochi: {

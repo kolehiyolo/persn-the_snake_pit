@@ -21,7 +21,7 @@ game.state = "over"; // This is the state when one or both Players lose
 // player.p1.choose.snake = "jörmungandr";
 // player.p1.choose.snake = "sheshanaga";
 
-players.player1.choose.snake = "orochi";
+players.player1.choose.snake = "apopis";
 players.player2.choose.snake = "quetzalcoatl";
 setGameState("arena");
 // setGameState("choose");

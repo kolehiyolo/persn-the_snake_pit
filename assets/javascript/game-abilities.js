@@ -106,49 +106,67 @@ function setSkillFunctions() {
         let activeUser = players[`player${num}`];
         let activeSkill = activeUser.skills.skill1;
         let activeSnake = activeUser.arena.snake;
+        let enemyUser = players[`player${num}`];
+        let enemySkill = activeUser.skills.skill1;
+        let enemySnake = activeUser.arena.snake;
         activeSkill.status = true;
 
-        if (enemyUser.abilities.strike.status === true) {
-            clearInterval(enemyUser.intervals.fetchStrike.function);
-            clearInterval(enemyUser.intervals.useStrike.function);
-            clearInterval(activeUser.intervals.fetchStrike.function);
-            clearInterval(activeUser.intervals.useStrike.function);
-        }
-
-        if (enemyUser.abilities.strike.status === true) {
+        if (enemyUser.skills.strike.status === true) {
+            enemyUser.skills.strike.status = false;
+            clearInterval(enemyUser.skills.strike.strike.function);
+            clearInterval(enemyUser.skills.strike.fetch.function);
+            enemyUser.skills.strike.strike.status = false;
+            enemyUser.skills.strike.fetch.status = false;
             $(`.p${enm}-strike`).addClass(`slow-anim`);
             $(`.p${enm}-strike`).removeClass(`${enemyUser.arena.snake}-strike vertical-strike horizontal-strike`);
-            enemyUser.abilities.strike.status = false;
-            enemyUser.intervals.fetchStrike.status = false;
-            enemyUser.intervals.useStrike.status = false;
-            activeUser.abilities.strike.status = false;
-            activeUser.intervals.fetchStrike.status = false;
-            activeUser.intervals.useStrike.status = false;
+            // clearInterval(activeUser.intervals.fetchStrike.function);
+            // clearInterval(activeUser.intervals.useStrike.function);
         }
 
-        player.p1.arena.immobilized = true;
-        player.p2.arena.immobilized = true;
+        // if (enemyUser.abilities.strike.status === true) {
+        //     activeUser.abilities.strike.status = false;
+        //     activeUser.intervals.fetchStrike.status = false;
+        //     activeUser.intervals.useStrike.status = false;
+        // }
 
-        player.p1.arena.disarmed = true;
-        player.p2.arena.disarmed = true;
+        for (let i = 1; i <= 2; i++) {
+            players[`player${i}`].status.immobilized = true;
+            players[`player${i}`].status.disarmed = true;
+            // player.p1.arena.immobilized = true;
+            // player.p2.arena.immobilized = true;
+            // player.p1.arena.disarmed = true;
+            // player.p2.arena.disarmed = true;
+        }
 
+//         arena: {direction: "right", snake: "apopis", position: Array(10), size: 10}
+// choose: {snake: "apopis", position: Array(2), ready: true, clicked: true}
+// controls: {main: {…}, alt: {…}}
+// intervals: {run: {…}, growth: {…}, popUp: {…}}
+// main: {id: 1, name: "Player 1", direction: "right", skill: undefined, misc: "aux", …}
+// skills: {strike: {…}, skill1: {…}, skill2: {…}}
+// status: {alive: false, disarmed: false, canTurn: false, canStrike: true, immobilized: false, …}
+// __proto__: Object
+
+        let alter1 = {};
+        let alter2 = {};
         // First we set the size, position and direction of the players to their alters
-        player.alter1.arena = JSON.parse(JSON.stringify(player.p1.arena));
-        player.alter2.arena = JSON.parse(JSON.stringify(player.p2.arena));
-        player.alter1.intervals = JSON.parse(JSON.stringify(player.p1.intervals));
-        player.alter2.intervals = JSON.parse(JSON.stringify(player.p2.intervals));
-        player.alter1.main.direction = JSON.parse(JSON.stringify(player.p1.main.direction));
-        player.alter2.main.direction = JSON.parse(JSON.stringify(player.p2.main.direction));
+        alter1.arena = JSON.parse(JSON.stringify(players.player1.arena));
+        alter2.arena = JSON.parse(JSON.stringify(players.player2.arena));
+        alter1.direction = JSON.parse(JSON.stringify(players.player1.main.direction));
+        alter2.direction = JSON.parse(JSON.stringify(players.player2.main.direction));
+        // alter1.intervals = JSON.parse(JSON.stringify(player.p1.intervals));
+        // alter2.intervals = JSON.parse(JSON.stringify(player.p2.intervals));
 
         // Then we swap the alters except for the player's snake
-        player.p1.arena = JSON.parse(JSON.stringify(player.alter2.arena));
-        player.p2.arena = JSON.parse(JSON.stringify(player.alter1.arena));
-        player.p1.arena.snake = JSON.parse(JSON.stringify(player.alter1.arena.snake));
-        player.p2.arena.snake = JSON.parse(JSON.stringify(player.alter2.arena.snake));
-        player.p1.intervals = JSON.parse(JSON.stringify(player.alter2.intervals));
-        player.p2.intervals = JSON.parse(JSON.stringify(player.alter1.intervals));
-        player.p1.main.direction = JSON.parse(JSON.stringify(player.alter2.main.direction));
-        player.p2.main.direction = JSON.parse(JSON.stringify(player.alter1.main.direction));
+
+        players.player1.arena = JSON.parse(JSON.stringify(alter2.arena));
+        players.player2.arena = JSON.parse(JSON.stringify(alter1.arena));
+        players.player1.arena.snake = JSON.parse(JSON.stringify(alter1.arena.snake));
+        players.player2.arena.snake = JSON.parse(JSON.stringify(alter2.arena.snake));
+        players.player1.main.direction = JSON.parse(JSON.stringify(alter2.direction));
+        players.player2.main.direction = JSON.parse(JSON.stringify(alter1.direction));
+        // players.player1.intervals = JSON.parse(JSON.stringify(player.alter2.intervals));
+        // players.player2.intervals = JSON.parse(JSON.stringify(player.alter1.intervals));
         // updatePlayerUI(1, `size`, ``);
         // updatePlayerUI(2, `size`, ``);
         setSnakeSize(1);
@@ -157,20 +175,20 @@ function setSkillFunctions() {
         $(`.player1-snake`).addClass(`slow-anim`);
         $(`.player2-snake`).addClass(`slow-anim`);
 
-        $(`.player1-snake-head`).addClass(`${player.p2.arena.snake}-head switch1-head`);
-        $(`.player1-snake-body`).addClass(`${player.p2.arena.snake}-body switch1-body`);
-        $(`.player2-snake-head`).addClass(`${player.p1.arena.snake}-head switch2-head`);
-        $(`.player2-snake-body`).addClass(`${player.p1.arena.snake}-body switch2-body`);
+        $(`.player1-snake-head`).addClass(`${players.player2.arena.snake}-head switch1-head`);
+        $(`.player1-snake-body`).addClass(`${players.player2.arena.snake}-body switch1-body`);
+        $(`.player2-snake-head`).addClass(`${players.player1.arena.snake}-head switch2-head`);
+        $(`.player2-snake-body`).addClass(`${players.player1.arena.snake}-body switch2-body`);
 
         $(`.switch1-head`).addClass(`player2-snake-head`);
         $(`.switch1-body`).addClass(`player2-snake-body`);
         $(`.switch2-head`).addClass(`player1-snake-head`);
         $(`.switch2-body`).addClass(`player1-snake-body`);
 
-        $(`.switch1-head`).removeClass(`${player.p1.arena.snake}-head switch1-head`);
-        $(`.switch1-body`).removeClass(`${player.p1.arena.snake}-body switch1-body`);
-        $(`.switch2-head`).removeClass(`${player.p2.arena.snake}-head switch2-head`);
-        $(`.switch2-body`).removeClass(`${player.p2.arena.snake}-body switch2-body`);
+        $(`.switch1-head`).removeClass(`${players.player1.arena.snake}-head switch1-head`);
+        $(`.switch1-body`).removeClass(`${players.player1.arena.snake}-body switch1-body`);
+        $(`.switch2-head`).removeClass(`${players.player2.arena.snake}-head switch2-head`);
+        $(`.switch2-body`).removeClass(`${players.player2.arena.snake}-body switch2-body`);
 
 
         let switchIntervalCounter = 1;
@@ -184,10 +202,19 @@ function setSkillFunctions() {
                     $(`.player2-snake`).removeClass(`slow-anim`);
                     $(`.p${enm}-strike`).removeClass(`slow-anim p${enm}-strike`);
                     game.paused = false;
-                    player.p1.arena.disarmed = false;
-                    player.p2.arena.disarmed = false;
-                    player.p1.arena.immobilized = false;
-                    player.p2.arena.immobilized = false;
+                    for (let i = 1; i <= 2; i++) {
+                        players[`player${i}`].status.immobilized = false;
+                        players[`player${i}`].status.disarmed = false;
+                        // player.p1.arena.immobilized = true;
+                        // player.p2.arena.immobilized = true;
+                        // player.p1.arena.disarmed = true;
+                        // player.p2.arena.disarmed = true;
+                    }
+            
+                    // player.p1.arena.disarmed = false;
+                    // player.p2.arena.disarmed = false;
+                    // player.p1.arena.immobilized = false;
+                    // player.p2.arena.immobilized = false;
                 }
             }
         }, 10);
