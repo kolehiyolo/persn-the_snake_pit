@@ -185,10 +185,10 @@ function setSkillFunctions() {
         $(`.switch2-head`).addClass(`player1-snake-head`);
         $(`.switch2-body`).addClass(`player1-snake-body`);
 
-        $(`.switch1-head`).removeClass(`${players.player1.arena.snake}-head switch1-head`);
-        $(`.switch1-body`).removeClass(`${players.player1.arena.snake}-body switch1-body`);
-        $(`.switch2-head`).removeClass(`${players.player2.arena.snake}-head switch2-head`);
-        $(`.switch2-body`).removeClass(`${players.player2.arena.snake}-body switch2-body`);
+        $(`.switch1-head`).removeClass(`${players.player1.arena.snake}-head player2-snake-head switch1-head`);
+        $(`.switch1-body`).removeClass(`${players.player1.arena.snake}-body player2-snake-body switch1-body`);
+        $(`.switch2-head`).removeClass(`${players.player2.arena.snake}-head player1-snake-head switch2-head`);
+        $(`.switch2-body`).removeClass(`${players.player2.arena.snake}-body player1-snake-body switch2-body`);
 
 
         let switchIntervalCounter = 1;
